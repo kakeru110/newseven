@@ -1,139 +1,15 @@
 <!doctype html>
-<html lang="ja" >
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>民泊ダッシュボード</title>
-  <meta name="description" content="民泊（住宅宿泊事業）の売上・稼働率・予約・タスクを一画面で管理するダッシュボード" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" />
-  <link rel="stylesheet" href="assets/styles.css" />
-</head>
-<body>
-  <div class="app">
-    <header class="topbar">
-      <div>
-        <h1><span id="app-title">民泊ダッシュボード</span><span class="badge" id="demo-badge"><span class="dot"></span>サンプルデータ</span></h1>
-        <div class="sub" id="app-sub"></div>
-      </div>
-      <div class="controls">
-        <label class="field"><span>対象月</span><select id="sel-month"></select></label>
-        <label class="field"><span>物件</span><select id="sel-property"></select></label>
-        <label class="field"><span>表示</span><button class="ghost" id="theme-toggle" type="button">ライト / ダーク</button></label>
-      </div>
-    </header>
-
-    <main>
-      <!-- KPI -->
-      <div class="grid kpi">
-        <section class="card tile hero" id="kpi-revenue" aria-label="売上"></section>
-        <section class="card tile" id="kpi-occ" aria-label="稼働率"></section>
-        <section class="card tile" id="kpi-adr" aria-label="ADR"></section>
-        <section class="card tile" id="kpi-revpar" aria-label="RevPAR"></section>
-      </div>
-      <div class="grid kpi-2">
-        <section class="card tile" id="kpi-bookings" aria-label="予約件数"></section>
-        <section class="card tile" id="kpi-profit" aria-label="営業利益"></section>
-        <section class="card tile" id="kpi-review" aria-label="レビュー評価"></section>
-        <section class="card tile" id="kpi-scope" aria-label="表示範囲">
-          <div class="label">表示範囲</div>
-          <div class="value" style="font-size:15px;line-height:1.5" id="scope-note">—</div>
-          <div class="foot"><span style="color:var(--muted);font-size:11px" id="updated"></span></div>
-          <div class="foot"><span style="color:var(--muted);font-size:11px">グラフの棒・点をクリックすると、その月に切り替わります</span></div>
-        </section>
-      </div>
-
-      <!-- 推移 -->
-      <div class="grid c2e">
-        <section class="card">
-          <header><h2>月次売上の推移（直近12ヶ月）</h2><span class="note">選択中の月を強調表示</span></header>
-          <div id="chart-revenue"></div>
-        </section>
-        <section class="card">
-          <header><h2>稼働率の推移（直近12ヶ月）</h2><span class="note">単位 ％</span></header>
-          <div id="chart-occupancy"></div>
-        </section>
-      </div>
-
-      <!-- カレンダー -->
-      <div class="grid">
-        <section class="card">
-          <header><h2>稼働カレンダー</h2><span class="note">バーにカーソルを合わせると予約の詳細が表示されます</span></header>
-          <div id="calendar"></div>
-          <div class="legend">
-            <span><i style="background:var(--series-1)"></i>予約あり</span>
-            <span><i style="background:var(--surface-2);border:1px solid var(--border)"></i>週末</span>
-            <span><i style="background:var(--critical)"></i>今日</span>
-          </div>
-        </section>
-      </div>
-
-      <!-- 内訳 -->
-      <div class="grid c2e">
-        <section class="card">
-          <header><h2>物件別の稼働率</h2><span class="note">縦線＝目標稼働率</span></header>
-          <div id="chart-prop-occ"></div>
-        </section>
-        <section class="card">
-          <header><h2>予約経路別の売上</h2><span class="note">選択中の月</span></header>
-          <div id="chart-channel"></div>
-        </section>
-      </div>
-
-      <!-- 物件一覧 -->
-      <div class="grid">
-        <section class="card">
-          <header><h2>物件一覧</h2><span class="note">選択中の月の実績</span></header>
-          <div class="table-wrap">
-            <table>
-              <thead><tr>
-                <th>物件</th><th class="num">稼働率</th><th class="num">売上</th><th class="num">ADR</th>
-                <th class="num">予約件数</th><th class="num">評価</th><th>次回チェックイン</th><th>状態</th>
-              </tr></thead>
-              <tbody id="tbl-properties"></tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-
-      <!-- 予定・タスク -->
-      <div class="grid c2e">
-        <section class="card">
-          <header><h2>直近の予定</h2><span class="note">今日以降のチェックイン / チェックアウト</span></header>
-          <div class="list" id="list-upcoming"></div>
-        </section>
-        <section class="card">
-          <header><h2>タスク</h2><span class="note">クリックで完了 / 未完了を切り替え</span></header>
-          <div class="list" id="list-tasks"></div>
-        </section>
-      </div>
-
-      <!-- 経費・表 -->
-      <div class="grid c2">
-        <section class="card">
-          <header><h2>経費の内訳</h2><span class="note" id="expense-summary"></span></header>
-          <div id="chart-expense"></div>
-        </section>
-        <section class="card">
-          <header><h2>月次サマリー（表）</h2><span class="note">グラフと同じ数値</span></header>
-          <div class="table-wrap" style="max-height:320px;overflow-y:auto">
-            <table>
-              <thead><tr><th>月</th><th class="num">売上</th><th class="num">稼働率</th><th class="num">ADR</th><th class="num">RevPAR</th><th class="num">予約</th><th class="num">営業利益</th></tr></thead>
-              <tbody id="tbl-monthly"></tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-
-      <footer class="foot">
-        売上は宿泊数で日割りして各月へ配分。稼働率＝宿泊した日数 ÷ 販売可能日数（掲載開始日を考慮）。ADR＝売上 ÷ 宿泊日数、RevPAR＝売上 ÷ 販売可能日数。
-      </footer>
-    </main>
-  </div>
-
-  <div id="tip" role="tooltip"></div>
-
-  <script src="data/data.js"></script>
-  <script src="assets/app.js"></script>
-</body>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kamakura Gate Inn 分析ダッシュボード</title>
+    <meta name="description" content="Kamakura Gate Inn の予約・価格・会計を統合した分析ダッシュボード（Stage 1 / 静的データ）" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&display=swap" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
