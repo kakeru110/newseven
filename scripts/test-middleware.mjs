@@ -32,5 +32,19 @@ check("Basic 以外の方式 → 401", (await middleware(req("Bearer token")))?.
 const ok = await middleware(req(basic("kamakura", "s3cret-pass")));
 check("正しい認証情報 → 通常配信（401/503 を返さない）", ok.status !== 401 && ok.status !== 503);
 
+console.log("\n■ 環境変数に空白・改行が混ざっていても通す");
+process.env.BASIC_AUTH_PASSWORD = "  s3cret-pass\n";
+process.env.BASIC_AUTH_USER = " kamakura ";
+const trimmed = await middleware(req(basic("kamakura", "s3cret-pass")));
+check("前後の空白・改行を無視して認証できる", trimmed.status !== 401 && trimmed.status !== 503);
+
+console.log("\n■ 多バイト文字のパスワード");
+process.env.BASIC_AUTH_USER = "kamakura";
+process.env.BASIC_AUTH_PASSWORD = "鎌倉ゲート2026";
+const utf8 = await middleware(req("Basic " + Buffer.from("kamakura:鎌倉ゲート2026", "utf8").toString("base64")));
+check("UTF-8 のパスワードで認証できる", utf8.status !== 401 && utf8.status !== 503);
+check("違う多バイト文字は拒否する",
+  (await middleware(req("Basic " + Buffer.from("kamakura:鎌倉ゲート2027", "utf8").toString("base64")))).status === 401);
+
 console.log(failed === 0 ? "\n✅ すべて期待どおりです" : `\n❌ ${failed} 件が失敗`);
 process.exit(failed === 0 ? 0 : 1);
