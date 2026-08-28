@@ -1,0 +1,531 @@
+{
+  "$schema": "kamakura-gate-inn seed v1",
+  "generatedAt": "2026-08-28",
+  "property": {
+    "name": "Kamakura Gate Inn",
+    "location": "神奈川県鎌倉市大船",
+    "operator": "クリプトマネージ合同会社",
+    "rooms": 1,
+    "currency": "JPY"
+  },
+  "notes": {
+    "summary": "2026年2〜8月の実績。全額は税込（表記のある項目を除く）。8月は仮値。",
+    "provisionalMonths": [
+      "2026-08"
+    ],
+    "missingData": [
+      "2026-03: 運営サポート収支表PDF未入手。売上総額はサポート料金からの逆算値、OTA手数料は推定値、チャネル内訳は不明。",
+      "2026-08: 月未了のため全項目が仮値。光熱費・日用品・清掃請求・収支表の差し替え待ち。"
+    ],
+    "nightsExplanation": "月跨ぎ滞在は売上がチェックアウト月にまとめて計上される。稼働率にはnightsActual、ADRにはnightsRevenueを使うこと。"
+  },
+  "costRates": [
+    {
+      "key": "cleaning_per_stay_excl_tax",
+      "value": 6500,
+      "unit": "JPY/stay",
+      "validFrom": "2026-01-01",
+      "validTo": null,
+      "source": "ラフプラス請求書明細"
+    },
+    {
+      "key": "garbage_per_bag_excl_tax",
+      "value": 800,
+      "unit": "JPY/bag",
+      "validFrom": "2026-02-01",
+      "validTo": null,
+      "source": "ラフプラス請求書明細"
+    },
+    {
+      "key": "cleaning_total_per_stay_incl_tax",
+      "value": 8540,
+      "unit": "JPY/stay",
+      "validFrom": "2026-02-01",
+      "validTo": null,
+      "source": "2・4〜7月の実績平均（74滞在、5月の立替控除を戻した金額）"
+    },
+    {
+      "key": "utilities_per_night",
+      "value": 758,
+      "unit": "JPY/night",
+      "validFrom": "2026-02-01",
+      "validTo": null,
+      "source": "2・4〜7月実績 76,537円 ÷ 101泊"
+    },
+    {
+      "key": "supplies_per_night",
+      "value": 401,
+      "unit": "JPY/night",
+      "validFrom": "2026-02-01",
+      "validTo": null,
+      "source": "2・4〜7月実績 40,482円 ÷ 101泊"
+    },
+    {
+      "key": "mgmt_support_rate_excl_tax",
+      "value": 0.1,
+      "unit": "ratio_of_revenue",
+      "validFrom": "2026-02-01",
+      "validTo": null,
+      "source": "グッドネイバーズ請求書。売上×10%で1円まで一致を確認済み"
+    },
+    {
+      "key": "consumption_tax_multiplier",
+      "value": 1.1,
+      "unit": "multiplier",
+      "validFrom": "2026-02-01",
+      "validTo": null,
+      "source": "消費税10%"
+    },
+    {
+      "key": "ota_rate_airbnb",
+      "value": 0.155,
+      "unit": "ratio_of_revenue",
+      "validFrom": "2026-02-01",
+      "validTo": null,
+      "source": "収支表PDF全件から逆算。全期間で例外なく一定"
+    },
+    {
+      "key": "ota_rate_booking_base",
+      "value": 0.133,
+      "unit": "ratio_of_revenue",
+      "validFrom": "2026-02-01",
+      "validTo": "2026-05-31",
+      "source": "収支表PDF"
+    },
+    {
+      "key": "ota_rate_booking_base",
+      "value": 0.143,
+      "unit": "ratio_of_revenue",
+      "validFrom": "2026-06-01",
+      "validTo": null,
+      "source": "収支表PDF。6月に1ポイント上昇"
+    },
+    {
+      "key": "ota_rate_booking_promo",
+      "value": 0.1697,
+      "unit": "ratio_of_revenue",
+      "validFrom": "2026-04-01",
+      "validTo": "2026-05-31",
+      "source": "収支表PDF。宣伝プログラム適用分のみ。6月以降は適用なし"
+    }
+  ],
+  "monthly": [
+    {
+      "month": "2026-02",
+      "isProvisional": false,
+      "calendarDays": 28,
+      "nightsActual": 15,
+      "nightsRevenue": 15,
+      "cleaningCount": 12,
+      "revenue": {
+        "airbnb": 122620,
+        "booking": 111955,
+        "direct": 0,
+        "unattributed": 0,
+        "total": 234575
+      },
+      "variableCosts": {
+        "cleaningBaseExclTax": 78000,
+        "garbageExclTax": 9600,
+        "advanceCredit": 0,
+        "cleaningTotalInclTax": 96360,
+        "otaFee": 33898,
+        "mgmtSupportFeeInclTax": 25803,
+        "utilities": 13396,
+        "supplies": 2698
+      },
+      "fixedCosts": {
+        "rent": 153000,
+        "internet": 3979,
+        "beds24": 4690,
+        "pricelabs": 0,
+        "mgmtBaseFeeInclTax": 22000,
+        "checkinSystemInclTax": 2200,
+        "noiseSensorInclTax": 0
+      }
+    },
+    {
+      "month": "2026-03",
+      "isProvisional": false,
+      "calendarDays": 31,
+      "nightsActual": 28,
+      "nightsRevenue": 28,
+      "cleaningCount": 25,
+      "revenue": {
+        "airbnb": 0,
+        "booking": 0,
+        "direct": 0,
+        "unattributed": 635600,
+        "total": 635600
+      },
+      "variableCosts": {
+        "cleaningBaseExclTax": 162500,
+        "garbageExclTax": 29600,
+        "advanceCredit": 0,
+        "cleaningTotalInclTax": 211310,
+        "otaFee": 94387,
+        "mgmtSupportFeeInclTax": 69916,
+        "utilities": 22449,
+        "supplies": 7440
+      },
+      "fixedCosts": {
+        "rent": 153000,
+        "internet": 3979,
+        "beds24": 4690,
+        "pricelabs": 0,
+        "mgmtBaseFeeInclTax": 22000,
+        "checkinSystemInclTax": 2200,
+        "noiseSensorInclTax": 0
+      }
+    },
+    {
+      "month": "2026-04",
+      "isProvisional": false,
+      "calendarDays": 30,
+      "nightsActual": 22,
+      "nightsRevenue": 22,
+      "cleaningCount": 17,
+      "revenue": {
+        "airbnb": 244960,
+        "booking": 342774,
+        "direct": 0,
+        "unattributed": 0,
+        "total": 587734
+      },
+      "variableCosts": {
+        "cleaningBaseExclTax": 110500,
+        "garbageExclTax": 15200,
+        "advanceCredit": 0,
+        "cleaningTotalInclTax": 138270,
+        "otaFee": 91628,
+        "mgmtSupportFeeInclTax": 64651,
+        "utilities": 16911,
+        "supplies": 15233
+      },
+      "fixedCosts": {
+        "rent": 153000,
+        "internet": 3979,
+        "beds24": 4690,
+        "pricelabs": 1600,
+        "mgmtBaseFeeInclTax": 22000,
+        "checkinSystemInclTax": 2200,
+        "noiseSensorInclTax": 0
+      }
+    },
+    {
+      "month": "2026-05",
+      "isProvisional": false,
+      "calendarDays": 31,
+      "nightsActual": 23,
+      "nightsRevenue": 23,
+      "cleaningCount": 17,
+      "revenue": {
+        "airbnb": 264566,
+        "booking": 338091,
+        "direct": 0,
+        "unattributed": 0,
+        "total": 602657
+      },
+      "variableCosts": {
+        "cleaningBaseExclTax": 110500,
+        "garbageExclTax": 18400,
+        "advanceCredit": -21868,
+        "cleaningTotalInclTax": 119922,
+        "otaFee": 87426,
+        "mgmtSupportFeeInclTax": 66292,
+        "utilities": 13972,
+        "supplies": 10119
+      },
+      "fixedCosts": {
+        "rent": 153000,
+        "internet": 3979,
+        "beds24": 4690,
+        "pricelabs": 1600,
+        "mgmtBaseFeeInclTax": 22000,
+        "checkinSystemInclTax": 2200,
+        "noiseSensorInclTax": 2200
+      }
+    },
+    {
+      "month": "2026-06",
+      "isProvisional": false,
+      "calendarDays": 30,
+      "nightsActual": 23,
+      "nightsRevenue": 20,
+      "cleaningCount": 12,
+      "revenue": {
+        "airbnb": 161020,
+        "booking": 314583,
+        "direct": 0,
+        "unattributed": 0,
+        "total": 475603
+      },
+      "variableCosts": {
+        "cleaningBaseExclTax": 78000,
+        "garbageExclTax": 23200,
+        "advanceCredit": 0,
+        "cleaningTotalInclTax": 111320,
+        "otaFee": 69943,
+        "mgmtSupportFeeInclTax": 52316,
+        "utilities": 14909,
+        "supplies": 6173
+      },
+      "fixedCosts": {
+        "rent": 153000,
+        "internet": 3979,
+        "beds24": 4690,
+        "pricelabs": 1600,
+        "mgmtBaseFeeInclTax": 22000,
+        "checkinSystemInclTax": 2200,
+        "noiseSensorInclTax": 2200
+      }
+    },
+    {
+      "month": "2026-07",
+      "isProvisional": false,
+      "calendarDays": 31,
+      "nightsActual": 24,
+      "nightsRevenue": 21,
+      "cleaningCount": 16,
+      "revenue": {
+        "airbnb": 192635,
+        "booking": 338297,
+        "direct": 0,
+        "unattributed": 0,
+        "total": 530932
+      },
+      "variableCosts": {
+        "cleaningBaseExclTax": 105500,
+        "garbageExclTax": 25600,
+        "advanceCredit": 0,
+        "cleaningTotalInclTax": 144210,
+        "otaFee": 78235,
+        "mgmtSupportFeeInclTax": 58403,
+        "utilities": 17349,
+        "supplies": 6259
+      },
+      "fixedCosts": {
+        "rent": 153000,
+        "internet": 3979,
+        "beds24": 4690,
+        "pricelabs": 1600,
+        "mgmtBaseFeeInclTax": 22000,
+        "checkinSystemInclTax": 2200,
+        "noiseSensorInclTax": 2200
+      }
+    },
+    {
+      "month": "2026-08",
+      "isProvisional": true,
+      "calendarDays": 31,
+      "nightsActual": 29,
+      "nightsRevenue": 29,
+      "cleaningCount": 20,
+      "revenue": {
+        "airbnb": 293548,
+        "booking": 540661,
+        "direct": 0,
+        "unattributed": 0,
+        "total": 834209
+      },
+      "variableCosts": {
+        "cleaningBaseExclTax": 130000,
+        "garbageExclTax": 35200,
+        "advanceCredit": 0,
+        "cleaningTotalInclTax": 181720,
+        "otaFee": 122815,
+        "mgmtSupportFeeInclTax": 91763,
+        "utilities": 21982,
+        "supplies": 11629
+      },
+      "fixedCosts": {
+        "rent": 153000,
+        "internet": 3979,
+        "beds24": 4690,
+        "pricelabs": 1600,
+        "mgmtBaseFeeInclTax": 22000,
+        "checkinSystemInclTax": 2200,
+        "noiseSensorInclTax": 2200
+      }
+    }
+  ],
+  "channelMonthly": {
+    "airbnb": {
+      "2026-02": {
+        "revenue": 122620,
+        "bookings": 5,
+        "nights": 7,
+        "otaFee": 19006
+      },
+      "2026-04": {
+        "revenue": 244960,
+        "bookings": 8,
+        "nights": 9,
+        "otaFee": 37969
+      },
+      "2026-05": {
+        "revenue": 264566,
+        "bookings": 8,
+        "nights": 10,
+        "otaFee": 41008
+      },
+      "2026-06": {
+        "revenue": 161020,
+        "bookings": 5,
+        "nights": 7,
+        "otaFee": 24959
+      },
+      "2026-07": {
+        "revenue": 192635,
+        "bookings": 4,
+        "nights": 7,
+        "otaFee": 29858
+      }
+    },
+    "booking": {
+      "2026-02": {
+        "revenue": 111955,
+        "bookings": 7,
+        "nights": 8,
+        "otaFee": 14892,
+        "promoAmount": 0
+      },
+      "2026-04": {
+        "revenue": 342774,
+        "bookings": 9,
+        "nights": 13,
+        "otaFee": 53659,
+        "promoAmount": 220091
+      },
+      "2026-05": {
+        "revenue": 338091,
+        "bookings": 10,
+        "nights": 13,
+        "otaFee": 46418,
+        "promoAmount": 39587
+      },
+      "2026-06": {
+        "revenue": 314583,
+        "bookings": 7,
+        "nights": 13,
+        "otaFee": 44985,
+        "promoAmount": 0
+      },
+      "2026-07": {
+        "revenue": 338297,
+        "bookings": 14,
+        "nights": 14,
+        "otaFee": 48376,
+        "promoAmount": 0
+      }
+    }
+  },
+  "channelMonths": [
+    "2026-02",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07"
+  ],
+  "incidents": [
+    {
+      "date": "2026-05",
+      "category": "cleaning_missed",
+      "description": "清掃漏れが発生し宿泊提供不可。清掃業者が宿泊費を全額負担（Airbnb予約1件相当）。",
+      "compensationAmount": -21868,
+      "guestRating": 4,
+      "netLoss": 0
+    }
+  ],
+  "garbageTrend": [
+    {
+      "month": "2026-02",
+      "bags": 12,
+      "cleanings": 12,
+      "nights": 15
+    },
+    {
+      "month": "2026-03",
+      "bags": 37,
+      "cleanings": 25,
+      "nights": 28
+    },
+    {
+      "month": "2026-04",
+      "bags": 19,
+      "cleanings": 17,
+      "nights": 22
+    },
+    {
+      "month": "2026-05",
+      "bags": 23,
+      "cleanings": 17,
+      "nights": 23
+    },
+    {
+      "month": "2026-06",
+      "bags": 29,
+      "cleanings": 12,
+      "nights": 23
+    },
+    {
+      "month": "2026-07",
+      "bags": 32,
+      "cleanings": 16,
+      "nights": 24
+    },
+    {
+      "month": "2026-08",
+      "bags": 44,
+      "cleanings": 20,
+      "nights": 29,
+      "isProvisional": true
+    }
+  ],
+  "formulas": {
+    "occupancyRate": "nightsActual / calendarDays",
+    "adr": "revenue.total / nightsRevenue",
+    "alos": "nightsActual / cleaningCount",
+    "variableCostTotal": "cleaningTotalInclTax + otaFee + mgmtSupportFeeInclTax + utilities + supplies",
+    "contributionMargin": "revenue.total - variableCostTotal",
+    "contributionMarginRate": "contributionMargin / revenue.total",
+    "fixedCostTotal": "sum(fixedCosts)",
+    "operatingProfit": "contributionMargin - fixedCostTotal",
+    "breakEvenRevenue": "fixedCostTotal / contributionMarginRate",
+    "breakEvenOccupancy": "breakEvenRevenue / adr / calendarDays",
+    "breakEvenPricePerNight": "(cleaning_total_per_stay_incl_tax / N + utilities_per_night + supplies_per_night) / (1 - otaRate - mgmt_support_rate_excl_tax * consumption_tax_multiplier)",
+    "contributionPerNightByChannel": "adr * (1 - otaRate - mgmt_support_rate_excl_tax * consumption_tax_multiplier) - cleaning_total_per_stay_incl_tax / alos - utilities_per_night - supplies_per_night"
+  },
+  "breakEvenPriceReference": [
+    {
+      "nights": 1,
+      "airbnb": 13196,
+      "booking": 12984
+    },
+    {
+      "nights": 2,
+      "airbnb": 7386,
+      "booking": 7268
+    },
+    {
+      "nights": 3,
+      "airbnb": 5450,
+      "booking": 5362
+    },
+    {
+      "nights": 5,
+      "airbnb": 3901,
+      "booking": 3838
+    },
+    {
+      "nights": 7,
+      "airbnb": 3237,
+      "booking": 3185
+    },
+    {
+      "nights": 14,
+      "airbnb": 2407,
+      "booking": 2368
+    }
+  ]
+}
