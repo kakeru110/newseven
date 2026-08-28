@@ -183,11 +183,11 @@
       if (d.highlight || (series.length - 1 - i) % every === 0) {
         var lab = sv("text", { x: mL + band * i + band / 2, y: H - 8, "text-anchor": "middle", fill: d.highlight ? "var(--text-1)" : "var(--muted)", "font-size": 10 });
         lab.textContent = d.label;
-        if (d.highlight) lab.setAttribute("font-weight", "600");
+        if (d.highlight) lab.setAttribute("font-weight", "700");
         s.appendChild(lab);
       }
       if (d.highlight) {   /* 直接ラベルは強調した1本だけ */
-        var vl = sv("text", { x: bx + bw / 2, y: by - 7, "text-anchor": "middle", fill: "var(--text-1)", "font-size": 11, "font-weight": 600 });
+        var vl = sv("text", { x: bx + bw / 2, y: by - 7, "text-anchor": "middle", fill: "var(--text-1)", "font-size": 11, "font-weight": 700 });
         vl.textContent = opts.label ? opts.label(d.value) : d.value;
         s.appendChild(vl);
       }
@@ -234,7 +234,7 @@
       var last = i === series.length - 1;
       if (d.highlight || last) {
         s.appendChild(sv("circle", { cx: x(i), cy: y(d.value), r: 4.5, fill: "var(--series-1)", stroke: "var(--surface)", "stroke-width": 2 }));
-        var vl = sv("text", { x: last ? x(i) - 7 : x(i), y: y(d.value) - 12, "text-anchor": last ? "end" : "middle", fill: "var(--text-1)", "font-size": 11, "font-weight": 600 });
+        var vl = sv("text", { x: last ? x(i) - 7 : x(i), y: y(d.value) - 12, "text-anchor": last ? "end" : "middle", fill: "var(--text-1)", "font-size": 11, "font-weight": 700 });
         vl.textContent = pctS(d.value, 0);
         s.appendChild(vl);
       }
@@ -358,7 +358,7 @@
     if (isoOf(TODAY).slice(0, 7) === ym) {   /* 今日の位置 */
       var tx = labW + cw * (TODAY.getDate() - 1) + cw / 2;
       s.appendChild(sv("line", { x1: tx, x2: tx, y1: headH - 4, y2: H - 4, stroke: "var(--critical)", "stroke-width": 1 }));
-      var tt = sv("text", { x: tx, y: headH - 8, "text-anchor": "middle", fill: "var(--critical)", "font-size": 9, "font-weight": 600 });
+      var tt = sv("text", { x: tx, y: headH - 8, "text-anchor": "middle", fill: "var(--critical)", "font-size": 9, "font-weight": 700 });
       tt.textContent = "今日"; s.appendChild(tt);
     }
     host.appendChild(s);
