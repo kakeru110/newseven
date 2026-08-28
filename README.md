@@ -14,6 +14,7 @@ npm run dev        # 開発サーバー（http://localhost:5173）
 npm run build      # 本番ビルド → dist/
 npm run verify     # 完了条件の突合（CLAUDE.md §12）
 npm run build:single   # 1枚のHTMLに固めて dist/standalone.html を出力
+npm run test:auth      # Basic 認証ミドルウェアの動作確認
 ```
 
 `dist/standalone.html` はサーバー不要でそのまま開けます（iPhone への共有・確認用）。
@@ -92,6 +93,31 @@ scripts/
   verify.mjs                  完了条件の突合
   build-singlefile.mjs        単一HTMLの生成
 ```
+
+## 本番URLのアクセス制限（Basic 認証）
+
+`middleware.js`（Vercel Edge Middleware）で Basic 認証をかけています。
+売上・原価・固定費を含むため、本番URLを素の状態で公開しないための措置です。
+CLAUDE.md §12 の「認証・ログイン」はアプリ内のユーザー認証を指すもので、こちらは配信側の保護です。
+
+Vercel の Deployment Protection は Hobby プランでは本番を塞げないため、この方式を採っています。
+
+- Standard Protection … 本番の `.vercel.app` ドメインは保護されない（実測で確認済み）
+- All Deployments / Password Protection … Pro プラン限定
+
+### 設定
+
+Vercel → Settings → Environment Variables に、**Production と Preview の両方**へ追加します。
+
+| 変数名 | 値 |
+|---|---|
+| `BASIC_AUTH_USER` | 任意のユーザー名（未設定なら `kamakura`） |
+| `BASIC_AUTH_PASSWORD` | パスワード（半角英数記号） |
+
+`BASIC_AUTH_PASSWORD` が未設定の場合、設定漏れによる無防備な公開を防ぐため **503 を返して配信しません**。
+ローカル開発（`npm run dev`）ではミドルウェアが動かないため、認証は不要のままです。
+
+動作確認: `npm run test:auth`
 
 ## Stage 1 でやらないこと（CLAUDE.md §12）
 
