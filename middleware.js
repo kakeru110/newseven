@@ -9,7 +9,11 @@
  *
  * 設定（Vercel → Settings → Environment Variables、Production/Preview 両方に追加）
  *   BASIC_AUTH_USER      … 任意のユーザー名（未設定なら "kamakura"）
- *   BASIC_AUTH_PASSWORD  … パスワード。半角英数記号で設定すること
+ *   BASIC_AUTH_PASSWORD  … パスワード
+ *
+ * 環境変数の値は前後の空白・改行を取り除いてから比較する。コピー&ペーストで
+ * 末尾に改行が混ざると「正しいのに入れない」状態になり、Secret 型は保存後に
+ * 値を確認できないため原因の切り分けが難しいため。
  *
  * ローカル開発（vite dev）ではミドルウェアは動かないため、認証は不要のまま。
  */
@@ -21,6 +25,14 @@ export const config = {
 };
 
 const encoder = new TextEncoder();
+const decoder = new TextDecoder("utf-8");
+
+/** Basic 認証ヘッダの Base64 を UTF-8 として復号する（atob だけでは多バイト文字が壊れる） */
+function decodeCredentials(b64) {
+  const binary = atob(b64);
+  const bytes = Uint8Array.from(binary, (ch) => ch.charCodeAt(0));
+  return decoder.decode(bytes);
+}
 
 /** 比較にかかる時間を入力内容に依存させない（総当たりの手がかりを与えない） */
 function safeEqual(a, b) {
@@ -44,8 +56,8 @@ function unauthorized() {
 }
 
 export default function middleware(request) {
-  const expectedUser = process.env.BASIC_AUTH_USER || "kamakura";
-  const expectedPass = process.env.BASIC_AUTH_PASSWORD;
+  const expectedUser = (process.env.BASIC_AUTH_USER || "kamakura").trim();
+  const expectedPass = (process.env.BASIC_AUTH_PASSWORD || "").trim();
 
   // 環境変数の設定漏れで無防備に公開されるのを防ぐため、未設定なら配信しない
   if (!expectedPass) {
@@ -60,7 +72,7 @@ export default function middleware(request) {
 
   let decoded = "";
   try {
-    decoded = atob(header.slice(6).trim());
+    decoded = decodeCredentials(header.slice(6).trim());
   } catch {
     return unauthorized();
   }

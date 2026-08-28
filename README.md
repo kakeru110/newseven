@@ -112,9 +112,16 @@ Vercel → Settings → Environment Variables に、**Production と Preview の
 | 変数名 | 値 |
 |---|---|
 | `BASIC_AUTH_USER` | 任意のユーザー名（未設定なら `kamakura`） |
-| `BASIC_AUTH_PASSWORD` | パスワード（半角英数記号） |
+| `BASIC_AUTH_PASSWORD` | パスワード（日本語も可） |
 
 `BASIC_AUTH_PASSWORD` が未設定の場合、設定漏れによる無防備な公開を防ぐため **503 を返して配信しません**。
+環境変数の値は前後の空白・改行を取り除いてから比較します（Secret 型は保存後に値を確認できず、
+末尾の改行が原因で入れないと切り分けが難しいため）。
+
+### パスワードが分からなくなったら
+
+Secret 型の値は Vercel でも再表示できません。Environment Variables で `BASIC_AUTH_PASSWORD` を
+**Edit → 新しい値で保存**し、Deployments の最新デプロイを **Redeploy** すれば入れ替わります。
 ローカル開発（`npm run dev`）ではミドルウェアが動かないため、認証は不要のままです。
 
 動作確認: `npm run test:auth`
