@@ -1,6 +1,6 @@
 {
   "$schema": "kamakura-gate-inn seed v1",
-  "generatedAt": "2026-08-28",
+  "generatedAt": "2026-08-29",
   "property": {
     "name": "Kamakura Gate Inn",
     "location": "神奈川県鎌倉市大船",
@@ -14,7 +14,6 @@
       "2026-08"
     ],
     "missingData": [
-      "2026-03: 運営サポート収支表PDF未入手。売上総額はサポート料金からの逆算値、OTA手数料は推定値、チャネル内訳は不明。",
       "2026-08: 月未了のため全項目が仮値。光熱費・日用品・清掃請求・収支表の差し替え待ち。"
     ],
     "nightsExplanation": "月跨ぎ滞在は売上がチェックアウト月にまとめて計上される。稼働率にはnightsActual、ADRにはnightsRevenueを使うこと。"
@@ -104,9 +103,9 @@
       "key": "ota_rate_booking_promo",
       "value": 0.1697,
       "unit": "ratio_of_revenue",
-      "validFrom": "2026-04-01",
+      "validFrom": "2026-03-01",
       "validTo": "2026-05-31",
-      "source": "収支表PDF。宣伝プログラム適用分のみ。6月以降は適用なし"
+      "source": "収支表PDF。宣伝プログラム適用分のみ。3月は Booking 売上の72.7%（282,983円）に適用。6月以降は適用なし"
     }
   ],
   "monthly": [
@@ -152,18 +151,18 @@
       "nightsRevenue": 28,
       "cleaningCount": 25,
       "revenue": {
-        "airbnb": 0,
-        "booking": 0,
+        "airbnb": 246345,
+        "booking": 389258,
         "direct": 0,
-        "unattributed": 635600,
-        "total": 635600
+        "unattributed": 0,
+        "total": 635603
       },
       "variableCosts": {
         "cleaningBaseExclTax": 162500,
         "garbageExclTax": 29600,
         "advanceCredit": 0,
         "cleaningTotalInclTax": 211310,
-        "otaFee": 94387,
+        "otaFee": 100316,
         "mgmtSupportFeeInclTax": 69916,
         "utilities": 22449,
         "supplies": 7440
@@ -357,6 +356,12 @@
         "nights": 7,
         "otaFee": 19006
       },
+      "2026-03": {
+        "revenue": 246345,
+        "bookings": 8,
+        "nights": 10,
+        "otaFee": 38182
+      },
       "2026-04": {
         "revenue": 244960,
         "bookings": 8,
@@ -390,6 +395,13 @@
         "otaFee": 14892,
         "promoAmount": 0
       },
+      "2026-03": {
+        "revenue": 389258,
+        "bookings": 17,
+        "nights": 18,
+        "otaFee": 62134,
+        "promoAmount": 282983
+      },
       "2026-04": {
         "revenue": 342774,
         "bookings": 9,
@@ -422,6 +434,7 @@
   },
   "channelMonths": [
     "2026-02",
+    "2026-03",
     "2026-04",
     "2026-05",
     "2026-06",

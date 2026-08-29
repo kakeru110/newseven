@@ -44,8 +44,8 @@ export default function App() {
 
       <SummaryCards totals={totals} months={months} />
       <MonthlyTrendChart months={months} />
-      <PLTable months={months} totals={totals} incidents={seed.incidents} />
-      <ChannelSection channels={channels} monthlyRows={chMonthly} />
+      <PLTable months={months} totals={totals} incidents={seed.incidents} notes={seed.notes} />
+      <ChannelSection channels={channels} monthlyRows={chMonthly} allMonths={months.map((m) => m.month)} />
       <div className="grid c2">
         <BreakEvenSection seed={seed} months={months} />
         <GarbageTrendChart trend={garbage} />

@@ -7,8 +7,10 @@ import { money, pct, num, monthShort, monthLong, signClass } from "../lib/format
  * チャネル別比較（CLAUDE.md §12-4）
  * 内訳の無い 2026-03・2026-08 は seed.channelMonths に含まれないため通算から除外される。
  */
-export default function ChannelSection({ channels, monthlyRows }) {
+export default function ChannelSection({ channels, monthlyRows, allMonths }) {
   const target = channels[0]?.months || [];
+  /* 内訳を取得できていない月は seed.channelMonths との差分から求める（固定で書かない） */
+  const excluded = (allMonths || []).filter((m) => !target.includes(m));
   const chartData = monthlyRows.map((r) => ({
     label: monthShort(r.month),
     month: r.month,
@@ -30,7 +32,7 @@ export default function ChannelSection({ channels, monthlyRows }) {
     <Card
       title="チャネル別比較"
       note={`対象: ${target.map(monthLong).join(" / ")}`}
-      desc="内訳が取得できていない 2026年3月・8月は除外。1泊あたり限界利益 = ADR ×（1 − OTA実料率 − 運営サポート料11%）− 清掃単価 ÷ ALOS − 泊単価。"
+      desc={`${excluded.length ? `内訳が取得できていない ${excluded.map(monthLong).join("・")} は除外。` : ""}1泊あたり限界利益 = ADR ×（1 − OTA実料率 − 運営サポート料11%）− 清掃単価 ÷ ALOS − 泊単価。`}
     >
       <div className="table-wrap">
         <table>
