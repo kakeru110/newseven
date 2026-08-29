@@ -15,14 +15,14 @@ const seed = JSON.parse(await readFile(new URL("../data/seed.json", import.meta.
 /* CLAUDE.md §12 完了条件の表（この値は CLAUDE.md からの転記であり、計算には使わない） */
 const EXPECTED_MONTHLY = [
   { month: "2026-02", revenue: 234575, cmRate: 26.6, operatingProfit: -123449 },
-  { month: "2026-03", revenue: 635600, cmRate: 36.2, operatingProfit: 44229 },
+  { month: "2026-03", revenue: 635603, cmRate: 35.3, operatingProfit: 38303 },
   { month: "2026-04", revenue: 587734, cmRate: 44.4, operatingProfit: 73572 },
   { month: "2026-05", revenue: 602657, cmRate: 50.6, operatingProfit: 115257 },
   { month: "2026-06", revenue: 475603, cmRate: 46.5, operatingProfit: 31273 },
   { month: "2026-07", revenue: 530932, cmRate: 42.7, operatingProfit: 36807 },
   { month: "2026-08", revenue: 834209, cmRate: 48.5, operatingProfit: 214631 },
 ];
-const EXPECTED_TOTAL = { revenue: 3901310, operatingProfit: 392320, cmRate: 43.8, occupancy: 77.4 };
+const EXPECTED_TOTAL = { revenue: 3901313, operatingProfit: 386394, cmRate: 43.7, occupancy: 77.4 };
 
 let failed = 0;
 const check = (label, actual, expected, tolerance = 0) => {
@@ -65,13 +65,30 @@ check("2026-04 の宣伝プログラム料率(%)", resolveRate(seed, "ota_rate_b
 const promoJune = resolveRate(seed, "ota_rate_booking_promo", "2026-06");
 check("2026-06 の宣伝プログラム料率（適用なし）", promoJune === null ? 1 : 0, 1);
 
-console.log("\n■ チャネル別（内訳の無い 2026-03 / 2026-08 は除外されること）");
+console.log("\n■ 2026-03 収支表PDFとの突合（合計欄の実額）");
+const march = months.find((m) => m.month === "2026-03");
+const marchCh = ["airbnb", "booking"].map((k) => seed.channelMonthly[k]["2026-03"]);
+check("売上（PDF合計欄）", Math.round(march.revenueTotal), 635603);
+check("チャネル内訳の合計が売上と一致", marchCh.reduce((s, c) => s + c.revenue, 0), 635603);
+check("OTA手数料（PDF合計欄）", march.variableCosts.otaFee, 100316);
+check("チャネル別OTA手数料の合計が一致", marchCh.reduce((s, c) => s + c.otaFee, 0), 100316);
+check("宿泊日数（PDF合計欄）", marchCh.reduce((s, c) => s + c.nights, 0), 28);
+check("予約件数（PDF合計欄）", marchCh.reduce((s, c) => s + c.bookings, 0), 25);
+/* CLAUDE.md §6-1: 運営サポート料金は売上のちょうど10%（税抜）。PDFの63,560円と突合する */
+check("運営サポート料（税込）= 63,560 × 1.1", march.variableCosts.mgmtSupportFeeInclTax, Math.round(63560 * 1.1));
+check("Airbnb 実料率(%)", +((marchCh[0].otaFee / marchCh[0].revenue) * 100).toFixed(2), 15.5, 0.02);
+/* 宣伝プログラム（16.97%）は実績では3月から適用されていた */
+check("2026-03 の宣伝プログラム料率(%)", resolveRate(seed, "ota_rate_booking_promo", "2026-03") * 100, 16.97, 0.001);
+const promoFeb = resolveRate(seed, "ota_rate_booking_promo", "2026-02");
+check("2026-02 は宣伝プログラム適用なし", promoFeb === null ? 1 : 0, 1);
+
+console.log("\n■ チャネル別（内訳の無い 2026-08 は除外されること）");
 const ch = channelSummary(seed);
-check("対象月数", ch[0].months.length, 5);
-check("除外月に 2026-03 を含まない", ch[0].months.includes("2026-03") ? 0 : 1, 1);
+check("対象月数", ch[0].months.length, 6);
+check("2026-03 を含む（PDF入手により内訳が判明）", ch[0].months.includes("2026-03") ? 1 : 0, 1);
 check("除外月に 2026-08 を含まない", ch[0].months.includes("2026-08") ? 0 : 1, 1);
 const airbnbCh = ch.find((c) => c.key === "airbnb");
-/* CLAUDE.md §9-1: 7月のAirbnbは ALOS 1.75 / 1泊あたり限界利益 14,188円 */
+/* CLAUDE.md §9-1: 7月のAirbnbは ALOS 1.75 */
 const july = seed.channelMonthly.airbnb["2026-07"];
 check("2026-07 Airbnb ALOS", +(july.nights / july.bookings).toFixed(2), 1.75, 0.005);
 check("Airbnb 実料率(%)", +(airbnbCh.otaRate * 100).toFixed(2), 15.5, 0.02);

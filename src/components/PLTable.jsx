@@ -7,7 +7,7 @@ import { money, pct, num, monthLong, signClass } from "../lib/format.js";
  * 売上 → 変動費内訳 → 限界利益 → 固定費内訳 → 営業損益 の順。
  * 派生値（稼働率・ADR・ALOS・限界利益率・損益分岐）は seed の生値から計算した値を表示する。
  */
-export default function PLTable({ months, totals, incidents }) {
+export default function PLTable({ months, totals, incidents, notes }) {
   const sumOf = (get) => months.reduce((s, m) => s + (get(m) || 0), 0);
 
   const money2 = (v) => <span className={signClass(v)}>{money(v)}</span>;
@@ -101,8 +101,10 @@ export default function PLTable({ months, totals, incidents }) {
         </table>
       </div>
       <ul className="footnotes">
-        <li>2026年8月は月未了のため全項目が仮値（光熱費・日用品・清掃請求・収支表の差し替え待ち）。</li>
-        <li>2026年3月は運営サポート収支表PDFが未入手。売上はサポート料金からの逆算値、OTA手数料は推定値、チャネル内訳は不明。</li>
+        {/* 欠損・仮値の注記は seed.notes.missingData から出す（原資料が届いたら seed の更新だけで消える） */}
+        {(notes?.missingData || []).map((note) => (
+          <li key={note}>{note}</li>
+        ))}
         {incidents.map((inc) => (
           <li key={inc.date}>
             {monthLong(inc.date)} ※ 清掃・ごみに立替控除 {money(inc.compensationAmount)}円 を含む（{inc.description} 評価{inc.guestRating}／実損{money(inc.netLoss)}円）。
