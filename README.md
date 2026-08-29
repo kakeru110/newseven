@@ -206,6 +206,14 @@ Beds24 の既定の取得にはキャンセルが含まれません。`api/beds2
 
 4〜8月に適用した場合の見込みは、年換算で **+30.7万〜61.4万円**。
 
+### 価格設定の記録
+
+PriceLabs は API 未接続のため、設定値（最低・基準・最高）と変更履歴を `seed.pricingSettings` /
+`seed.pricingChanges` に手で記録します。あとから効果を測るときに「いつ何を変えたか」が必要になるためです。
+
+**効果は配信価格ではなく成約単価で測ります。** Airbnb・Booking.com それぞれで割引を設定しているため、
+PriceLabs が配信する日別価格と実際にゲストが支払う金額は一致しません。
+
 ## 本番URLのアクセス制限（Basic 認証）
 
 `middleware.js`（Vercel Edge Middleware）で Basic 認証をかけています。

@@ -661,5 +661,47 @@
       "midIncrease": 0.1,
       "note": "稼働率で機械的に区分する。88%以上は売り切れに近く値上げ余地が大きい。70%未満は据え置き（上げると稼働がさらに落ちる）"
     }
+  },
+  "pricingSettings": {
+    "source": "PriceLabs（画面から手入力。API 未接続のため自動取得できない）",
+    "asOf": "2026-08-29",
+    "minPrice": 18500,
+    "basePrice": 23548,
+    "maxPrice": 75000,
+    "note": "配信される日別価格は PriceLabs がこの3値と市場データから算出する。Beds24 の在庫カレンダー（api/beds24.js の inventory）で結果を確認できる。なお Airbnb・Booking.com 側でそれぞれ割引を設定しているため、配信価格と実際の成約単価は一致しない。効果測定は成約単価で行うこと。"
+  },
+  "pricingChanges": [
+    {
+      "date": "2026-08-15",
+      "setting": "minPrice",
+      "from": 17500,
+      "to": 18500,
+      "approximate": true,
+      "note": "約1,000円の引き上げ。変更前の値は概算"
+    },
+    {
+      "date": "2026-08-29",
+      "setting": "basePrice",
+      "from": 22900,
+      "to": 23548,
+      "note": "PriceLabs の基本価格推奨ツールの値をそのまま採用。市場データを持つ側の推奨を優先した"
+    },
+    {
+      "date": "2026-08-29",
+      "setting": "maxPrice",
+      "from": 65000,
+      "to": 75000,
+      "note": "2026-12-31・2027-01-01 が 63,362円で上限に頭打ちだったため"
+    }
+  ],
+  "pricingObservations": {
+    "asOf": "2026-08-29",
+    "deliveredPriceAvg": 25082,
+    "deliveredPriceMedian": 21844,
+    "deliveredDays": 183,
+    "floorClampedDays": 26,
+    "bookedAdrBefore": 23292,
+    "bookedAdrAfter": 24647,
+    "note": "minPrice 引き上げ（8/15）の前後2週間に入った予約の1泊単価。23,292円 → 24,647円（+5.8%）。件数は9件→6件だが、同じリードタイムでの埋まり具合は7月より速いため、季節性の範囲とみている"
   }
 }

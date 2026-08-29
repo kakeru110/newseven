@@ -14,6 +14,7 @@ import LiveSection from "./components/LiveSection.jsx";
 import AcquisitionSection from "./components/AcquisitionSection.jsx";
 import PricingSimulator from "./components/PricingSimulator.jsx";
 import PriceRecommendation from "./components/PriceRecommendation.jsx";
+import PricingSettings from "./components/PricingSettings.jsx";
 
 /**
  * Stage 1（CLAUDE.md §8 / §12）
@@ -52,6 +53,7 @@ export default function App() {
       <PLTable months={months} totals={totals} incidents={seed.incidents} notes={seed.notes} />
       <ChannelSection channels={channels} monthlyRows={chMonthly} allMonths={months.map((m) => m.month)} />
       <AcquisitionSection seed={seed} channels={channels} />
+      <PricingSettings seed={seed} />
       <PriceRecommendation seed={seed} months={months} />
       <PricingSimulator seed={seed} totals={totals} month={months[months.length - 1].month} />
       <div className="grid c2">
