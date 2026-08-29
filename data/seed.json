@@ -569,7 +569,17 @@
         "actuallyVacant": 40,
         "airbnbListedButUnsold": 8,
         "airbnbBlockedAndUnsold": 33,
-        "note": "Airbnb画面の『空室8泊』は Airbnb 上で販売可能だったのに埋まらなかった日数であり、実際の空室ではない。実際の空室は40泊。Airbnb の『ブロック122泊』のうち Booking.com が埋めていたのは89泊で、残り33泊はどこでも売れていないのに Airbnb 上で販売不可だった。最低宿泊日数・在庫配分・手動ブロックが疑われる。2026-02-28〜08-28 の Beds24 実績から算出（scripts/beds24-verify.mjs 参照）"
+        "note": "Airbnb画面の『空室8泊』は Airbnb 上で販売可能だったのに埋まらなかった日数であり、実際の空室ではない。実際の空室は40泊。うち7泊はキャンセルされた予約が入っていた日（Booking.com 6泊・Airbnb 1泊）で、残り33泊は最初から何も入らなかった。Airbnb の『ブロック122泊』のうち Booking.com が埋めていたのは89泊で、差の33泊は Airbnb 上で販売不可だった日にあたる。ただし Beds24 は過去の在庫設定を保持しないため、当時の理由は特定できない。2026-08-30〜12-31 で同じ検査をすると該当0日なので、現在は問題が起きていない。",
+        "vacantAfterCancellation": 7,
+        "forwardCheck": {
+          "checkedAt": "2026-08-29",
+          "range": {
+            "from": "2026-08-30",
+            "to": "2026-12-31"
+          },
+          "blockedAndUnsoldDays": 0,
+          "note": "Beds24 の在庫カレンダーと予約を突き合わせた結果、予約が無いのに販売不可の日は0日。現時点で在庫が不当に塞がれている日は無い"
+        }
       },
       "monthly": {},
       "monthlyNote": "月次のインプレッション・閲覧数。Airbnb の各画面右上『月間レポート』から取得して埋める。未取得のため空。"
