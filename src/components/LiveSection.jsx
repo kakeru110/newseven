@@ -53,6 +53,7 @@ export default function LiveSection({ seed }) {
   const ahead = summary.months.filter((m) => m.month >= now);
   const rows = compareWithSeed(seed, summary).filter((r) => r.hasSeed);
   const corrections = summary.corrections.length;
+  const cancelByMonth = Object.fromEntries(summary.months.map((m) => [m.month, m.cancelled]));
   const anomalies = summary.anomalies.length;
 
   const chartData = ahead.map((m) => ({
@@ -70,6 +71,7 @@ export default function LiveSection({ seed }) {
         { label: "泊数", value: `${current.nights} 泊`, sub: `稼働率 ${pct(current.nights / daysInMonth(now))}` },
         { label: "予約件数", value: `${current.bookings} 件`, sub: `清掃 ${current.bookings} 回ぶん` },
         { label: "OTA手数料", value: yen(current.commission), sub: `実料率 ${pct(current.effectiveRate, 2)}` },
+        { label: "キャンセル", value: `${current.cancelled} 件`, sub: `キャンセル率 ${pct(current.cancelRate, 1)}` },
       ]
     : [];
 
@@ -142,6 +144,7 @@ export default function LiveSection({ seed }) {
                 <th className="num">収支表</th>
                 <th className="num">差</th>
                 <th className="num">11/12 補正</th>
+                <th className="num">キャンセル</th>
               </tr>
             </thead>
             <tbody>
@@ -155,6 +158,7 @@ export default function LiveSection({ seed }) {
                   <td>{money(r.seedCommission)}</td>
                   <td className={signClass(r.commissionDiff)}>{money(r.commissionDiff)}</td>
                   <td>{r.corrections ? `${r.corrections}件` : "—"}</td>
+                  <td>{cancelByMonth[r.month] ? `${cancelByMonth[r.month]}件` : "—"}</td>
                 </tr>
               ))}
             </tbody>
@@ -163,6 +167,10 @@ export default function LiveSection({ seed }) {
         <ul className="footnotes">
           <li>OTA手数料は Beds24 に実額で入っており、全期間で収支表と一致しています（差は最大20円）。</li>
           <li>11/12 の過少計上は 2026年2〜4月の Booking.com 予約で発生し、5月以降は解消しています。</li>
+          <li>
+            キャンセルは Beds24 の既定の取得に含まれないため、`status=cancelled` を明示して別途取得しています。
+            全期間で {summary.cancelled.length}件・{pct(summary.cancelRate, 1)}（Booking.com 表示の 20.0〜21.8% と整合）。売上には含めていません。
+          </li>
           {summary.anomalies.map((a) => (
             <li key={a.id}>
               {monthLong(a.month)} 予約ID {a.id} は実料率 {pct(a.rate, 2)} と想定外のため補正していません（市税を含み金額が丸められている予約）。

@@ -16,9 +16,15 @@ const summary = summarize(seed, fixture.bookings);
 const rows = compareWithSeed(seed, summary);
 
 let failed = 0;
-const check = (label, ok, detail = "") => {
+/** check(label, 真偽, 説明) / check(label, 実測値, 期待値, 許容差, 説明) の両方を受ける */
+const check = (label, actual, expected = true, tolerance = 0, detail = "") => {
+  if (typeof expected === "string") { detail = expected; expected = true; tolerance = 0; }
+  const ok =
+    typeof actual === "boolean" || typeof expected === "boolean"
+      ? actual === expected
+      : Math.abs(actual - expected) <= tolerance;
   if (!ok) failed++;
-  console.log(`  ${ok ? "PASS" : "FAIL"}  ${label.padEnd(46)} ${detail}`);
+  console.log(`  ${ok ? "PASS" : "FAIL"}  ${label.padEnd(46)} ${detail || (ok ? "" : `計算値 ${actual} / 期待値 ${expected}`)}`);
 };
 
 console.log("■ 月次の突合（Beds24 補正後 vs 収支表PDF）");
@@ -63,6 +69,11 @@ for (const m of summary.months.filter((x) => seed.monthly.some((s) => s.month ==
   const gap = m.bookings - s.cleaningCount;
   check(`${m.month} 予約件数 ${m.bookings} vs 清掃回数 ${s.cleaningCount}`, gap === (KNOWN_GAP[m.month] || 0), gap ? `差 ${gap}件` : "一致");
 }
+
+console.log("\n■ キャンセル（既定の取得には含まれないため status=cancelled で別途取得する）");
+check("キャンセル件数", summary.cancelled.length, 31, 0, `${summary.cancelled.length}件`);
+check("キャンセル率が Booking.com 表示（20.0〜21.8%）と整合", Math.abs(summary.cancelRate - 0.187) <= 0.01, true, 0, `${(summary.cancelRate * 100).toFixed(1)}%`);
+check("キャンセルは売上に含めない", rows.every((r) => Math.abs(r.revenueDiff) <= (TOLERANCE[r.month] ?? 0)), true);
 
 console.log("\n■ 想定料率から外れた予約（要調査）");
 check("異常は既知の1件のみ", summary.anomalies.length === 1, summary.anomalies.map((a) => `${a.month} id${a.id} 率${(a.rate * 100).toFixed(2)}%`).join(", "));

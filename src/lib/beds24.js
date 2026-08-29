@@ -93,11 +93,13 @@ const emptyBucket = () => ({
 });
 
 /** 月次・チャネル別に集計する（売上の計上月はチェックイン月） */
+export const isCancelled = (b) => String(b.status || "").toLowerCase() === "cancelled";
+
 export function summarize(seed, rawBookings) {
-  const normalized = rawBookings
-    .filter((b) => b && b.arrival && b.departure)
-    .filter((b) => String(b.status || "").toLowerCase() !== "cancelled")
-    .map((b) => normalizeBooking(seed, b));
+  const valid = rawBookings.filter((b) => b && b.arrival && b.departure);
+  /* キャンセルは売上に含めないが、件数はキャンセル率のために数える */
+  const cancelled = valid.filter(isCancelled).map((b) => normalizeBooking(seed, b));
+  const normalized = valid.filter((b) => !isCancelled(b)).map((b) => normalizeBooking(seed, b));
 
   const byMonth = new Map();
   for (const b of normalized) {
@@ -115,15 +117,27 @@ export function summarize(seed, rawBookings) {
     }
   }
 
+  const cancelledByMonth = new Map();
+  for (const b of cancelled) cancelledByMonth.set(b.month, (cancelledByMonth.get(b.month) || 0) + 1);
+  for (const m of cancelledByMonth.keys()) {
+    if (!byMonth.has(m)) byMonth.set(m, { month: m, ...emptyBucket(), byChannel: {} });
+  }
+
   const months = [...byMonth.values()].sort((a, b) => a.month.localeCompare(b.month));
   for (const m of months) {
     m.adr = m.nights ? m.revenue / m.nights : 0;
     m.effectiveRate = m.revenue ? m.commission / m.revenue : 0;
+    m.cancelled = cancelledByMonth.get(m.month) || 0;
+    /* キャンセル率 = キャンセル ÷（成立 + キャンセル） */
+    m.cancelRate = m.bookings + m.cancelled ? m.cancelled / (m.bookings + m.cancelled) : 0;
   }
 
+  const totalBookings = normalized.length;
   return {
     months,
     bookings: normalized,
+    cancelled,
+    cancelRate: totalBookings + cancelled.length ? cancelled.length / (totalBookings + cancelled.length) : 0,
     anomalies: normalized.filter((b) => b.anomaly),
     corrections: normalized.filter((b) => b.correction),
   };

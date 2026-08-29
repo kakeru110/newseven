@@ -51,19 +51,26 @@ export default async function handler(req, res) {
   const to = new Date(today.getFullYear(), today.getMonth() + MONTHS_AHEAD + 1, 0);
 
   try {
+    /**
+     * 既定の取得にはキャンセルが含まれないため、status=cancelled を明示して2回取得する。
+     * キャンセルは売上には影響しないが、キャンセル率の把握に必要（実測 18.7%）。
+     */
     const bookings = [];
-    for (let page = 1; page <= MAX_PAGES; page++) {
-      const url =
-        `${API}/bookings?arrivalFrom=${iso(from)}&arrivalTo=${iso(to)}&page=${page}`;
-      const r = await fetch(url, { headers: { token, accept: "application/json" } });
-      if (!r.ok) {
-        const body = await r.text();
-        res.status(502).json({ error: `Beds24 API がエラーを返しました（${r.status}）`, detail: body.slice(0, 300) });
-        return;
+    for (const status of [null, "cancelled"]) {
+      for (let page = 1; page <= MAX_PAGES; page++) {
+        const url =
+          `${API}/bookings?arrivalFrom=${iso(from)}&arrivalTo=${iso(to)}&page=${page}` +
+          (status ? `&status=${status}` : "");
+        const r = await fetch(url, { headers: { token, accept: "application/json" } });
+        if (!r.ok) {
+          const body = await r.text();
+          res.status(502).json({ error: `Beds24 API がエラーを返しました（${r.status}）`, detail: body.slice(0, 300) });
+          return;
+        }
+        const json = await r.json();
+        bookings.push(...(json.data || []).map(toSafeBooking));
+        if (!json.pages?.nextPageExists) break;
       }
-      const json = await r.json();
-      bookings.push(...(json.data || []).map(toSafeBooking));
-      if (!json.pages?.nextPageExists) break;
     }
 
     /* Beds24 のクレジット上限（既定 100/5分）に配慮し、CDN 側で15分キャッシュする */
