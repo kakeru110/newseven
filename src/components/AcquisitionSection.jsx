@@ -63,12 +63,12 @@ export default function AcquisitionSection({ seed, channels }) {
   const airbnbCh = channels.find((c) => c.key === "airbnb");
   const bookingCh = channels.find((c) => c.key === "booking");
 
+  const inv = a.inventoryBreakdown;
   const viewToBooking = a.views ? a.checkIns / a.views : 0;
   /* 1閲覧あたり限界利益。期間が完全には一致しないため目安として扱う */
   const contributionPerNight = airbnbCh?.contributionPerNight || 0;
   const contributionTotal = contributionPerNight * a.nightsSold;
   const perView = a.views ? contributionTotal / a.views : 0;
-  const vacantLoss = contributionPerNight * a.vacantNights;
   const adrGap = b.competitor.adr - b.adr;
   const bookingNights = Object.values(b.monthlyReported).reduce((s, m) => s + m.nights, 0);
 
@@ -91,17 +91,52 @@ export default function AcquisitionSection({ seed, channels }) {
             <div className="k">検索1ページ目の表示率</div>
             <div className="v">{pct(a.impressionShareFirstPage, 1)}</div>
           </div>
-          <div className="pill">
-            <div className="k">空室のまま流れた泊数</div>
-            <div className="v">{a.vacantNights} 泊</div>
-          </div>
+          {inv && (
+            <div className="pill">
+              <div className="k">実際の空室</div>
+              <div className="v">{inv.actuallyVacant} 泊</div>
+            </div>
+          )}
         </div>
 
+        {inv && (
+          <div className="table-wrap" style={{ marginTop: 12 }}>
+            <table>
+              <thead>
+                <tr>
+                  <th>期間 {inv.periodNights}泊の内訳</th>
+                  <th className="num">泊数</th>
+                  <th>Airbnb 上の扱い</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Airbnb で売れた</td><td className="num">{inv.occupiedAirbnb}</td><td>予約獲得</td></tr>
+                <tr><td>Booking.com で売れた</td><td className="num">{inv.occupiedBooking}</td><td>ブロック</td></tr>
+                <tr className="grand">
+                  <td>どこでも売れなかった</td>
+                  <td className="num">{inv.actuallyVacant}</td>
+                  <td>
+                    出品していた {inv.airbnbListedButUnsold}泊 ／{" "}
+                    <strong>出品していなかった {inv.airbnbBlockedAndUnsold}泊</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
+
         <ul className="footnotes">
-          <li>
-            {a.nightsSold}泊を獲得し、{a.blockedNights}泊は他チャネルで埋まっていたためブロック。
-            <strong>空室は {a.vacantNights}泊だけ</strong>で、金額にすると約 {money(vacantLoss)}円。集客量より単価が課題であることを示します。
-          </li>
+          {(!a.monthly || !Object.keys(a.monthly).length) && (
+            <li>月次のインプレッション・閲覧数は未取得です（Airbnb 各画面右上の「月間レポート」から取得できます）。入れば月ごとの CVR を出せます。</li>
+          )}
+          {inv && (
+            <li>
+              Airbnb 画面の「空室 {a.vacantNights}泊」は<strong>販売可能だったのに埋まらなかった日数</strong>で、実際の空室ではありません。
+              実際の空室は {inv.actuallyVacant}泊あり、うち <strong>{inv.airbnbBlockedAndUnsold}泊は Airbnb 上で販売不可</strong>のまま流れています
+              （最低宿泊日数・在庫配分・手動ブロックが疑われます）。1泊あたり限界利益 {money(contributionPerNight)}円 で換算すると
+              最大 {money(contributionPerNight * inv.airbnbBlockedAndUnsold)}円ぶんの販売機会にあたります。
+            </li>
+          )}
           <li>
             1閲覧あたり限界利益は、Airbnb の1泊あたり限界利益 {money(contributionPerNight)}円 × {a.nightsSold}泊 ÷ 閲覧 {a.views.toLocaleString("ja-JP")} で算出した目安です（集計期間が完全には一致しません）。
           </li>
