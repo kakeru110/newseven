@@ -11,6 +11,7 @@ import ChannelSection from "./components/ChannelSection.jsx";
 import BreakEvenSection from "./components/BreakEvenSection.jsx";
 import GarbageTrendChart from "./components/GarbageTrendChart.jsx";
 import LiveSection from "./components/LiveSection.jsx";
+import AcquisitionSection from "./components/AcquisitionSection.jsx";
 
 /**
  * Stage 1（CLAUDE.md §8 / §12）
@@ -48,6 +49,7 @@ export default function App() {
       <MonthlyTrendChart months={months} />
       <PLTable months={months} totals={totals} incidents={seed.incidents} notes={seed.notes} />
       <ChannelSection channels={channels} monthlyRows={chMonthly} allMonths={months.map((m) => m.month)} />
+      <AcquisitionSection seed={seed} channels={channels} />
       <div className="grid c2">
         <BreakEvenSection seed={seed} months={months} />
         <GarbageTrendChart trend={garbage} />

@@ -540,5 +540,90 @@
       "airbnb": 2407,
       "booking": 2368
     }
-  ]
+  ],
+  "channelMetrics": {
+    "source": "Airbnb ホスト管理画面『実績』／Booking.com エクストラネット。2026-08-29 に画面から手入力（API が無いため）",
+    "period": {
+      "from": "2026-02-28",
+      "to": "2026-08-28"
+    },
+    "airbnb": {
+      "impressions": 26554,
+      "views": 3258,
+      "searchToViewRate": 0.1227,
+      "impressionShareFirstPage": 0.564,
+      "reportedViewToBookingRate": 0.019,
+      "reportedOverallRate": 0.0023,
+      "cancelRate": 0.161,
+      "leadTimeDays": 33.3,
+      "nightsSold": 52,
+      "checkIns": 36,
+      "blockedNights": 122,
+      "vacantNights": 8,
+      "note": "閲覧 3,258 = インプレッション 26,554 × 12.27% で画面表示と一致。予約36件・52泊は Beds24 実績と完全一致。reported* は Airbnb 表示の率で、月次平均の取り方が異なるため実績から求めた率とは差がある"
+    },
+    "booking": {
+      "period": {
+        "from": "2026-08-30",
+        "to": "2026-08-29",
+        "label": "過去365日"
+      },
+      "adr": 22711.11,
+      "alos": 1.34,
+      "cancelRate": 0.2177,
+      "leadTimeDays": 37.22,
+      "competitor": {
+        "label": "直接競合",
+        "adr": 31200.79,
+        "alos": 1.76,
+        "cancelRate": 0.3018,
+        "leadTimeDays": 49.68
+      },
+      "monthlyReported": {
+        "2026-02": {
+          "nights": 8,
+          "revenue": 102626.1
+        },
+        "2026-03": {
+          "nights": 18,
+          "revenue": 356837.1
+        },
+        "2026-04": {
+          "nights": 13,
+          "revenue": 314211.24
+        },
+        "2026-05": {
+          "nights": 13,
+          "revenue": 309917.15
+        },
+        "2026-06": {
+          "nights": 11,
+          "revenue": 275040.95
+        },
+        "2026-07": {
+          "nights": 16,
+          "revenue": 377838.33
+        },
+        "2026-08": {
+          "nights": 19,
+          "revenue": 522796.71
+        }
+      },
+      "note": "monthlyReported は宿泊日が属する月への配分（泊数はこちらの集計と完全一致）。ただし売上は 2026年2〜5月が実額の 11/12 で表示されるため参考値。6月以降は実額と一致する"
+    },
+    "cancellations": {
+      "source": "Beds24 API（status=cancelled）2026-08-29 取得",
+      "byMonth": {
+        "2026-02": 6,
+        "2026-03": 6,
+        "2026-04": 4,
+        "2026-05": 7,
+        "2026-06": 2,
+        "2026-07": 4,
+        "2026-09": 2
+      },
+      "total": 31,
+      "note": "既定の取得には含まれないため status を明示して取得する。31 ÷ (135+31) = 18.7% で Booking.com 表示の 20.0〜21.77% と整合"
+    }
+  }
 }
