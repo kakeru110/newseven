@@ -132,9 +132,14 @@ export default function AcquisitionSection({ seed, channels }) {
           {inv && (
             <li>
               Airbnb 画面の「空室 {a.vacantNights}泊」は<strong>販売可能だったのに埋まらなかった日数</strong>で、実際の空室ではありません。
-              実際の空室は {inv.actuallyVacant}泊あり、うち <strong>{inv.airbnbBlockedAndUnsold}泊は Airbnb 上で販売不可</strong>のまま流れています
-              （最低宿泊日数・在庫配分・手動ブロックが疑われます）。1泊あたり限界利益 {money(contributionPerNight)}円 で換算すると
-              最大 {money(contributionPerNight * inv.airbnbBlockedAndUnsold)}円ぶんの販売機会にあたります。
+              実際の空室は {inv.actuallyVacant}泊で、うち {inv.vacantAfterCancellation}泊はキャンセルされた予約が入っていた日です。
+              {inv.airbnbBlockedAndUnsold}泊は Airbnb 上で販売不可のまま流れていますが、Beds24 は過去の在庫設定を保持しないため当時の理由は特定できません。
+            </li>
+          )}
+          {inv?.forwardCheck && (
+            <li>
+              {inv.forwardCheck.range.from}〜{inv.forwardCheck.range.to} で在庫カレンダーと予約を突き合わせた結果、
+              予約が無いのに販売不可の日は <strong>{inv.forwardCheck.blockedAndUnsoldDays}日</strong>。現時点で在庫が不当に塞がれている日はありません。
             </li>
           )}
           <li>
