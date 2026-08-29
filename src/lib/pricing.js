@@ -89,3 +89,61 @@ export function breakEvenOccupancyDelta(seed, base, priceMultiplier, month) {
   }
   return (lo + hi) / 2;
 }
+
+/**
+ * 月別の値上げ推奨（CLAUDE.md §9-4）
+ *
+ * 稼働率で機械的に区分する。ただし立ち上げ期（レビュー獲得のために意図的に
+ * 単価を下げていた期間）は、低単価が戦略なので判断から除外する。
+ */
+export function priceRecommendations(seed, months) {
+  const ctx = seed.pricingContext || {};
+  const t = ctx.thresholds || {};
+  const launch = new Set(ctx.launchMonths || []);
+  const high = t.highOccupancy ?? 0.88;
+  const mid = t.midOccupancy ?? 0.7;
+
+  return months.map((m) => {
+    const perNight = m.nightsActual ? m.revenueTotal / m.nightsActual : 0;
+    const row = {
+      month: m.month,
+      occupancy: m.occupancyRate,
+      perNight,
+      operatingProfit: m.operatingProfit,
+      isLaunch: launch.has(m.month),
+      isProvisional: m.isProvisional,
+    };
+    if (row.isLaunch) return { ...row, band: "launch", increase: 0 };
+
+    const increase = m.occupancyRate >= high ? (t.highIncrease ?? 0.15)
+      : m.occupancyRate >= mid ? (t.midIncrease ?? 0.10)
+      : 0;
+    if (!increase) return { ...row, band: "hold", increase: 0 };
+
+    const base = {
+      calendarDays: m.calendarDays,
+      nights: m.nightsActual,
+      cleanings: m.cleaningCount,
+      revenue: m.revenueTotal,
+      perNight,
+      occupancy: m.occupancyRate,
+      alos: m.alos,
+      otaRate: m.revenueTotal ? m.variableCosts.otaFee / m.revenueTotal : 0,
+      contributionMargin: m.contributionMargin,
+      fixedCost: m.fixedCostTotal,
+      operatingProfit: m.operatingProfit,
+    };
+    const tolerance = breakEvenOccupancyDelta(seed, base, 1 + increase, m.month);
+    const flat = simulate(seed, base, { priceMultiplier: 1 + increase, occupancyDelta: 0, month: m.month });
+    const halfDrop = simulate(seed, base, { priceMultiplier: 1 + increase, occupancyDelta: tolerance / 2, month: m.month });
+    return {
+      ...row,
+      band: m.occupancyRate >= high ? "high" : "mid",
+      increase,
+      tolerance,
+      gainIfFlat: flat.deltaOperatingProfit,
+      gainIfHalfDrop: halfDrop.operatingProfit - m.operatingProfit,
+      suggestedPerNight: perNight * (1 + increase),
+    };
+  });
+}
