@@ -93,6 +93,7 @@ export function periodTotals(seed) {
   const variableCostTotal = acc((m) => m.variableCostTotal);
   const fixedCostTotal = acc((m) => m.fixedCostTotal);
   const contributionMargin = revenue - variableCostTotal;
+  const otaFee = acc((m) => m.variableCosts.otaFee);
   const nightsActual = acc((m) => m.nightsActual);
   const nightsRevenue = acc((m) => m.nightsRevenue);
   const calendarDays = acc((m) => m.calendarDays);
@@ -101,6 +102,7 @@ export function periodTotals(seed) {
     months: ms.length,
     revenue,
     variableCostTotal,
+    otaFee,
     contributionMargin,
     contributionMarginRate: revenue ? contributionMargin / revenue : 0,
     fixedCostTotal,
