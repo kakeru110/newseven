@@ -10,6 +10,7 @@ import PLTable from "./components/PLTable.jsx";
 import ChannelSection from "./components/ChannelSection.jsx";
 import BreakEvenSection from "./components/BreakEvenSection.jsx";
 import GarbageTrendChart from "./components/GarbageTrendChart.jsx";
+import LiveSection from "./components/LiveSection.jsx";
 
 /**
  * Stage 1（CLAUDE.md §8 / §12）
@@ -43,6 +44,7 @@ export default function App() {
       </header>
 
       <SummaryCards totals={totals} months={months} />
+      <LiveSection seed={seed} />
       <MonthlyTrendChart months={months} />
       <PLTable months={months} totals={totals} incidents={seed.incidents} notes={seed.notes} />
       <ChannelSection channels={channels} monthlyRows={chMonthly} allMonths={months.map((m) => m.month)} />

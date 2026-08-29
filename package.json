@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "verify": "node scripts/verify.mjs",
     "build:single": "vite build && node scripts/build-singlefile.mjs",
-    "test:auth": "node scripts/test-middleware.mjs"
+    "test:auth": "node scripts/test-middleware.mjs",
+    "verify:beds24": "node scripts/beds24-verify.mjs"
   },
   "dependencies": {
     "@vercel/edge": "^1.3.3",

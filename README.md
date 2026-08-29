@@ -13,6 +13,7 @@ npm install
 npm run dev        # 開発サーバー（http://localhost:5173）
 npm run build      # 本番ビルド → dist/
 npm run verify     # 完了条件の突合（CLAUDE.md §12）
+npm run verify:beds24  # Beds24 と収支表PDFの突合（Stage 2）
 npm run build:single   # 1枚のHTMLに固めて dist/standalone.html を出力
 npm run test:auth      # Basic 認証ミドルウェアの動作確認
 ```
@@ -96,6 +97,48 @@ scripts/
   verify.mjs                  完了条件の突合
   build-singlefile.mjs        単一HTMLの生成
 ```
+
+## Beds24 連携（Stage 2）
+
+予約データを Beds24 API v2 から取得し、当月の速報値と先行予約を表示します。
+収支表PDFは翌月初にしか届かないため、当月は seed 上すべて仮値になりますが、
+Beds24 の予約データは当日時点の実績なので待たずに確定値に近い数字が出せます。
+
+### 設定
+
+Vercel → Settings → Environment Variables に **Production** で追加します。
+
+| 変数名 | 値 |
+|---|---|
+| `BEDS24_TOKEN` | Beds24 の **Long life token**（読み取り専用） |
+
+トークンは Beds24 の `https://beds24.com/control3.php?pagetype=apiv2` で発行します。
+必要なスコープは `read:bookings` / `read:bookings-financial` / `read:properties` です。
+未設定の場合、ダッシュボードは「未接続」と表示するだけで、他の表示は影響を受けません。
+
+### 個人情報の扱い
+
+`api/beds24.js` は宿泊者名・メール・電話・住所・コメントを**サーバー側で落としてから**返します。
+ブラウザに渡すのは日付・チャネル・金額・人数だけです。
+テスト用スナップショット `data/fixtures/beds24-bookings.json` も同じ項目のみで、個人情報は含みません。
+
+### データ品質の検算
+
+Beds24 の Booking.com 売上は、2026年2〜4月の一部予約で実額の 11/12 になっていました
+（5月以降は解消）。`commission` は全期間で正しいため、
+`commission ÷ price` が想定料率から外れたら `price × 12 ÷ 11` で補正します。
+
+```bash
+npm run verify:beds24    # 収支表PDF（seed.json）との突合
+```
+
+| 月 | Beds24（補正後） | 収支表PDF | 差 |
+|---|---|---|---|
+| 2026-03 | 635,622 | 635,603 | +19 |
+| 2026-04 | 587,739 | 587,734 | +5 |
+| 2026-05〜08 | — | — | **0** |
+
+OTA手数料は全期間で一致します（差は最大20円）。
 
 ## 本番URLのアクセス制限（Basic 認証）
 
