@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useBeds24 } from "./lib/useBeds24.js";
 import seed from "../data/seed.json";
 import {
   allMonths, periodTotals, channelSummary, channelMonthlyRows, garbageTrend,
@@ -15,6 +16,7 @@ import AcquisitionSection from "./components/AcquisitionSection.jsx";
 import PricingSimulator from "./components/PricingSimulator.jsx";
 import PriceRecommendation from "./components/PriceRecommendation.jsx";
 import PricingSettings from "./components/PricingSettings.jsx";
+import RegulationCounter from "./components/RegulationCounter.jsx";
 
 /**
  * Stage 1（CLAUDE.md §8 / §12）
@@ -26,6 +28,7 @@ export default function App() {
   const channels = useMemo(() => channelSummary(seed), []);
   const chMonthly = useMemo(() => channelMonthlyRows(seed), []);
   const garbage = useMemo(() => garbageTrend(seed), []);
+  const live = useBeds24();
 
   return (
     <div className="app">
@@ -48,7 +51,8 @@ export default function App() {
       </header>
 
       <SummaryCards totals={totals} months={months} />
-      <LiveSection seed={seed} />
+      <RegulationCounter seed={seed} live={live} />
+      <LiveSection seed={seed} live={live} />
       <MonthlyTrendChart months={months} />
       <PLTable months={months} totals={totals} incidents={seed.incidents} notes={seed.notes} />
       <ChannelSection channels={channels} monthlyRows={chMonthly} allMonths={months.map((m) => m.month)} />

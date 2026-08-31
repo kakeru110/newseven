@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Card, Legend, ChartTooltip, axisProps } from "./ui.jsx";
 import { yen, money, man, pct, monthShort, monthLong, signClass } from "../lib/format.js";
@@ -14,22 +14,7 @@ const thisMonth = () => { const d = new Date(); return `${d.getFullYear()}-${Str
  * Beds24 の予約データは当日時点の実績なので、待たずに確定値に近い数字が出せる。
  * 先行予約（今月以降）は収支表PDFには原理的に存在しない情報。
  */
-export default function LiveSection({ seed }) {
-  const [state, setState] = useState({ status: "loading" });
-
-  useEffect(() => {
-    let alive = true;
-    fetch("/api/beds24")
-      .then(async (r) => {
-        const body = await r.json().catch(() => ({}));
-        if (!r.ok) throw new Error(body.error || `取得に失敗しました（${r.status}）`);
-        return body;
-      })
-      .then((data) => alive && setState({ status: "ok", data }))
-      .catch((err) => alive && setState({ status: "error", message: String(err.message || err) }));
-    return () => { alive = false; };
-  }, []);
-
+export default function LiveSection({ seed, live: state }) {
   const summary = useMemo(
     () => (state.status === "ok" ? summarize(seed, state.data.bookings) : null),
     [state, seed]
