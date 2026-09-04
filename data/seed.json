@@ -1,6 +1,6 @@
 {
   "$schema": "kamakura-gate-inn seed v1",
-  "generatedAt": "2026-08-29",
+  "generatedAt": "2026-09-04",
   "property": {
     "name": "Kamakura Gate Inn",
     "location": "神奈川県鎌倉市大船",
@@ -9,12 +9,12 @@
     "currency": "JPY"
   },
   "notes": {
-    "summary": "2026年2〜8月の実績。全額は税込（表記のある項目を除く）。8月は仮値。",
+    "summary": "2026年2〜8月の実績。全額は税込（表記のある項目を除く）。8月は光熱費・日用品・収支表が仮値。",
     "provisionalMonths": [
       "2026-08"
     ],
     "missingData": [
-      "2026-08: 月未了のため全項目が仮値。光熱費・日用品・清掃請求・収支表の差し替え待ち。"
+      "2026-08: 清掃請求（2026-09-01付 ラフプラス請求書）で清掃22回・ごみ42袋を確定。光熱費・日用品・運営サポート収支表PDFが差し替え待ち。"
     ],
     "nightsExplanation": "月跨ぎ滞在は売上がチェックアウト月にまとめて計上される。稼働率にはnightsActual、ADRにはnightsRevenueを使うこと。"
   },
@@ -37,11 +37,11 @@
     },
     {
       "key": "cleaning_total_per_stay_incl_tax",
-      "value": 8540,
+      "value": 8624,
       "unit": "JPY/stay",
       "validFrom": "2026-02-01",
       "validTo": null,
-      "source": "2・4〜7月の実績平均（74滞在、5月の立替控除を戻した金額）"
+      "source": "2・4〜8月の実績平均（96滞在、5月の立替控除を戻した金額）"
     },
     {
       "key": "utilities_per_night",
@@ -319,7 +319,7 @@
       "calendarDays": 31,
       "nightsActual": 29,
       "nightsRevenue": 29,
-      "cleaningCount": 20,
+      "cleaningCount": 22,
       "revenue": {
         "airbnb": 293548,
         "booking": 540661,
@@ -328,10 +328,10 @@
         "total": 834209
       },
       "variableCosts": {
-        "cleaningBaseExclTax": 130000,
-        "garbageExclTax": 35200,
+        "cleaningBaseExclTax": 144500,
+        "garbageExclTax": 33600,
         "advanceCredit": 0,
-        "cleaningTotalInclTax": 181720,
+        "cleaningTotalInclTax": 195910,
         "otaFee": 122815,
         "mgmtSupportFeeInclTax": 91763,
         "utilities": 21982,
@@ -489,10 +489,9 @@
     },
     {
       "month": "2026-08",
-      "bags": 44,
-      "cleanings": 20,
-      "nights": 29,
-      "isProvisional": true
+      "bags": 42,
+      "cleanings": 22,
+      "nights": 29
     }
   ],
   "formulas": {
@@ -512,33 +511,33 @@
   "breakEvenPriceReference": [
     {
       "nights": 1,
-      "airbnb": 13196,
-      "booking": 12984
+      "airbnb": 13310,
+      "booking": 13096
     },
     {
       "nights": 2,
-      "airbnb": 7386,
-      "booking": 7268
+      "airbnb": 7444,
+      "booking": 7324
     },
     {
       "nights": 3,
-      "airbnb": 5450,
-      "booking": 5362
+      "airbnb": 5488,
+      "booking": 5400
     },
     {
       "nights": 5,
-      "airbnb": 3901,
-      "booking": 3838
+      "airbnb": 3924,
+      "booking": 3861
     },
     {
       "nights": 7,
-      "airbnb": 3237,
-      "booking": 3185
+      "airbnb": 3253,
+      "booking": 3201
     },
     {
       "nights": 14,
-      "airbnb": 2407,
-      "booking": 2368
+      "airbnb": 2415,
+      "booking": 2376
     }
   ],
   "channelMetrics": {

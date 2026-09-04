@@ -5,7 +5,11 @@ import { num, monthShort, monthLong } from "../lib/format.js";
 
 /** ごみ袋トレンド（CLAUDE.md §12-6）: 袋数/滞在 と 袋数/泊 */
 export default function GarbageTrendChart({ trend }) {
-  const lastActual = trend.reduce((acc, g, i) => (g.isProvisional ? acc : i), 0);
+  /* 仮値が1件も無ければ破線は引かない（trend.length にすると prov が常に false になる） */
+  const provisionalMonths = trend.filter((g) => g.isProvisional).map((g) => monthLong(g.month));
+  const lastActual = provisionalMonths.length
+    ? trend.reduce((acc, g, i) => (g.isProvisional ? acc : i), 0)
+    : trend.length;
   const data = trend.map((g, i) => {
     const prov = i >= lastActual;
     return {
@@ -21,8 +25,8 @@ export default function GarbageTrendChart({ trend }) {
   return (
     <Card
       title="ごみ袋トレンド"
-      note="破線は仮値"
-      desc="1滞在あたり・1泊あたりの袋数。連泊増だけでは説明できない単調増加が続いている（800円/袋）。"
+      note={provisionalMonths.length ? "破線は仮値" : ""}
+      desc="1滞在あたり・1泊あたりの袋数（800円/袋）。滞在あたりは6月がピークだが、泊あたりは反転せず最高値を更新し続けている。"
     >
       <div className="chart">
         <ResponsiveContainer width="100%" height={224}>
@@ -63,7 +67,9 @@ export default function GarbageTrendChart({ trend }) {
         items={[
           { label: "袋数 / 滞在", color: "var(--series-1)", type: "line" },
           { label: "袋数 / 泊", color: "var(--series-2)", type: "line" },
-          { label: "破線 = 仮値（2026年8月）", type: "hatch" },
+          ...(provisionalMonths.length
+            ? [{ label: `破線 = 仮値（${provisionalMonths.join("・")}）`, type: "hatch" }]
+            : []),
         ]}
       />
     </Card>

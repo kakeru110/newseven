@@ -20,9 +20,9 @@ const EXPECTED_MONTHLY = [
   { month: "2026-05", revenue: 602657, cmRate: 50.6, operatingProfit: 115257 },
   { month: "2026-06", revenue: 475603, cmRate: 46.5, operatingProfit: 31273 },
   { month: "2026-07", revenue: 530932, cmRate: 42.7, operatingProfit: 36807 },
-  { month: "2026-08", revenue: 834209, cmRate: 48.5, operatingProfit: 214631 },
+  { month: "2026-08", revenue: 834209, cmRate: 46.8, operatingProfit: 200441 },
 ];
-const EXPECTED_TOTAL = { revenue: 3901313, operatingProfit: 386394, cmRate: 43.7, occupancy: 77.4 };
+const EXPECTED_TOTAL = { revenue: 3901313, operatingProfit: 372204, cmRate: 43.3, occupancy: 77.4 };
 
 let failed = 0;
 const check = (label, actual, expected, tolerance = 0) => {
@@ -81,6 +81,27 @@ check("Airbnb 実料率(%)", +((marchCh[0].otaFee / marchCh[0].revenue) * 100).t
 check("2026-03 の宣伝プログラム料率(%)", resolveRate(seed, "ota_rate_booking_promo", "2026-03") * 100, 16.97, 0.001);
 const promoFeb = resolveRate(seed, "ota_rate_booking_promo", "2026-02");
 check("2026-02 は宣伝プログラム適用なし", promoFeb === null ? 1 : 0, 1);
+
+console.log("\n■ 2026-08 清掃請求書との突合（2026-09-01付 ラフプラス請求書）");
+const aug = seed.monthly.find((m) => m.month === "2026-08");
+const augBags = seed.garbageTrend.find((g) => g.month === "2026-08");
+/* 明細は清掃22回 + 7/30 の待機費1時間（1,500円）。ごみは42袋 */
+check("清掃請負費（税抜・待機費を含む）", aug.variableCosts.cleaningBaseExclTax, 22 * 6500 + 1500);
+check("ごみ回収費（税抜）", aug.variableCosts.garbageExclTax, 42 * 800);
+check("請求書の合計欄（税込）", aug.variableCosts.cleaningTotalInclTax, 195910);
+check("清掃回数", aug.cleaningCount, 22);
+check("ごみ袋数", augBags.bags, 42);
+
+console.log("\n■ 清掃請求の内部整合（全月：合計 =（清掃 + ごみ）× 1.1 + 立替控除）");
+for (const m of seed.monthly) {
+  const v = m.variableCosts;
+  const taxMul = resolveRate(seed, "consumption_tax_multiplier", m.month);
+  const bagRate = resolveRate(seed, "garbage_per_bag_excl_tax", m.month);
+  const trend = seed.garbageTrend.find((g) => g.month === m.month);
+  check(`${m.month} 合計（税込）`, v.cleaningTotalInclTax,
+    Math.round((v.cleaningBaseExclTax + v.garbageExclTax) * taxMul) + v.advanceCredit);
+  check(`${m.month} ごみ袋数 × ${bagRate}円`, v.garbageExclTax, trend.bags * bagRate);
+}
 
 console.log("\n■ チャネル別（内訳の無い 2026-08 は除外されること）");
 const ch = channelSummary(seed);
