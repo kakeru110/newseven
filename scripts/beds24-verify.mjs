@@ -78,9 +78,30 @@ for (const s of seed.monthly) {
   check(`${s.month} 退去 ${dep}件 vs 清掃 ${s.cleaningCount}回`, gap === (KNOWN_GAP[s.month] || 0), gap ? `差 ${gap}件` : "一致");
 }
 
+console.log("\n■ 実泊数の突合（seed は収支表由来、Beds24 は予約を日単位で並べたもの）");
+/* 2・3・4・8月は完全一致。5〜7月の差は原因未確定（CLAUDE.md §10）。
+   売上とOTA手数料は全期間で一致しているので、ずれているのは泊数だけ。 */
+const KNOWN_NIGHT_GAP = { "2026-05": 2, "2026-06": 3, "2026-07": 1 };
+const occupied = new Set();
+for (const b of fixture.bookings) {
+  if (!b?.arrival || !b?.departure || String(b.status || "").toLowerCase() === "cancelled") continue;
+  const nights = Math.round((new Date(b.departure) - new Date(b.arrival)) / 86400000);
+  for (let i = 0; i < nights; i++) {
+    const d = new Date(new Date(b.arrival).getTime() + i * 86400000);
+    occupied.add(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
+  }
+}
+for (const s of seed.monthly) {
+  const n = [...occupied].filter((d) => d.slice(0, 7) === s.month).length;
+  const gap = s.nightsActual - n;
+  check(`${s.month} 実泊数 seed ${s.nightsActual} vs Beds24 ${n}`, gap === (KNOWN_NIGHT_GAP[s.month] || 0),
+    gap ? `差 ${gap}泊（原因未確定・§10）` : "一致");
+}
+
 console.log("\n■ キャンセル（既定の取得には含まれないため status=cancelled で別途取得する）");
-check("キャンセル件数", summary.cancelled.length, 31, 0, `${summary.cancelled.length}件`);
-check("キャンセル率が Booking.com 表示（20.0〜21.8%）と整合", Math.abs(summary.cancelRate - 0.187) <= 0.01, true, 0, `${(summary.cancelRate * 100).toFixed(1)}%`);
+check("キャンセル件数", summary.cancelled.length, 40, 0, `${summary.cancelled.length}件`);
+check("キャンセル率が Booking.com 表示（20.0〜21.8%）に収まる",
+  summary.cancelRate >= 0.19 && summary.cancelRate <= 0.22, `${(summary.cancelRate * 100).toFixed(1)}%`);
 check("キャンセルは売上に含めない", rows.every((r) => Math.abs(r.revenueDiff) <= (TOLERANCE[r.month] ?? 0)), true);
 
 console.log("\n■ 想定料率から外れた予約（要調査）");

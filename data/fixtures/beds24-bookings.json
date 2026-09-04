@@ -1,7 +1,7 @@
 {
- "note": "2026-08-29 に Beds24 API から取得したスナップショット（キャンセル分を含む）。突合テスト用。個人情報（氏名・連絡先・住所・コメント）は含まない。",
- "fetchedAt": "2026-08-29",
- "count": 166,
+ "note": "Beds24 API v2 の予約スナップショット（2026-09-04 取得・個人情報は含まない）。arrivalFrom=2026-01-01 / arrivalTo=2027-03-31 で、既定の取得と status=cancelled の2回ぶんを含む。先行きの検証に使うため、以前の 9月末まで のスナップショットを年度末まで広げたもの。",
+ "fetchedAt": "2026-09-04T11:16:05.470Z",
+ "count": 191,
  "bookings": [
   {
    "id": 81657204,
@@ -88,20 +88,6 @@
    "cancelledAt": null
   },
   {
-   "id": 82048285,
-   "status": "cancelled",
-   "channel": "booking",
-   "apiSource": "Booking.com",
-   "arrival": "2026-02-19",
-   "departure": "2026-02-21",
-   "price": 0,
-   "commission": 0,
-   "adults": 4,
-   "children": 0,
-   "bookedAt": "2026-02-08T08:44:08Z",
-   "cancelledAt": "2026-02-09T06:12:39Z"
-  },
-  {
    "id": 82174775,
    "status": "new",
    "channel": "airbnb",
@@ -114,6 +100,20 @@
    "children": 0,
    "bookedAt": "2026-02-10T18:50:55Z",
    "cancelledAt": null
+  },
+  {
+   "id": 82048285,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-02-19",
+   "departure": "2026-02-21",
+   "price": 0,
+   "commission": 0,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-02-08T08:44:08Z",
+   "cancelledAt": "2026-02-09T06:12:39Z"
   },
   {
    "id": 82351679,
@@ -144,20 +144,6 @@
    "cancelledAt": null
   },
   {
-   "id": 81927790,
-   "status": "cancelled",
-   "channel": "booking",
-   "apiSource": "Booking.com",
-   "arrival": "2026-02-22",
-   "departure": "2026-02-23",
-   "price": 0,
-   "commission": 0,
-   "adults": 5,
-   "children": 0,
-   "bookedAt": "2026-02-05T14:40:56Z",
-   "cancelledAt": "2026-02-20T19:29:13Z"
-  },
-  {
    "id": 82657909,
    "status": "new",
    "channel": "booking",
@@ -172,6 +158,20 @@
    "cancelledAt": null
   },
   {
+   "id": 81927790,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-02-22",
+   "departure": "2026-02-23",
+   "price": 0,
+   "commission": 0,
+   "adults": 5,
+   "children": 0,
+   "bookedAt": "2026-02-05T14:40:56Z",
+   "cancelledAt": "2026-02-20T19:29:13Z"
+  },
+  {
    "id": 82758931,
    "status": "new",
    "channel": "airbnb",
@@ -183,6 +183,20 @@
    "adults": 6,
    "children": 0,
    "bookedAt": "2026-02-23T10:10:15Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 82742875,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-02-24",
+   "departure": "2026-02-25",
+   "price": 10000,
+   "commission": 1218,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-02-23T00:40:20Z",
    "cancelledAt": null
   },
   {
@@ -200,20 +214,6 @@
    "cancelledAt": "2026-02-20T16:44:46Z"
   },
   {
-   "id": 82742875,
-   "status": "new",
-   "channel": "booking",
-   "apiSource": "Booking.com",
-   "arrival": "2026-02-24",
-   "departure": "2026-02-25",
-   "price": 10000,
-   "commission": 1218,
-   "adults": 4,
-   "children": 0,
-   "bookedAt": "2026-02-23T00:40:20Z",
-   "cancelledAt": null
-  },
-  {
    "id": 82921302,
    "status": "new",
    "channel": "booking",
@@ -226,34 +226,6 @@
    "children": 0,
    "bookedAt": "2026-02-26T01:50:29Z",
    "cancelledAt": null
-  },
-  {
-   "id": 81441658,
-   "status": "cancelled",
-   "channel": "airbnb",
-   "apiSource": "Airbnb",
-   "arrival": "2026-02-28",
-   "departure": "2026-03-01",
-   "price": 0,
-   "commission": 0,
-   "adults": 4,
-   "children": 0,
-   "bookedAt": "2026-01-27T03:11:22Z",
-   "cancelledAt": "2026-02-17T02:44:41Z"
-  },
-  {
-   "id": 82529447,
-   "status": "cancelled",
-   "channel": "booking",
-   "apiSource": "Booking.com",
-   "arrival": "2026-02-28",
-   "departure": "2026-03-01",
-   "price": 0,
-   "commission": 0,
-   "adults": 2,
-   "children": 2,
-   "bookedAt": "2026-02-18T10:54:08Z",
-   "cancelledAt": "2026-02-23T12:30:04Z"
   },
   {
    "id": 82799982,
@@ -270,18 +242,32 @@
    "cancelledAt": null
   },
   {
-   "id": 81903403,
+   "id": 82529447,
    "status": "cancelled",
    "channel": "booking",
    "apiSource": "Booking.com",
-   "arrival": "2026-03-02",
-   "departure": "2026-03-04",
+   "arrival": "2026-02-28",
+   "departure": "2026-03-01",
    "price": 0,
    "commission": 0,
-   "adults": 3,
+   "adults": 2,
    "children": 2,
-   "bookedAt": "2026-02-05T04:52:31Z",
-   "cancelledAt": "2026-02-07T11:14:23Z"
+   "bookedAt": "2026-02-18T10:54:08Z",
+   "cancelledAt": "2026-02-23T12:30:04Z"
+  },
+  {
+   "id": 81441658,
+   "status": "cancelled",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-02-28",
+   "departure": "2026-03-01",
+   "price": 0,
+   "commission": 0,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-01-27T03:11:22Z",
+   "cancelledAt": "2026-02-17T02:44:41Z"
   },
   {
    "id": 83124772,
@@ -296,6 +282,20 @@
    "children": 0,
    "bookedAt": "2026-03-02T08:40:53Z",
    "cancelledAt": null
+  },
+  {
+   "id": 81903403,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-03-02",
+   "departure": "2026-03-04",
+   "price": 0,
+   "commission": 0,
+   "adults": 3,
+   "children": 2,
+   "bookedAt": "2026-02-05T04:52:31Z",
+   "cancelledAt": "2026-02-07T11:14:23Z"
   },
   {
    "id": 83077040,
@@ -382,20 +382,6 @@
    "cancelledAt": null
   },
   {
-   "id": 82101576,
-   "status": "cancelled",
-   "channel": "airbnb",
-   "apiSource": "Airbnb",
-   "arrival": "2026-03-11",
-   "departure": "2026-03-12",
-   "price": 0,
-   "commission": 0,
-   "adults": 3,
-   "children": 0,
-   "bookedAt": "2026-02-09T10:38:22Z",
-   "cancelledAt": "2026-03-01T15:44:01Z"
-  },
-  {
    "id": 83442505,
    "status": "confirmed",
    "channel": "airbnb",
@@ -408,6 +394,20 @@
    "children": 0,
    "bookedAt": "2026-03-08T17:07:29Z",
    "cancelledAt": null
+  },
+  {
+   "id": 82101576,
+   "status": "cancelled",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-03-11",
+   "departure": "2026-03-12",
+   "price": 0,
+   "commission": 0,
+   "adults": 3,
+   "children": 0,
+   "bookedAt": "2026-02-09T10:38:22Z",
+   "cancelledAt": "2026-03-01T15:44:01Z"
   },
   {
    "id": 81920158,
@@ -424,20 +424,6 @@
    "cancelledAt": null
   },
   {
-   "id": 81718905,
-   "status": "cancelled",
-   "channel": "airbnb",
-   "apiSource": "Airbnb",
-   "arrival": "2026-03-14",
-   "departure": "2026-03-15",
-   "price": 0,
-   "commission": 0,
-   "adults": 5,
-   "children": 0,
-   "bookedAt": "2026-02-01T15:15:11Z",
-   "cancelledAt": "2026-03-03T11:50:20Z"
-  },
-  {
    "id": 83547463,
    "status": "confirmed",
    "channel": "booking",
@@ -450,6 +436,20 @@
    "children": 2,
    "bookedAt": "2026-03-10T13:48:07Z",
    "cancelledAt": null
+  },
+  {
+   "id": 81718905,
+   "status": "cancelled",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-03-14",
+   "departure": "2026-03-15",
+   "price": 0,
+   "commission": 0,
+   "adults": 5,
+   "children": 0,
+   "bookedAt": "2026-02-01T15:15:11Z",
+   "cancelledAt": "2026-03-03T11:50:20Z"
   },
   {
    "id": 83198078,
@@ -606,20 +606,6 @@
    "cancelledAt": null
   },
   {
-   "id": 81741354,
-   "status": "cancelled",
-   "channel": "airbnb",
-   "apiSource": "Airbnb",
-   "arrival": "2026-03-28",
-   "departure": "2026-03-29",
-   "price": 0,
-   "commission": 0,
-   "adults": 3,
-   "children": 2,
-   "bookedAt": "2026-02-02T02:04:36Z",
-   "cancelledAt": "2026-03-23T01:07:00Z"
-  },
-  {
    "id": 84170403,
    "status": "new",
    "channel": "airbnb",
@@ -634,6 +620,20 @@
    "cancelledAt": null
   },
   {
+   "id": 81741354,
+   "status": "cancelled",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-03-28",
+   "departure": "2026-03-29",
+   "price": 0,
+   "commission": 0,
+   "adults": 3,
+   "children": 2,
+   "bookedAt": "2026-02-02T02:04:36Z",
+   "cancelledAt": "2026-03-23T01:07:00Z"
+  },
+  {
    "id": 83607235,
    "status": "confirmed",
    "channel": "booking",
@@ -645,6 +645,20 @@
    "adults": 5,
    "children": 0,
    "bookedAt": "2026-03-11T15:41:07Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 84227498,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-03-30",
+   "departure": "2026-03-31",
+   "price": 31978,
+   "commission": 4253,
+   "adults": 5,
+   "children": 0,
+   "bookedAt": "2026-03-24T13:48:49Z",
    "cancelledAt": null
   },
   {
@@ -662,17 +676,17 @@
    "cancelledAt": "2026-03-24T13:46:25Z"
   },
   {
-   "id": 84227498,
-   "status": "new",
+   "id": 83980136,
+   "status": "confirmed",
    "channel": "booking",
    "apiSource": "Booking.com",
-   "arrival": "2026-03-30",
-   "departure": "2026-03-31",
-   "price": 31978,
-   "commission": 4253,
-   "adults": 5,
-   "children": 0,
-   "bookedAt": "2026-03-24T13:48:49Z",
+   "arrival": "2026-03-31",
+   "departure": "2026-04-01",
+   "price": 26835,
+   "commission": 3893,
+   "adults": 3,
+   "children": 3,
+   "bookedAt": "2026-03-19T09:29:24Z",
    "cancelledAt": null
   },
   {
@@ -690,20 +704,6 @@
    "cancelledAt": "2026-03-03T11:03:39Z"
   },
   {
-   "id": 83980136,
-   "status": "confirmed",
-   "channel": "booking",
-   "apiSource": "Booking.com",
-   "arrival": "2026-03-31",
-   "departure": "2026-04-01",
-   "price": 26835,
-   "commission": 3893,
-   "adults": 3,
-   "children": 3,
-   "bookedAt": "2026-03-19T09:29:24Z",
-   "cancelledAt": null
-  },
-  {
    "id": 83770832,
    "status": "new",
    "channel": "booking",
@@ -718,20 +718,6 @@
    "cancelledAt": null
   },
   {
-   "id": 84523865,
-   "status": "cancelled",
-   "channel": "booking",
-   "apiSource": "Booking.com",
-   "arrival": "2026-04-02",
-   "departure": "2026-04-04",
-   "price": 0,
-   "commission": 0,
-   "adults": 4,
-   "children": 0,
-   "bookedAt": "2026-03-28T05:45:15Z",
-   "cancelledAt": "2026-03-28T05:50:10Z"
-  },
-  {
    "id": 84623955,
    "status": "cancelled",
    "channel": "booking",
@@ -744,6 +730,20 @@
    "children": 0,
    "bookedAt": "2026-03-30T11:09:08Z",
    "cancelledAt": "2026-03-30T12:07:45Z"
+  },
+  {
+   "id": 84523865,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-04-02",
+   "departure": "2026-04-04",
+   "price": 0,
+   "commission": 0,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-03-28T05:45:15Z",
+   "cancelledAt": "2026-03-28T05:50:10Z"
   },
   {
    "id": 84530413,
@@ -858,20 +858,6 @@
    "cancelledAt": null
   },
   {
-   "id": 85236148,
-   "status": "cancelled",
-   "channel": "booking",
-   "apiSource": "Booking.com",
-   "arrival": "2026-04-17",
-   "departure": "2026-04-18",
-   "price": 0,
-   "commission": 0,
-   "adults": 3,
-   "children": 2,
-   "bookedAt": "2026-04-12T14:03:34Z",
-   "cancelledAt": "2026-04-14T14:40:52Z"
-  },
-  {
    "id": 85469439,
    "status": "confirmed",
    "channel": "booking",
@@ -884,6 +870,20 @@
    "children": 0,
    "bookedAt": "2026-04-17T07:27:20Z",
    "cancelledAt": null
+  },
+  {
+   "id": 85236148,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-04-17",
+   "departure": "2026-04-18",
+   "price": 0,
+   "commission": 0,
+   "adults": 3,
+   "children": 2,
+   "bookedAt": "2026-04-12T14:03:34Z",
+   "cancelledAt": "2026-04-14T14:40:52Z"
   },
   {
    "id": 83297456,
@@ -1012,18 +1012,18 @@
    "cancelledAt": "2026-04-28T08:08:57Z"
   },
   {
-   "id": 85407486,
-   "status": "cancelled",
+   "id": 86019309,
+   "status": "new",
    "channel": "booking",
    "apiSource": "Booking.com",
    "arrival": "2026-05-02",
    "departure": "2026-05-03",
-   "price": 0,
-   "commission": 0,
+   "price": 27014,
+   "commission": 3593,
    "adults": 2,
-   "children": 2,
-   "bookedAt": "2026-04-15T20:55:52Z",
-   "cancelledAt": "2026-04-28T01:25:52Z"
+   "children": 3,
+   "bookedAt": "2026-04-29T00:17:38Z",
+   "cancelledAt": null
   },
   {
    "id": 85976834,
@@ -1040,17 +1040,31 @@
    "cancelledAt": "2026-04-28T15:34:41Z"
   },
   {
-   "id": 86019309,
-   "status": "new",
+   "id": 85407486,
+   "status": "cancelled",
    "channel": "booking",
    "apiSource": "Booking.com",
    "arrival": "2026-05-02",
    "departure": "2026-05-03",
-   "price": 27014,
-   "commission": 3593,
+   "price": 0,
+   "commission": 0,
    "adults": 2,
-   "children": 3,
-   "bookedAt": "2026-04-29T00:17:38Z",
+   "children": 2,
+   "bookedAt": "2026-04-15T20:55:52Z",
+   "cancelledAt": "2026-04-28T01:25:52Z"
+  },
+  {
+   "id": 85566379,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-05-03",
+   "departure": "2026-05-04",
+   "price": 47998,
+   "commission": 6384,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-04-19T13:34:56Z",
    "cancelledAt": null
   },
   {
@@ -1066,20 +1080,6 @@
    "children": 0,
    "bookedAt": "2026-02-20T11:10:34Z",
    "cancelledAt": "2026-04-19T00:22:36Z"
-  },
-  {
-   "id": 85566379,
-   "status": "new",
-   "channel": "booking",
-   "apiSource": "Booking.com",
-   "arrival": "2026-05-03",
-   "departure": "2026-05-04",
-   "price": 47998,
-   "commission": 6384,
-   "adults": 4,
-   "children": 0,
-   "bookedAt": "2026-04-19T13:34:56Z",
-   "cancelledAt": null
   },
   {
    "id": 83636067,
@@ -1236,20 +1236,6 @@
    "cancelledAt": null
   },
   {
-   "id": 83523459,
-   "status": "cancelled",
-   "channel": "booking",
-   "apiSource": "Booking.com",
-   "arrival": "2026-05-23",
-   "departure": "2026-05-24",
-   "price": 0,
-   "commission": 0,
-   "adults": 4,
-   "children": 1,
-   "bookedAt": "2026-03-10T08:31:58Z",
-   "cancelledAt": "2026-03-11T03:48:53Z"
-  },
-  {
    "id": 85047800,
    "status": "new",
    "channel": "airbnb",
@@ -1262,6 +1248,20 @@
    "children": 0,
    "bookedAt": "2026-04-08T11:08:54Z",
    "cancelledAt": null
+  },
+  {
+   "id": 83523459,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-05-23",
+   "departure": "2026-05-24",
+   "price": 0,
+   "commission": 0,
+   "adults": 4,
+   "children": 1,
+   "bookedAt": "2026-03-10T08:31:58Z",
+   "cancelledAt": "2026-03-11T03:48:53Z"
   },
   {
    "id": 87031217,
@@ -1418,20 +1418,6 @@
    "cancelledAt": null
   },
   {
-   "id": 85572890,
-   "status": "cancelled",
-   "channel": "airbnb",
-   "apiSource": "Airbnb",
-   "arrival": "2026-06-17",
-   "departure": "2026-06-20",
-   "price": 0,
-   "commission": 0,
-   "adults": 4,
-   "children": 0,
-   "bookedAt": "2026-04-19T16:10:25Z",
-   "cancelledAt": "2026-04-21T06:12:12Z"
-  },
-  {
    "id": 86359672,
    "status": "new",
    "channel": "airbnb",
@@ -1444,6 +1430,20 @@
    "children": 0,
    "bookedAt": "2026-05-06T05:57:27Z",
    "cancelledAt": null
+  },
+  {
+   "id": 85572890,
+   "status": "cancelled",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-06-17",
+   "departure": "2026-06-20",
+   "price": 0,
+   "commission": 0,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-04-19T16:10:25Z",
+   "cancelledAt": "2026-04-21T06:12:12Z"
   },
   {
    "id": 87403211,
@@ -1460,20 +1460,6 @@
    "cancelledAt": null
   },
   {
-   "id": 85809123,
-   "status": "cancelled",
-   "channel": "booking",
-   "apiSource": "Booking.com",
-   "arrival": "2026-06-19",
-   "departure": "2026-06-20",
-   "price": 0,
-   "commission": 0,
-   "adults": 4,
-   "children": 2,
-   "bookedAt": "2026-04-24T13:35:00Z",
-   "cancelledAt": "2026-06-12T12:37:49Z"
-  },
-  {
    "id": 88247737,
    "status": "new",
    "channel": "booking",
@@ -1486,6 +1472,20 @@
    "children": 0,
    "bookedAt": "2026-06-13T12:01:50Z",
    "cancelledAt": null
+  },
+  {
+   "id": 85809123,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-06-19",
+   "departure": "2026-06-20",
+   "price": 0,
+   "commission": 0,
+   "adults": 4,
+   "children": 2,
+   "bookedAt": "2026-04-24T13:35:00Z",
+   "cancelledAt": "2026-06-12T12:37:49Z"
   },
   {
    "id": 85488456,
@@ -1558,20 +1558,6 @@
    "cancelledAt": null
   },
   {
-   "id": 83207890,
-   "status": "cancelled",
-   "channel": "booking",
-   "apiSource": "Booking.com",
-   "arrival": "2026-07-04",
-   "departure": "2026-07-05",
-   "price": 0,
-   "commission": 0,
-   "adults": 6,
-   "children": 0,
-   "bookedAt": "2026-03-03T17:25:59Z",
-   "cancelledAt": "2026-04-26T18:31:41Z"
-  },
-  {
    "id": 87662876,
    "status": "new",
    "channel": "airbnb",
@@ -1584,6 +1570,20 @@
    "children": 2,
    "bookedAt": "2026-06-01T16:58:28Z",
    "cancelledAt": null
+  },
+  {
+   "id": 83207890,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-07-04",
+   "departure": "2026-07-05",
+   "price": 0,
+   "commission": 0,
+   "adults": 6,
+   "children": 0,
+   "bookedAt": "2026-03-03T17:25:59Z",
+   "cancelledAt": "2026-04-26T18:31:41Z"
   },
   {
    "id": 88616497,
@@ -1628,20 +1628,6 @@
    "cancelledAt": null
   },
   {
-   "id": 85174233,
-   "status": "cancelled",
-   "channel": "booking",
-   "apiSource": "Booking.com",
-   "arrival": "2026-07-12",
-   "departure": "2026-07-17",
-   "price": 0,
-   "commission": 0,
-   "adults": 2,
-   "children": 1,
-   "bookedAt": "2026-04-10T23:19:22Z",
-   "cancelledAt": "2026-04-19T02:44:45Z"
-  },
-  {
    "id": 89568045,
    "status": "new",
    "channel": "booking",
@@ -1654,6 +1640,20 @@
    "children": 0,
    "bookedAt": "2026-07-09T14:12:55Z",
    "cancelledAt": null
+  },
+  {
+   "id": 85174233,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-07-12",
+   "departure": "2026-07-17",
+   "price": 0,
+   "commission": 0,
+   "adults": 2,
+   "children": 1,
+   "bookedAt": "2026-04-10T23:19:22Z",
+   "cancelledAt": "2026-04-19T02:44:45Z"
   },
   {
    "id": 86296966,
@@ -2174,20 +2174,6 @@
    "cancelledAt": null
   },
   {
-   "id": 87660896,
-   "status": "cancelled",
-   "channel": "booking",
-   "apiSource": "Booking.com",
-   "arrival": "2026-09-04",
-   "departure": "2026-09-07",
-   "price": 0,
-   "commission": 0,
-   "adults": 5,
-   "children": 0,
-   "bookedAt": "2026-06-01T16:16:03Z",
-   "cancelledAt": "2026-06-25T05:05:46Z"
-  },
-  {
    "id": 90073717,
    "status": "new",
    "channel": "airbnb",
@@ -2202,6 +2188,20 @@
    "cancelledAt": null
   },
   {
+   "id": 87660896,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-09-04",
+   "departure": "2026-09-07",
+   "price": 0,
+   "commission": 0,
+   "adults": 5,
+   "children": 0,
+   "bookedAt": "2026-06-01T16:16:03Z",
+   "cancelledAt": "2026-06-25T05:05:46Z"
+  },
+  {
    "id": 91948395,
    "status": "new",
    "channel": "booking",
@@ -2213,6 +2213,20 @@
    "adults": 6,
    "children": 0,
    "bookedAt": "2026-08-24T03:45:38Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 92244018,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-09-09",
+   "departure": "2026-09-10",
+   "price": 18881,
+   "commission": 2700,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-08-29T14:53:28Z",
    "cancelledAt": null
   },
   {
@@ -2300,6 +2314,20 @@
    "cancelledAt": null
   },
   {
+   "id": 92273332,
+   "status": "cancelled",
+   "channel": "direct",
+   "apiSource": "Direct",
+   "arrival": "2026-09-18",
+   "departure": "2026-09-19",
+   "price": 23239,
+   "commission": 0,
+   "adults": 2,
+   "children": 0,
+   "bookedAt": "2026-08-30T09:47:57Z",
+   "cancelledAt": "2026-08-30T12:54:07Z"
+  },
+  {
    "id": 86366165,
    "status": "new",
    "channel": "airbnb",
@@ -2311,6 +2339,20 @@
    "adults": 3,
    "children": 0,
    "bookedAt": "2026-05-06T08:55:34Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 92341058,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-09-22",
+   "departure": "2026-09-23",
+   "price": 27506,
+   "commission": 3934,
+   "adults": 6,
+   "children": 0,
+   "bookedAt": "2026-08-31T15:11:45Z",
    "cancelledAt": null
   },
   {
@@ -2326,6 +2368,314 @@
    "children": 2,
    "bookedAt": "2026-03-11T07:43:29Z",
    "cancelledAt": null
+  },
+  {
+   "id": 90990292,
+   "status": "new",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-10-02",
+   "departure": "2026-10-04",
+   "price": 53307,
+   "commission": 8263,
+   "adults": 4,
+   "children": 1,
+   "bookedAt": "2026-08-05T12:45:22Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 83888142,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-10-09",
+   "departure": "2026-10-11",
+   "price": 44352,
+   "commission": 6342,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-03-17T13:15:38Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 90271835,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-10-11",
+   "departure": "2026-10-12",
+   "price": 0,
+   "commission": 0,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-07-22T17:30:46Z",
+   "cancelledAt": "2026-07-22T17:51:03Z"
+  },
+  {
+   "id": 92390536,
+   "status": "confirmed",
+   "channel": "direct",
+   "apiSource": "Direct",
+   "arrival": "2026-10-14",
+   "departure": "2026-10-15",
+   "price": 18576,
+   "commission": 0,
+   "adults": 2,
+   "children": 0,
+   "bookedAt": "2026-09-01T13:13:02Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 91649684,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-10-16",
+   "departure": "2026-10-18",
+   "price": 0,
+   "commission": 0,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-08-18T04:41:25Z",
+   "cancelledAt": "2026-08-19T13:07:08Z"
+  },
+  {
+   "id": 90601202,
+   "status": "new",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-10-18",
+   "departure": "2026-10-21",
+   "price": 69126,
+   "commission": 10715,
+   "adults": 5,
+   "children": 0,
+   "bookedAt": "2026-07-29T02:18:18Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 91818821,
+   "status": "new",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-10-23",
+   "departure": "2026-10-25",
+   "price": 61797,
+   "commission": 9579,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-08-21T06:39:02Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 91272891,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-10-23",
+   "departure": "2026-10-25",
+   "price": 0,
+   "commission": 0,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-08-11T00:16:07Z",
+   "cancelledAt": "2026-08-11T12:59:53Z"
+  },
+  {
+   "id": 91166660,
+   "status": "cancelled",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-10-23",
+   "departure": "2026-10-25",
+   "price": 0,
+   "commission": 0,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-08-08T22:27:45Z",
+   "cancelledAt": "2026-08-09T12:41:46Z"
+  },
+  {
+   "id": 91353810,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-11-05",
+   "departure": "2026-11-07",
+   "price": 41870,
+   "commission": 5987,
+   "adults": 5,
+   "children": 1,
+   "bookedAt": "2026-08-12T12:24:56Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 90195948,
+   "status": "cancelled",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-11-06",
+   "departure": "2026-11-09",
+   "price": 0,
+   "commission": 0,
+   "adults": 3,
+   "children": 0,
+   "bookedAt": "2026-07-21T12:46:55Z",
+   "cancelledAt": "2026-07-29T11:17:28Z"
+  },
+  {
+   "id": 92239075,
+   "status": "new",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-11-07",
+   "departure": "2026-11-08",
+   "price": 33280,
+   "commission": 5158,
+   "adults": 5,
+   "children": 0,
+   "bookedAt": "2026-08-29T13:11:12Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 91197553,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-11-28",
+   "departure": "2026-11-30",
+   "price": 77424,
+   "commission": 11072,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-08-09T15:14:18Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 92201965,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-11-30",
+   "departure": "2026-12-02",
+   "price": 43051,
+   "commission": 6156,
+   "adults": 3,
+   "children": 0,
+   "bookedAt": "2026-08-28T15:36:14Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 90243967,
+   "status": "new",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-12-03",
+   "departure": "2026-12-07",
+   "price": 102315,
+   "commission": 15859,
+   "adults": 4,
+   "children": 1,
+   "bookedAt": "2026-07-22T08:58:36Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 90121243,
+   "status": "new",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-12-20",
+   "departure": "2027-01-01",
+   "price": 418794,
+   "commission": 64913,
+   "adults": 2,
+   "children": 3,
+   "bookedAt": "2026-07-20T06:12:50Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 86671888,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-12-30",
+   "departure": "2027-01-02",
+   "price": 0,
+   "commission": 0,
+   "adults": 5,
+   "children": 0,
+   "bookedAt": "2026-05-12T13:16:33Z",
+   "cancelledAt": "2026-05-31T05:23:05Z"
+  },
+  {
+   "id": 83719343,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2027-01-05",
+   "departure": "2027-01-16",
+   "price": 221470,
+   "commission": 31670,
+   "adults": 2,
+   "children": 0,
+   "bookedAt": "2026-03-13T21:25:28Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 92301525,
+   "status": "cancelled",
+   "channel": "direct",
+   "apiSource": "Direct",
+   "arrival": "2027-01-15",
+   "departure": "2027-01-16",
+   "price": 18500,
+   "commission": 0,
+   "adults": 1,
+   "children": 0,
+   "bookedAt": "2026-08-30T22:26:25Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 89298585,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2027-01-19",
+   "departure": "2027-01-21",
+   "price": 40882,
+   "commission": 5846,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-07-04T16:49:02Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 90113709,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2027-02-01",
+   "departure": "2027-02-02",
+   "price": 23628,
+   "commission": 3378,
+   "adults": 2,
+   "children": 1,
+   "bookedAt": "2026-07-20T00:35:12Z",
+   "cancelledAt": null
+  },
+  {
+   "id": 91862078,
+   "status": "cancelled",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2027-03-30",
+   "departure": "2027-04-01",
+   "price": 0,
+   "commission": 0,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-08-22T02:31:27Z",
+   "cancelledAt": "2026-08-26T04:57:18Z"
   }
  ]
 }

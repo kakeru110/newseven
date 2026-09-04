@@ -14,6 +14,8 @@ npm run dev        # 開発サーバー（http://localhost:5173）
 npm run build      # 本番ビルド → dist/
 npm run verify     # 完了条件の突合（CLAUDE.md §12）
 npm run verify:beds24  # Beds24 と収支表PDFの突合（Stage 2）
+npm run verify:regulation  # 住宅宿泊事業法180日の消化状況
+npm run verify:forecast    # 先行き（オン・ザ・ブックス）と埋まりペース
 npm run build:single   # 1枚のHTMLに固めて dist/standalone.html を出力
 npm run test:auth      # Basic 認証ミドルウェアの動作確認
 ```
@@ -95,12 +97,32 @@ data/
 src/
   App.jsx                     画面の組み立て
   lib/metrics.js              指標計算（料率の日付解決を含む）
+  lib/beds24.js               Beds24 の正規化・11/12 補正・収支表との突合
+  lib/forecast.js             先行き（オン・ザ・ブックス）と埋まりペース
+  lib/regulation.js           住宅宿泊事業法180日のカウント
+  lib/pricing.js              値上げシミュレーションと月別推奨
   lib/format.js               金額・率の表示フォーマット
   components/                 各セクション
 scripts/
   verify.mjs                  完了条件の突合
   build-singlefile.mjs        単一HTMLの生成
 ```
+
+## 先行き（オン・ザ・ブックス）
+
+将来月は収支表PDFが存在しないため、Beds24 の予約データだけで
+「予約済み泊数 → 売上 → 変動費 → 限界利益 → 営業損益」を組み立てます。
+埋まりペースは、同じリードタイム（対象月の初日までの日数）で過去の各月が
+何泊入っていたかと比べて判定します。`npm run verify:forecast` で検算できます。
+
+読むときの注意が3つあります。
+
+- 月配分は**宿泊日が属する月**です。月次P/L（収支表由来）はチェックアウト月に
+  計上するため、2つの表の月次売上は一致しません（CLAUDE.md §6-2 / §9-6）。
+- **季節性は補正していません。** 同じ月の前年実績がまだ無いので、
+  10月を4〜9月と比べています。サンプルも6ヶ月しかありません。
+- 値下げを考える前に「販売可能」列を見てください。住宅宿泊事業法の180日枠が
+  残っていない月は、価格を下げても予約を受けられません（CLAUDE.md §9-5）。
 
 ## Beds24 連携（Stage 2）
 
