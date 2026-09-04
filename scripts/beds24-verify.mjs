@@ -61,13 +61,21 @@ for (const m of ["2026-05", "2026-06", "2026-07", "2026-08"]) {
   check(`${m} は補正不要`, (corrByMonth[m] || 0) === 0, `${corrByMonth[m] || 0}件`);
 }
 
-console.log("\n■ 予約件数と清掃回数の整合（CLAUDE.md §6-3）");
-/* 2026-05 は清掃漏れ事故で1件が宿泊不可、2026-07 は月跨ぎのため一致しない（既知） */
-const KNOWN_GAP = { "2026-05": 1, "2026-07": 2 };
-for (const m of summary.months.filter((x) => seed.monthly.some((s) => s.month === x.month))) {
-  const s = seed.monthly.find((x) => x.month === m.month);
-  const gap = m.bookings - s.cleaningCount;
-  check(`${m.month} 予約件数 ${m.bookings} vs 清掃回数 ${s.cleaningCount}`, gap === (KNOWN_GAP[m.month] || 0), gap ? `差 ${gap}件` : "一致");
+console.log("\n■ チェックアウト件数と清掃回数の整合（CLAUDE.md §6-3）");
+/* 清掃はチェックアウトで発生するので、比較対象はチェックイン月ではなく退去月。
+   2026-05 は清掃漏れ事故（§6-5）で1件が未請求。
+   2026-07 の2件は、1件が翌月請求に回った 7/28 分、もう1件が請求に現れない未請求分。
+   2026-08 の −1 はその 7/28 分を8月請求が含んでいるため。 */
+const KNOWN_GAP = { "2026-05": 1, "2026-07": 2, "2026-08": -1 };
+const departures = {};
+for (const b of fixture.bookings) {
+  if (!b || !b.departure || String(b.status || "").toLowerCase() === "cancelled") continue;
+  departures[b.departure.slice(0, 7)] = (departures[b.departure.slice(0, 7)] || 0) + 1;
+}
+for (const s of seed.monthly) {
+  const dep = departures[s.month] || 0;
+  const gap = dep - s.cleaningCount;
+  check(`${s.month} 退去 ${dep}件 vs 清掃 ${s.cleaningCount}回`, gap === (KNOWN_GAP[s.month] || 0), gap ? `差 ${gap}件` : "一致");
 }
 
 console.log("\n■ キャンセル（既定の取得には含まれないため status=cancelled で別途取得する）");

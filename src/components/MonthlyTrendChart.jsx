@@ -15,7 +15,11 @@ import { yen, man, pct, monthShort, monthLong } from "../lib/format.js";
  * 仮値の月（2026-08）は、棒＝斜線ハッチ、折れ線＝破線で区別する。
  */
 export default function MonthlyTrendChart({ months }) {
-  const lastActual = months.reduce((acc, m, i) => (m.isProvisional ? acc : i), 0);
+  /* 仮値が1件も無ければ破線・ハッチは出さない */
+  const provisionalMonths = months.filter((m) => m.isProvisional).map((m) => monthLong(m.month));
+  const lastActual = provisionalMonths.length
+    ? months.reduce((acc, m, i) => (m.isProvisional ? acc : i), 0)
+    : months.length;
 
   const data = months.map((m, i) => {
     const prov = i >= lastActual;   // 実績最終点から破線をつなぐ
@@ -49,7 +53,7 @@ export default function MonthlyTrendChart({ months }) {
   return (
     <Card
       title="月次推移（2026年2月〜8月）"
-      note="斜線・破線は仮値の月"
+      note={provisionalMonths.length ? "斜線・破線は仮値の月" : ""}
       desc="上段は金額（売上・限界利益・営業損益）、下段は率（限界利益率・稼働率）。縦軸の単位が違うため2段に分けています。"
     >
       <div className="chart">
@@ -135,7 +139,9 @@ export default function MonthlyTrendChart({ months }) {
           { label: "営業損益（折れ線）", color: "var(--series-3)", type: "line" },
           { label: "下段: 限界利益率", color: "var(--series-1)", type: "line" },
           { label: "下段: 稼働率", color: "var(--series-2)", type: "line" },
-          { label: "斜線・破線 = 仮値（2026年8月）", type: "hatch" },
+          ...(provisionalMonths.length
+            ? [{ label: `斜線・破線 = 仮値（${provisionalMonths.join("・")}）`, type: "hatch" }]
+            : []),
         ]}
       />
     </Card>
