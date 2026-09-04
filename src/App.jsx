@@ -17,6 +17,7 @@ import PricingSimulator from "./components/PricingSimulator.jsx";
 import PriceRecommendation from "./components/PriceRecommendation.jsx";
 import PricingSettings from "./components/PricingSettings.jsx";
 import RegulationCounter from "./components/RegulationCounter.jsx";
+import ForecastSection from "./components/ForecastSection.jsx";
 
 /**
  * Stage 1（CLAUDE.md §8 / §12）
@@ -53,6 +54,7 @@ export default function App() {
       <SummaryCards totals={totals} months={months} />
       <RegulationCounter seed={seed} live={live} />
       <LiveSection seed={seed} live={live} />
+      <ForecastSection seed={seed} live={live} alos={totals.alos} />
       <MonthlyTrendChart months={months} />
       <PLTable months={months} totals={totals} incidents={seed.incidents} notes={seed.notes} />
       <ChannelSection channels={channels} monthlyRows={chMonthly} allMonths={months.map((m) => m.month)} />
