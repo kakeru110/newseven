@@ -2,7 +2,8 @@ import React, { useMemo } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 import { Card, ChartTooltip, axisProps } from "./ui.jsx";
 import { num, monthShort, monthLong } from "../lib/format.js";
-import { fiscalYear, consumption, project, recentPace } from "../lib/regulation.js";
+import { CHANNEL_LABELS } from "../lib/metrics.js";
+import { fiscalYear, consumption, project, recentPace, overLimit } from "../lib/regulation.js";
 
 /**
  * 住宅宿泊事業法の年間営業日数（180日）カウンター
@@ -24,7 +25,9 @@ export default function RegulationCounter({ seed, live }) {
     const pace = recentPace(c.months, today, 3);
     const main = project(bookings, { today, fy, limit: cfg.limit, pace: Math.round(pace) || 1 });
     const alts = PACES.map((p) => ({ pace: p, ...project(bookings, { today, fy, limit: cfg.limit, pace: p }) }));
-    return { c, pace, main, alts };
+    /* 確定済みの予約だけで超過しているか（新規を1件も受けない前提） */
+    const over = overLimit(bookings.filter((b) => String(b.status || "").toLowerCase() !== "cancelled"), { today, fy, limit: cfg.limit });
+    return { c, pace, main, alts, over };
   }, [live, seed]);
 
   if (live.status !== "ok") {
@@ -37,7 +40,7 @@ export default function RegulationCounter({ seed, live }) {
     );
   }
 
-  const { c, pace, main, alts } = result;
+  const { c, pace, main, alts, over } = result;
   const used = c.total / cfg.limit;
   const warn = c.remaining <= (cfg.warnRemaining ?? 30);
   const meterColor = c.remaining <= 0 ? "var(--critical)" : warn ? "var(--warning)" : "var(--series-1)";
@@ -67,7 +70,9 @@ export default function RegulationCounter({ seed, live }) {
             </div>
             <div className="meter-cap">
               <span>実績 {c.stayed}日 ・ 予約 {c.booked}日</span>
-              <span style={{ fontWeight: 500, color: c.remaining <= 0 ? "var(--neg)" : "var(--text-2)" }}>残り {c.remaining}日</span>
+              <span style={{ fontWeight: 500, color: c.remaining <= 0 ? "var(--neg)" : "var(--text-2)" }}>
+                {c.remaining < 0 ? `${-c.remaining}日 超過` : `残り ${c.remaining}日`}
+              </span>
             </div>
           </div>
         </div>
@@ -76,9 +81,20 @@ export default function RegulationCounter({ seed, live }) {
           <div className="value">{num(pace, 1)} <span style={{ fontSize: 15, color: "var(--text-2)" }}>泊/月</span></div>
         </div>
         <div className="card tile" style={{ boxShadow: "none", background: warn ? "var(--series-2-wash)" : "var(--surface-2)" }}>
-          <div className="label">{cfg.limit}泊目を迎える日（このペースで）</div>
-          <div className="value" style={{ fontSize: 22 }}>{main.reachDate ? monthLong(main.reachDate) + main.reachDate.slice(8).replace(/^0/, "") + "日" : "年度内に到達せず"}</div>
-          <div className="sub">この日までに旅館業の許可が要ります</div>
+          <div className="label">
+            {over.nights.length ? `${cfg.limit}泊目（確定済みの予約だけで）` : `${cfg.limit}泊目を迎える日（このペースで）`}
+          </div>
+          <div className="value" style={{ fontSize: 22 }}>
+            {(() => {
+              const d = over.nights.length ? over.limitDate : main.reachDate;
+              return d ? monthLong(d) + d.slice(8).replace(/^0/, "") + "日" : "年度内に到達せず";
+            })()}
+          </div>
+          <div className="sub">
+            {over.deadline
+              ? `翌泊の ${monthLong(over.deadline)}${over.deadline.slice(8).replace(/^0/, "")}日 までに旅館業の許可が要ります`
+              : "この日までに旅館業の許可が要ります"}
+          </div>
         </div>
         <div className="card tile" style={{ boxShadow: "none", background: "var(--surface-2)" }}>
           <div className="label">年度末までの見込み</div>
@@ -109,6 +125,40 @@ export default function RegulationCounter({ seed, live }) {
           </LineChart>
         </ResponsiveContainer>
       </div>
+
+      {over.nights.length > 0 && (
+        <>
+          <p className="alert bad" style={{ marginTop: 14 }}>
+            <b>確定済みの予約だけで上限を {over.nights.length}泊 超えています。</b>
+            　{monthLong(over.limitDate)}{over.limitDate.slice(8).replace(/^0/, "")}日 が{cfg.limit}泊目で、
+            その翌泊から先は住宅宿泊事業の枠外です。
+            <b>{monthLong(over.deadline)}{over.deadline.slice(8).replace(/^0/, "")}日 までに旅館業の許可</b>が下りていないと、
+            下の予約を受けたまま営業できません。新規予約を取るたびに超過は増えます。
+          </p>
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>超過している泊</th>
+                  <th>何泊目</th>
+                  <th>チャネル</th>
+                  <th>予約</th>
+                </tr>
+              </thead>
+              <tbody>
+                {over.nights.map((n) => (
+                  <tr key={n.date}>
+                    <td>{n.date}</td>
+                    <td className="neg">{n.index} 泊目</td>
+                    <td>{CHANNEL_LABELS[n.channel] || n.channel || "—"}</td>
+                    <td>{n.arrival} → {n.departure}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
 
       <div className="table-wrap" style={{ marginTop: 14 }}>
         <table>

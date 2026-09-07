@@ -1,7 +1,7 @@
 {
- "note": "Beds24 API v2 の予約スナップショット（2026-09-04 取得・個人情報は含まない）。arrivalFrom=2026-01-01 / arrivalTo=2027-03-31 で、既定の取得と status=cancelled の2回ぶんを含む。先行きの検証に使うため、以前の 9月末まで のスナップショットを年度末まで広げたもの。",
- "fetchedAt": "2026-09-04T11:16:05.470Z",
- "count": 191,
+ "note": "Beds24 API v2 の予約スナップショット（2026-09-07 取得・個人情報は含まない）。arrivalFrom=2026-01-01 / arrivalTo=2027-03-31 で、既定の取得と status=cancelled の2回ぶんを含む。",
+ "fetchedAt": "2026-09-07T22:01:36.282Z",
+ "count": 195,
  "bookings": [
   {
    "id": 81657204,
@@ -2202,6 +2202,20 @@
    "cancelledAt": "2026-06-25T05:05:46Z"
   },
   {
+   "id": 92616114,
+   "status": "new",
+   "channel": "airbnb",
+   "apiSource": "Airbnb",
+   "arrival": "2026-09-06",
+   "departure": "2026-09-07",
+   "price": 22540,
+   "commission": 3494,
+   "adults": 5,
+   "children": 0,
+   "bookedAt": "2026-09-05T05:33:56Z",
+   "cancelledAt": null
+  },
+  {
    "id": 91948395,
    "status": "new",
    "channel": "booking",
@@ -2412,8 +2426,22 @@
    "cancelledAt": "2026-07-22T17:51:03Z"
   },
   {
+   "id": 92617838,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-10-12",
+   "departure": "2026-10-14",
+   "price": 37940,
+   "commission": 5426,
+   "adults": 2,
+   "children": 2,
+   "bookedAt": "2026-09-05T06:42:22Z",
+   "cancelledAt": null
+  },
+  {
    "id": 92390536,
-   "status": "confirmed",
+   "status": "cancelled",
    "channel": "direct",
    "apiSource": "Direct",
    "arrival": "2026-10-14",
@@ -2423,7 +2451,7 @@
    "adults": 2,
    "children": 0,
    "bookedAt": "2026-09-01T13:13:02Z",
-   "cancelledAt": null
+   "cancelledAt": "2026-09-06T02:46:56Z"
   },
   {
    "id": 91649684,
@@ -2438,6 +2466,20 @@
    "children": 0,
    "bookedAt": "2026-08-18T04:41:25Z",
    "cancelledAt": "2026-08-19T13:07:08Z"
+  },
+  {
+   "id": 92751372,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-10-17",
+   "departure": "2026-10-18",
+   "price": 33404,
+   "commission": 4777,
+   "adults": 4,
+   "children": 0,
+   "bookedAt": "2026-09-07T18:37:57Z",
+   "cancelledAt": null
   },
   {
    "id": 90601202,
@@ -2494,6 +2536,20 @@
    "children": 0,
    "bookedAt": "2026-08-08T22:27:45Z",
    "cancelledAt": "2026-08-09T12:41:46Z"
+  },
+  {
+   "id": 92628068,
+   "status": "new",
+   "channel": "booking",
+   "apiSource": "Booking.com",
+   "arrival": "2026-10-29",
+   "departure": "2026-10-30",
+   "price": 20979,
+   "commission": 3000,
+   "adults": 3,
+   "children": 0,
+   "bookedAt": "2026-09-05T11:47:30Z",
+   "cancelledAt": null
   },
   {
    "id": 91353810,

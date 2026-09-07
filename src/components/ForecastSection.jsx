@@ -90,7 +90,10 @@ export default function ForecastSection({ seed, live: state, alos }) {
     >
       {capped ? (
         <p className="alert bad">
-          <b>住宅宿泊事業法の年間180日を、確定済みの予約だけで使い切っています（残り {quota.remaining} 日）。</b>
+          <b>
+            住宅宿泊事業法の年間180日を、確定済みの予約だけで
+            {quota.remaining < 0 ? `${-quota.remaining}泊 超えています` : "使い切っています"}。
+          </b>
           　この状態では空室が何日あっても新規予約は受けられません。価格を下げて埋める判断より先に、
           旅館業の許可取得か、カレンダーを閉じる対応が要ります（§9-5）。
         </p>
@@ -105,7 +108,11 @@ export default function ForecastSection({ seed, live: state, alos }) {
           { label: "予約済み売上（5ヶ月）", value: yen(totals.revenue), sub: `${totals.nights} 泊ぶん` },
           { label: "予約済み 限界利益", value: yen(totals.cm), sub: `固定費 ${money(rows[0].fixedCost)}円/月` },
           { label: "予約済み 営業損益", value: yen(totals.op), sub: "この先の予約が積み上がる前の値" },
-          { label: `180日の残り枠（${fy.label}）`, value: `${quota.remaining} 日`, sub: `実績 ${quota.stayed}日 ／ 予約済み ${quota.booked}日` },
+          {
+            label: `180日の${quota.remaining < 0 ? "超過" : "残り枠"}（${fy.label}）`,
+            value: quota.remaining < 0 ? `${-quota.remaining} 日 超過` : `${quota.remaining} 日`,
+            sub: `実績 ${quota.stayed}日 ／ 予約済み ${quota.booked}日`,
+          },
         ].map((t) => (
           <div className="card kpi-card" key={t.label} style={{ boxShadow: "none", background: "var(--surface-2)" }}>
             <div className="label">{t.label}</div>

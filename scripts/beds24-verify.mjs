@@ -99,7 +99,7 @@ for (const s of seed.monthly) {
 }
 
 console.log("\n■ キャンセル（既定の取得には含まれないため status=cancelled で別途取得する）");
-check("キャンセル件数", summary.cancelled.length, 40, 0, `${summary.cancelled.length}件`);
+check("キャンセル件数", summary.cancelled.length, 41, 0, `${summary.cancelled.length}件`);
 check("キャンセル率が Booking.com 表示（20.0〜21.8%）に収まる",
   summary.cancelRate >= 0.19 && summary.cancelRate <= 0.22, `${(summary.cancelRate * 100).toFixed(1)}%`);
 check("キャンセルは売上に含めない", rows.every((r) => Math.abs(r.revenueDiff) <= (TOLERANCE[r.month] ?? 0)), true);

@@ -11,7 +11,7 @@ import { consumption, fiscalYear } from "../src/lib/regulation.js";
 const load = async (p) => JSON.parse(await readFile(new URL(p, import.meta.url), "utf8"));
 const seed = await load("../data/seed.json");
 const fixture = await load("../data/fixtures/beds24-bookings.json");
-const TODAY = "2026-09-04";
+const TODAY = "2026-09-07";
 
 let failed = 0;
 const check = (label, actual, expected, tolerance = 0, detail = "") => {
@@ -30,7 +30,7 @@ const quota = Object.fromEntries(["2026-09", "2026-10", "2026-11", "2026-12", "2
 const MONTHS = ["2026-09", "2026-10", "2026-11", "2026-12", "2027-01"];
 const rows = monthlyForecast(seed, fixture.bookings, { months: MONTHS, asOf: TODAY, assumedAlos: 1.36, quotaByMonth: quota });
 
-console.log("■ 月別の予約済み損益（2026-09-04 時点）");
+console.log(`■ 月別の予約済み損益（${TODAY} 時点）`);
 console.log("  月        泊  稼働   売上      限界利益   営業損益   分岐まで  規制枠");
 for (const r of rows) {
   console.log(
@@ -89,7 +89,7 @@ for (const m of ["2026-10", "2026-11", "2026-12"]) {
 }
 
 console.log("\n■ 規制枠との整合");
-check("残り枠", c.remaining, 0);
+check("残り枠（マイナスは超過）", c.remaining, -4);
 check("どの月も新規は受けられない", rows.every((r) => r.sellableDays === 0), true);
 check("暦の空きは残っている（＝枠が制約になっている）", rows.every((r) => r.openDays > 0 && r.quotaLimited), true);
 check("固定費（seed 最終月）", latestFixedCost(seed), 189669);

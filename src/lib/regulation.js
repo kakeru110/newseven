@@ -103,3 +103,41 @@ export function recentPace(months, today, n = 3) {
   if (!use.length) return 0;
   return use.reduce((s, m) => s + m.nights, 0) / use.length;
 }
+
+/**
+ * 確定済みの予約だけで上限を超えている場合に、超過している泊を返す。
+ *
+ * 年度の頭から日付順に数えて limit 泊目までを枠内とし、それ以降を超過とする。
+ * 「どの予約が超過なのか」は数え方の約束事でしかないが、
+ * 許可の取得期限（＝ limit 泊目の翌泊の日付）を出すのに要る。
+ */
+export function overLimit(bookings, { today, fy, limit = 180 }) {
+  const occupied = occupiedDates(bookings);
+  const byDate = new Map();
+  for (const b of bookings || []) {
+    if (!b?.arrival || !b?.departure || isCancelled(b)) continue;
+    const nights = Math.round((new Date(b.departure) - new Date(b.arrival)) / DAY);
+    for (let i = 0; i < nights; i++) byDate.set(iso(new Date(new Date(b.arrival).getTime() + i * DAY)), b);
+  }
+
+  let cum = 0, limitDate = null;
+  const nights = [];
+  eachDate(fy.start, fy.end, (k) => {
+    if (!occupied.has(k)) return;
+    cum++;
+    if (cum === limit) limitDate = k;
+    if (cum > limit) {
+      const b = byDate.get(k);
+      nights.push({ date: k, index: cum, channel: b?.channel || null, arrival: b?.arrival || null, departure: b?.departure || null });
+    }
+  });
+  return {
+    /** limit 泊目の日付。ここまでは枠内 */
+    limitDate,
+    /** 超過している泊。空なら枠内に収まっている */
+    nights,
+    /** 許可がこの日までに要る（最初の超過泊）。超過が無ければ null */
+    deadline: nights.length ? nights[0].date : null,
+    total: cum,
+  };
+}
