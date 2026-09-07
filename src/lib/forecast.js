@@ -74,6 +74,35 @@ export function onTheBooks(bookings, month, asOf = null) {
   return { nights, revenue, commission };
 }
 
+/**
+ * from 以降の泊を「泊まり終わった分」と「これから泊まる分」に分ける。
+ *
+ * 泊の日付は「その泊が始まる日」なので、asOf より前の日付の泊が泊まり終わっている。
+ * asOf 当日の泊はまだ終わっていないので upcoming 側に入れる。
+ */
+export function stayedVsUpcoming(bookings, { from, asOf, to = null }) {
+  const zero = () => ({ nights: 0, revenue: 0, commission: 0 });
+  const stayed = zero(), upcoming = zero();
+  for (const b of bookedAsOf(bookings, asOf)) {
+    for (const n of nightsOf(b)) {
+      if (n.date < from) continue;
+      if (to && n.date > to) continue;
+      const bucket = n.date < asOf ? stayed : upcoming;
+      bucket.nights += 1;
+      bucket.revenue += n.revenue;
+      bucket.commission += n.commission;
+    }
+  }
+  return {
+    stayed, upcoming,
+    total: {
+      nights: stayed.nights + upcoming.nights,
+      revenue: stayed.revenue + upcoming.revenue,
+      commission: stayed.commission + upcoming.commission,
+    },
+  };
+}
+
 /** 月内のチェックアウト件数（＝清掃が発生する回数） */
 function departuresIn(bookings, month, asOf = null) {
   return bookedAsOf(bookings, asOf).filter((b) => monthOf(b.departure || "") === month).length;

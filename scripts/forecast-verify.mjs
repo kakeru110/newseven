@@ -5,7 +5,7 @@
  * data/fixtures/beds24-bookings.json（2026-09-04 取得）を基準日 2026-09-04 で読む。
  */
 import { readFile } from "node:fs/promises";
-import { monthlyForecast, onTheBooks, paceBenchmark, bookedAsOf, latestFixedCost, daysInMonth } from "../src/lib/forecast.js";
+import { monthlyForecast, onTheBooks, paceBenchmark, bookedAsOf, latestFixedCost, daysInMonth, stayedVsUpcoming } from "../src/lib/forecast.js";
 import { consumption, fiscalYear } from "../src/lib/regulation.js";
 
 const load = async (p) => JSON.parse(await readFile(new URL(p, import.meta.url), "utf8"));
@@ -87,6 +87,22 @@ for (const m of ["2026-10", "2026-11", "2026-12"]) {
   check(`${m} の着地見込みが暦日を超えない`, p.landing.high <= daysInMonth(m), true);
   check(`${m} の着地見込みは現在の泊数を下回らない`, p.landing.low >= p.nights, true);
 }
+
+console.log("\n■ 泊まり終わった分とこれから泊まる分の切り分け");
+/* サマリーカードは seed の最終月の翌月から年度末までを、この2つに割って出す */
+const split = stayedVsUpcoming(fixture.bookings, { from: "2026-09-01", asOf: TODAY, to: fy.end });
+console.log(`  泊まり終わった ${split.stayed.nights}泊 ${Math.round(split.stayed.revenue).toLocaleString("ja-JP")}円` +
+  ` ／ これから ${split.upcoming.nights}泊 ${Math.round(split.upcoming.revenue).toLocaleString("ja-JP")}円`);
+check("合計が2つの和と一致（泊数）", split.total.nights, split.stayed.nights + split.upcoming.nights);
+check("合計が2つの和と一致（売上）", Math.round(split.total.revenue),
+  Math.round(split.stayed.revenue + split.upcoming.revenue));
+/* 9月の月次と、9月ぶんの切り分けの合計は同じでなければならない */
+const sep = onTheBooks(fixture.bookings, "2026-09", TODAY);
+const sepSplit = stayedVsUpcoming(fixture.bookings, { from: "2026-09-01", asOf: TODAY, to: "2026-09-30" });
+check("9月の泊数が月次集計と一致", sepSplit.total.nights, sep.nights);
+check("9月の売上が月次集計と一致", Math.round(sepSplit.total.revenue), Math.round(sep.revenue), 1);
+check("基準日より前の泊だけが「泊まり終わった」に入る", split.stayed.nights, 5);
+check("seed の通算と合わせた売上", Math.round(seed.monthly.reduce((s, m) => s + m.revenue.total, 0) + split.total.revenue), 5691554, 1);
 
 console.log("\n■ 規制枠との整合");
 check("残り枠（マイナスは超過）", c.remaining, -4);
