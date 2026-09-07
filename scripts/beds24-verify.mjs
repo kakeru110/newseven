@@ -99,9 +99,19 @@ for (const s of seed.monthly) {
 }
 
 console.log("\n■ キャンセル（既定の取得には含まれないため status=cancelled で別途取得する）");
-check("キャンセル件数", summary.cancelled.length, 41, 0, `${summary.cancelled.length}件`);
-check("キャンセル率が Booking.com 表示（20.0〜21.8%）に収まる",
-  summary.cancelRate >= 0.19 && summary.cancelRate <= 0.22, `${(summary.cancelRate * 100).toFixed(1)}%`);
+check("キャンセル件数（自社のテスト予約を除く）", summary.cancelled.length, 37, 0, `${summary.cancelled.length}件`);
+check("全チャネルのキャンセル率", summary.cancelRate >= 0.15 && summary.cancelRate <= 0.25,
+  `${(summary.cancelRate * 100).toFixed(1)}%`);
+/* Booking.com エクストラネットの表示（20.0〜21.77%）と比べるなら、分母も Booking.com だけにする */
+const bookingLive = summary.bookings.filter((b) => b.channel === "booking").length;
+const bookingCx = summary.cancelled.filter((b) => b.channel === "booking").length;
+const bookingRate = bookingCx / (bookingLive + bookingCx);
+check("Booking.com のキャンセル率が同社表示（20.0〜21.8%）に収まる",
+  bookingRate >= 0.195 && bookingRate <= 0.22, `${(bookingRate * 100).toFixed(1)}%（${bookingCx}/${bookingLive + bookingCx}件）`);
+/* テスト予約は集計に混ざっていないこと */
+check("テスト予約が集計に入っていない",
+  [...summary.bookings, ...summary.cancelled].every((b) => !(seed.testBookings?.ids || []).includes(Number(b.id))),
+  `除外 ${(seed.testBookings?.ids || []).length}件`);
 check("キャンセルは売上に含めない", rows.every((r) => Math.abs(r.revenueDiff) <= (TOLERANCE[r.month] ?? 0)), true);
 
 console.log("\n■ 想定料率から外れた予約（要調査）");

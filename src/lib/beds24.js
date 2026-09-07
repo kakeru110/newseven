@@ -95,8 +95,12 @@ const emptyBucket = () => ({
 /** 月次・チャネル別に集計する（売上の計上月はチェックイン月） */
 export const isCancelled = (b) => String(b.status || "").toLowerCase() === "cancelled";
 
+/** 自社のテスト予約（seed.testBookings）。実際のゲストではないので集計から外す */
+export const isTestBooking = (seed, b) =>
+  (seed.testBookings?.ids || []).includes(Number(b?.id));
+
 export function summarize(seed, rawBookings) {
-  const valid = rawBookings.filter((b) => b && b.arrival && b.departure);
+  const valid = rawBookings.filter((b) => b && b.arrival && b.departure && !isTestBooking(seed, b));
   /* キャンセルは売上に含めないが、件数はキャンセル率のために数える */
   const cancelled = valid.filter(isCancelled).map((b) => normalizeBooking(seed, b));
   const normalized = valid.filter((b) => !isCancelled(b)).map((b) => normalizeBooking(seed, b));

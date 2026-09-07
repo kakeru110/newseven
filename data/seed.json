@@ -1,6 +1,6 @@
 {
   "$schema": "kamakura-gate-inn seed v1",
-  "generatedAt": "2026-09-04",
+  "generatedAt": "2026-09-07",
   "property": {
     "name": "Kamakura Gate Inn",
     "location": "神奈川県鎌倉市大船",
@@ -16,7 +16,8 @@
     "missingData": [
       "2026-08: 清掃請求（2026-09-01付 ラフプラス請求書）で清掃22回・ごみ42袋を確定。光熱費・日用品・運営サポート収支表PDFが差し替え待ち。"
     ],
-    "nightsExplanation": "月跨ぎ滞在は売上がチェックアウト月にまとめて計上される。稼働率にはnightsActual、ADRにはnightsRevenueを使うこと。"
+    "nightsExplanation": "月跨ぎ滞在は売上がチェックアウト月にまとめて計上される。稼働率にはnightsActual、ADRにはnightsRevenueを使うこと。",
+    "testBookings": "直販チャネルの4件（seed.testBookings）は自社のテスト予約。集計から除外している。"
   },
   "costRates": [
     {
@@ -709,5 +710,14 @@
     "fiscalYearStartMonth": 4,
     "warnRemaining": 30,
     "note": "年間営業日数の上限。カウント期間は毎年4月1日正午から翌年4月1日正午まで。1泊を1日として数える。上限に達するとその年度は営業できないため、旅館業の許可取得が間に合うかを常時監視する。境界日の解釈で±1日ずれうるので、自治体への定期報告の値と突き合わせて検証すること。"
+  },
+  "testBookings": {
+    "note": "直販フローの動作確認のために自社で入れて取り消した予約。実際のゲストではないので、キャンセル率などの集計から除く。入れている間は在庫を塞ぐため、確認が済んだらすぐ取り消すこと。",
+    "ids": [
+      82044442,
+      92273332,
+      92301525,
+      92390536
+    ]
   }
 }
