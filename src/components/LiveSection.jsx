@@ -154,7 +154,10 @@ export default function LiveSection({ seed, live: state }) {
           <li>11/12 の過少計上は 2026年2〜4月の Booking.com 予約で発生し、5月以降は解消しています。</li>
           <li>
             キャンセルは Beds24 の既定の取得に含まれないため、`status=cancelled` を明示して別途取得しています。
-            全期間で {summary.cancelled.length}件・{pct(summary.cancelRate, 1)}（Booking.com 表示の 20.0〜21.8% と整合）。売上には含めていません。
+            全期間で {summary.cancelled.length}件・{pct(summary.cancelRate, 1)}。売上には含めていません。
+            {(seed.testBookings?.ids || []).length > 0 && (
+              <> 直販フローの動作確認で入れた自社のテスト予約 {seed.testBookings.ids.length}件 は集計から除いています。</>
+            )}
           </li>
           {summary.anomalies.map((a) => (
             <li key={a.id}>
