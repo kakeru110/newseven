@@ -102,7 +102,10 @@ const sepSplit = stayedVsUpcoming(fixture.bookings, { from: "2026-09-01", asOf: 
 check("9月の泊数が月次集計と一致", sepSplit.total.nights, sep.nights);
 check("9月の売上が月次集計と一致", Math.round(sepSplit.total.revenue), Math.round(sep.revenue), 1);
 check("基準日より前の泊だけが「泊まり終わった」に入る", split.stayed.nights, 5);
-check("seed の通算と合わせた売上", Math.round(seed.monthly.reduce((s, m) => s + m.revenue.total, 0) + split.total.revenue), 5691554, 1);
+/* サマリーの売上合計は「確定 + 泊まり終わった」だけ。これから泊まる分は足さない */
+const seedRevenue = seed.monthly.reduce((s, m) => s + m.revenue.total, 0);
+check("本日までの実績（確定 + 収支表待ち）", Math.round(seedRevenue + split.stayed.revenue), 4008763, 1);
+check("これから泊まる分は別建て", Math.round(split.upcoming.revenue), 1682791, 1);
 
 console.log("\n■ 規制枠との整合");
 check("残り枠（マイナスは超過）", c.remaining, -4);

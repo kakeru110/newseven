@@ -13,10 +13,11 @@ const nextMonth = (month) => {
 /**
  * サマリーカード（CLAUDE.md §12-1）
  *
- * 売上は合計を先頭に出しつつ、内訳で出所を示す。
+ * 売上の合計は**今日までに泊まり終わった分だけ**を足す。
  *   確定     … 収支表PDFで検証済み（seed の最終月まで）
  *   泊まり終わった … 宿泊は済んだが収支表が届いていない（Beds24 の速報）
- *   これから … まだ泊まっていない予約（Beds24 のオン・ザ・ブックス）
+ * まだ泊まっていない予約（これから）は別カードにする。成立していない売上なので、
+ * 実績と同じ数字に混ぜない。キャンセルされれば消える。
  *
  * 損益・率・稼働率は確定分だけで出す。変動費の一部（光熱・日用品）が
  * 単価マスタからの推計になるため、確定値と混ぜると精度の違いが見えなくなる。
@@ -33,22 +34,23 @@ export default function SummaryCards({ totals, months, live }) {
     return split.total.nights ? { ...split, from, asOf } : null;
   }, [live, last]);
 
-  const grand = totals.revenue + (ahead ? ahead.total.revenue : 0);
+  /* 合計に足すのは、今日までに泊まり終わった分だけ */
+  const realised = totals.revenue + (ahead ? ahead.stayed.revenue : 0);
 
   const cards = [
     {
-      label: ahead ? "売上（合計）" : `売上（${monthLong(first)}〜${monthLong(last)} 通算）`,
-      value: yen(grand),
+      label: ahead ? "売上（本日までの実績）" : `売上（${monthLong(first)}〜${monthLong(last)} 通算）`,
+      value: yen(realised),
       sub: ahead
-        ? `確定 ${money(totals.revenue)}円（${monthLong(first)}〜${monthLong(last)}）＋ ${monthLong(ahead.from)}以降 ${money(ahead.total.revenue)}円`
+        ? `確定 ${money(totals.revenue)}円（${monthLong(first)}〜${monthLong(last)}）＋ 収支表待ち ${money(ahead.stayed.revenue)}円（${ahead.stayed.nights}泊）`
         : `${totals.months}ヶ月 ・ ADR ${money(totals.adr)}円 ・ ALOS ${num(totals.alos)}泊`,
       lead: true,
     },
     ...(ahead
       ? [{
-          label: `${monthLong(ahead.from)}以降の売上（Beds24）`,
-          value: yen(ahead.total.revenue),
-          sub: `泊まり終わった ${ahead.stayed.nights}泊 ${money(ahead.stayed.revenue)}円 ／ これから ${ahead.upcoming.nights}泊 ${money(ahead.upcoming.revenue)}円`,
+          label: "これから泊まる予約（未成立）",
+          value: yen(ahead.upcoming.revenue),
+          sub: `${ahead.upcoming.nights}泊 ・ ${monthLong(ahead.from)}〜年度末 ・ 上の合計には入れていません`,
           fresh: true,
         }]
       : []),
@@ -85,7 +87,9 @@ export default function SummaryCards({ totals, months, live }) {
       </div>
       {ahead && (
         <p className="desc" style={{ margin: "-2px 0 0" }}>
-          「確定」は収支表PDFで検証済みの金額、それ以降は Beds24 の予約データです。
+          売上の合計は<b>今日までに泊まり終わった分だけ</b>です。「確定」は収支表PDFで検証済みの金額、
+          「収支表待ち」は宿泊は済んだが収支表がまだ届いていない分（Beds24 の実額）。
+          これから泊まる予約はキャンセルで消えるため、実績と同じ数字には混ぜていません。
           損益・率・稼働率は確定分だけで出しています（変動費の一部が推計になるため）。
           月別の内訳は「先行き（予約済み）」を見てください。
         </p>
