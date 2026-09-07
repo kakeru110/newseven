@@ -41,7 +41,14 @@ export default function App() {
           </div>
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-          <span className="badge stage"><span className="dot" />Stage 1 ・ 静的データ（API接続なし）</span>
+          <span className="badge stage">
+            <span className="dot" />
+            {live.status === "ok"
+              ? `Beds24 連携中 ・ 取得 ${new Date(live.data.fetchedAt).toLocaleString("ja-JP", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}`
+              : live.status === "loading"
+                ? "Beds24 取得中"
+                : "Beds24 未接続（seed のみ）"}
+          </span>
           {totals.hasProvisional && (
             <span className="badge">
               <span className="dot" />
@@ -51,7 +58,7 @@ export default function App() {
         </div>
       </header>
 
-      <SummaryCards totals={totals} months={months} />
+      <SummaryCards totals={totals} months={months} live={live} />
       <RegulationCounter seed={seed} live={live} />
       <LiveSection seed={seed} live={live} />
       <ForecastSection seed={seed} live={live} alos={totals.alos} />
