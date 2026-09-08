@@ -13,6 +13,7 @@ const LABEL = { minPrice: "最低価格", basePrice: "基準価格", maxPrice: "
 
 export default function PricingSettings({ seed }) {
   const s = seed.pricingSettings;
+  const overrides = s?.overrides || [];
   const changes = seed.pricingChanges || [];
   const obs = seed.pricingObservations;
   if (!s) return null;
@@ -43,6 +44,42 @@ export default function PricingSettings({ seed }) {
         )}
       </div>
 
+      {overrides.length > 0 && (
+        <>
+          <h3 style={{ fontSize: 12.5, fontWeight: 600, margin: "18px 0 6px" }}>期間を限った上書き</h3>
+          <p className="desc" style={{ marginBottom: 8 }}>
+            全体の3値は動かさず、特定の期間だけ床を上げ下げするもの。
+            効果測定を混ぜないよう、全体の設定変更とは別に記録します。
+          </p>
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>期間</th>
+                  <th>設定</th>
+                  <th className="num">値</th>
+                  <th>状態</th>
+                  <th>理由</th>
+                </tr>
+              </thead>
+              <tbody>
+                {overrides.map((o, i) => (
+                  <tr key={i}>
+                    <td>{o.from} 〜 {o.to}</td>
+                    <td>{LABEL[o.setting] || o.setting}</td>
+                    <td>{money(o.value)} 円</td>
+                    <td className={o.status === "planned" ? "warn" : ""}>
+                      {o.status === "planned" ? "未反映（予定）" : "反映済み"}
+                    </td>
+                    <td style={{ whiteSpace: "normal", maxWidth: 380, color: "var(--text-2)" }}>{o.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
       <h3 style={{ fontSize: 12.5, fontWeight: 600, margin: "18px 0 6px" }}>変更履歴</h3>
       <div className="table-wrap">
         <table>
@@ -53,6 +90,7 @@ export default function PricingSettings({ seed }) {
               <th className="num">変更前</th>
               <th className="num">変更後</th>
               <th className="num">変化率</th>
+              <th>範囲</th>
               <th>理由</th>
             </tr>
           </thead>
@@ -67,6 +105,10 @@ export default function PricingSettings({ seed }) {
                 </td>
                 <td>{money(c.to)}</td>
                 <td>+{num(((c.to - c.from) / c.from) * 100, 1)}%</td>
+                <td className={c.status === "planned" ? "warn" : ""}>
+                  {c.scope || "全期間"}
+                  {c.status === "planned" && <span className="psub"> 未反映</span>}
+                </td>
                 <td style={{ whiteSpace: "normal", maxWidth: 380, color: "var(--text-2)" }}>{c.note}</td>
               </tr>
             ))}
