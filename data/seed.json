@@ -1,6 +1,6 @@
 {
   "$schema": "kamakura-gate-inn seed v1",
-  "generatedAt": "2026-09-07",
+  "generatedAt": "2026-09-09",
   "property": {
     "name": "Kamakura Gate Inn",
     "location": "神奈川県鎌倉市大船",
@@ -9,12 +9,12 @@
     "currency": "JPY"
   },
   "notes": {
-    "summary": "2026年2〜8月の実績。全額は税込（表記のある項目を除く）。8月は光熱費・日用品・収支表が仮値。",
+    "summary": "2026年2〜8月の実績。全額は税込（表記のある項目を除く）。8月は光熱費・日用品のみ推計値。",
     "provisionalMonths": [
       "2026-08"
     ],
     "missingData": [
-      "2026-08: 清掃請求（2026-09-01付 ラフプラス請求書）で清掃22回・ごみ42袋を確定。光熱費・日用品・運営サポート収支表PDFが差し替え待ち。"
+      "2026-08: 収支表PDF（2026年8月分）と清掃請求書で、売上・OTA手数料・運営サポート料・清掃・ごみを確定。残るは光熱費・日用品で、単価マスタ（758円/泊・401円/泊）からの推計値。"
     ],
     "nightsExplanation": "月跨ぎ滞在は売上がチェックアウト月にまとめて計上される。稼働率にはnightsActual、ADRにはnightsRevenueを使うこと。",
     "testBookings": "直販チャネルの4件（seed.testBookings）は自社のテスト予約。集計から除外している。"
@@ -334,7 +334,7 @@
         "advanceCredit": 0,
         "cleaningTotalInclTax": 195910,
         "otaFee": 122815,
-        "mgmtSupportFeeInclTax": 91763,
+        "mgmtSupportFeeInclTax": 91764,
         "utilities": 21982,
         "supplies": 11629
       },
@@ -386,6 +386,12 @@
         "bookings": 4,
         "nights": 7,
         "otaFee": 29858
+      },
+      "2026-08": {
+        "revenue": 293548,
+        "bookings": 3,
+        "nights": 9,
+        "otaFee": 45500
       }
     },
     "booking": {
@@ -430,6 +436,12 @@
         "nights": 14,
         "otaFee": 48376,
         "promoAmount": 0
+      },
+      "2026-08": {
+        "revenue": 540661,
+        "bookings": 17,
+        "nights": 20,
+        "otaFee": 77315
       }
     }
   },
@@ -439,7 +451,8 @@
     "2026-04",
     "2026-05",
     "2026-06",
-    "2026-07"
+    "2026-07",
+    "2026-08"
   ],
   "incidents": [
     {

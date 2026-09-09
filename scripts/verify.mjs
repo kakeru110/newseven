@@ -20,9 +20,9 @@ const EXPECTED_MONTHLY = [
   { month: "2026-05", revenue: 602657, cmRate: 50.6, operatingProfit: 115257 },
   { month: "2026-06", revenue: 475603, cmRate: 46.5, operatingProfit: 31273 },
   { month: "2026-07", revenue: 530932, cmRate: 42.7, operatingProfit: 36807 },
-  { month: "2026-08", revenue: 834209, cmRate: 46.8, operatingProfit: 200441 },
+  { month: "2026-08", revenue: 834209, cmRate: 46.8, operatingProfit: 200440 },
 ];
-const EXPECTED_TOTAL = { revenue: 3901313, operatingProfit: 372204, cmRate: 43.3, occupancy: 77.4 };
+const EXPECTED_TOTAL = { revenue: 3901313, operatingProfit: 372203, cmRate: 43.3, occupancy: 77.4 };
 
 let failed = 0;
 const check = (label, actual, expected, tolerance = 0) => {
@@ -103,11 +103,30 @@ for (const m of seed.monthly) {
   check(`${m.month} ごみ袋数 × ${bagRate}円`, v.garbageExclTax, trend.bags * bagRate);
 }
 
-console.log("\n■ チャネル別（内訳の無い 2026-08 は除外されること）");
+console.log("\n■ 2026-08 収支表PDFとの突合（明細20件）");
+const augM = months.find((m) => m.month === "2026-08");
+const augCh = ["airbnb", "booking"].map((k) => seed.channelMonthly[k]["2026-08"]);
+check("売上（PDF合計欄）", Math.round(augM.revenueTotal), 834209);
+check("チャネル内訳の合計が売上と一致", augCh.reduce((s, c) => s + c.revenue, 0), 834209);
+/* PDFの合計欄は 122,814 だが、明細20件を足すと 122,815。各行は commission = 売上 × 料率で
+   再現できるため明細側を採る（合計欄の丸め誤差1円） */
+check("OTA手数料（明細20件の合計）", augM.variableCosts.otaFee, 122815);
+check("チャネル別OTA手数料の合計が一致", augCh.reduce((s, c) => s + c.otaFee, 0), 122815);
+check("宿泊日数（PDF合計欄）", augCh.reduce((s, c) => s + c.nights, 0), 29);
+check("予約件数（PDF合計欄）", augCh.reduce((s, c) => s + c.bookings, 0), 20);
+/* 運営サポート料は請求書の実額。売上×0.11 の丸め（91,763）と1円ずれる */
+check("運営サポート料（税込）= 83,422 × 1.1", augM.variableCosts.mgmtSupportFeeInclTax, Math.round(83422 * 1.1));
+check("Airbnb 実料率(%)", +((augCh[0].otaFee / augCh[0].revenue) * 100).toFixed(2), 15.5, 0.02);
+check("Booking 実料率(%)", +((augCh[1].otaFee / augCh[1].revenue) * 100).toFixed(2), 14.3, 0.02);
+check("オーナー請求の固定費がPDFと一致",
+  augM.fixedCosts.mgmtBaseFeeInclTax + augM.fixedCosts.checkinSystemInclTax + augM.fixedCosts.noiseSensorInclTax,
+  22000 + 2200 + 2200);
+
+console.log("\n■ チャネル別（内訳の無い月が除外されること）");
 const ch = channelSummary(seed);
-check("対象月数", ch[0].months.length, 6);
+check("対象月数", ch[0].months.length, 7);
 check("2026-03 を含む（PDF入手により内訳が判明）", ch[0].months.includes("2026-03") ? 1 : 0, 1);
-check("除外月に 2026-08 を含まない", ch[0].months.includes("2026-08") ? 0 : 1, 1);
+check("2026-08 を含む（PDF入手により内訳が判明）", ch[0].months.includes("2026-08") ? 1 : 0, 1);
 const airbnbCh = ch.find((c) => c.key === "airbnb");
 /* CLAUDE.md §9-1: 7月のAirbnbは ALOS 1.75 */
 const july = seed.channelMonthly.airbnb["2026-07"];
