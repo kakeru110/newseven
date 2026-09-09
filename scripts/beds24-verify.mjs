@@ -79,9 +79,9 @@ for (const s of seed.monthly) {
 }
 
 console.log("\n■ 実泊数の突合（seed は収支表由来、Beds24 は予約を日単位で並べたもの）");
-/* 2・3・4・8月は完全一致。5〜7月の差は原因未確定（CLAUDE.md §10）。
-   売上とOTA手数料は全期間で一致しているので、ずれているのは泊数だけ。 */
-const KNOWN_NIGHT_GAP = { "2026-05": 2, "2026-06": 3, "2026-07": 1 };
+/* 2026-09-09 に seed の nightsActual を Beds24 のカレンダー基準へ直したので、全月一致する。
+   ここがずれたら、収支表の「宿泊日数」（到着月ベース）を実泊数として取り込んでいないか疑う。 */
+const KNOWN_NIGHT_GAP = {};
 const occupied = new Set();
 for (const b of fixture.bookings) {
   if (!b?.arrival || !b?.departure || String(b.status || "").toLowerCase() === "cancelled") continue;
@@ -96,6 +96,20 @@ for (const s of seed.monthly) {
   const gap = s.nightsActual - n;
   check(`${s.month} 実泊数 seed ${s.nightsActual} vs Beds24 ${n}`, gap === (KNOWN_NIGHT_GAP[s.month] || 0),
     gap ? `差 ${gap}泊（原因未確定・§10）` : "一致");
+}
+
+console.log("\n■ 売上計上泊数の突合（収支表はチェックイン月に滞在まるごとを計上する）");
+const arrivalNights = {};
+for (const b of fixture.bookings) {
+  if (!b?.arrival || !b?.departure || String(b.status || "").toLowerCase() === "cancelled") continue;
+  if ((seed.testBookings?.ids || []).includes(Number(b.id))) continue;
+  const n = Math.round((new Date(b.departure) - new Date(b.arrival)) / 86400000);
+  const m = b.arrival.slice(0, 7);
+  arrivalNights[m] = (arrivalNights[m] || 0) + n;
+}
+for (const s of seed.monthly) {
+  check(`${s.month} 売上計上泊数 ${s.nightsRevenue} vs 到着月集計 ${arrivalNights[s.month] || 0}`,
+    s.nightsRevenue === (arrivalNights[s.month] || 0), "一致");
 }
 
 console.log("\n■ キャンセル（既定の取得には含まれないため status=cancelled で別途取得する）");
