@@ -22,7 +22,7 @@ const EXPECTED_MONTHLY = [
   { month: "2026-07", revenue: 530932, cmRate: 42.7, operatingProfit: 36807 },
   { month: "2026-08", revenue: 834209, cmRate: 46.8, operatingProfit: 200440 },
 ];
-const EXPECTED_TOTAL = { revenue: 3901313, operatingProfit: 372203, cmRate: 43.3, occupancy: 77.4 };
+const EXPECTED_TOTAL = { revenue: 3901313, operatingProfit: 372203, cmRate: 43.3, occupancy: 74.5 };
 
 let failed = 0;
 const check = (label, actual, expected, tolerance = 0) => {

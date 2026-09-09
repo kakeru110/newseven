@@ -7,6 +7,7 @@
 import { readFile } from "node:fs/promises";
 import { monthlyForecast, onTheBooks, paceBenchmark, bookedAsOf, latestFixedCost, daysInMonth, stayedVsUpcoming } from "../src/lib/forecast.js";
 import { consumption, fiscalYear } from "../src/lib/regulation.js";
+import { periodTotals } from "../src/lib/metrics.js";
 
 const load = async (p) => JSON.parse(await readFile(new URL(p, import.meta.url), "utf8"));
 const seed = await load("../data/seed.json");
@@ -28,7 +29,8 @@ const c = consumption(fixture.bookings, { today: TODAY, fy });
 const quota = Object.fromEntries(["2026-09", "2026-10", "2026-11", "2026-12", "2027-01"].map((m) => [m, c.remaining]));
 
 const MONTHS = ["2026-09", "2026-10", "2026-11", "2026-12", "2027-01"];
-const rows = monthlyForecast(seed, fixture.bookings, { months: MONTHS, asOf: TODAY, assumedAlos: 1.36, quotaByMonth: quota });
+/* 追加1泊の限界利益は期間通算のALOSを前提にする（画面と同じ） */
+const rows = monthlyForecast(seed, fixture.bookings, { months: MONTHS, asOf: TODAY, assumedAlos: periodTotals(seed).alos, quotaByMonth: quota });
 
 console.log(`■ 月別の予約済み損益（${TODAY} 時点）`);
 console.log("  月        泊  稼働   売上      限界利益   営業損益   分岐まで  規制枠");

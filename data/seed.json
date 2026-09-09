@@ -16,7 +16,7 @@
     "missingData": [
       "2026-08: 収支表PDF（2026年8月分）と清掃請求書で、売上・OTA手数料・運営サポート料・清掃・ごみを確定。残るは光熱費・日用品で、単価マスタ（758円/泊・401円/泊）からの推計値。"
     ],
-    "nightsExplanation": "月跨ぎ滞在は売上がチェックアウト月にまとめて計上される。稼働率にはnightsActual、ADRにはnightsRevenueを使うこと。",
+    "nightsExplanation": "月跨ぎ滞在の扱いが2系統ある。nightsRevenue は収支表の「宿泊日数」で、チェックイン月に滞在まるごとを計上する（Beds24 の到着月集計と全期間で一致）。nightsActual はカレンダー上で実際に埋まっていた日数（Beds24 の宿泊日ベース）。稼働率には nightsActual、ADR には nightsRevenue を使うこと。",
     "testBookings": "直販チャネルの4件（seed.testBookings）は自社のテスト予約。集計から除外している。"
   },
   "costRates": [
@@ -216,7 +216,7 @@
       "month": "2026-05",
       "isProvisional": false,
       "calendarDays": 31,
-      "nightsActual": 23,
+      "nightsActual": 21,
       "nightsRevenue": 23,
       "cleaningCount": 17,
       "revenue": {
@@ -250,7 +250,7 @@
       "month": "2026-06",
       "isProvisional": false,
       "calendarDays": 30,
-      "nightsActual": 23,
+      "nightsActual": 20,
       "nightsRevenue": 20,
       "cleaningCount": 12,
       "revenue": {
@@ -284,7 +284,7 @@
       "month": "2026-07",
       "isProvisional": false,
       "calendarDays": 31,
-      "nightsActual": 24,
+      "nightsActual": 23,
       "nightsRevenue": 21,
       "cleaningCount": 16,
       "revenue": {
