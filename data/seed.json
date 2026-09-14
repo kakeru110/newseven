@@ -1,6 +1,6 @@
 {
   "$schema": "kamakura-gate-inn seed v1",
-  "generatedAt": "2026-09-10",
+  "generatedAt": "2026-09-14",
   "property": {
     "name": "Kamakura Gate Inn",
     "location": "神奈川県鎌倉市大船",
@@ -17,7 +17,8 @@
       "2026-08: 収支表PDF（2026年8月分）と清掃請求書で、売上・OTA手数料・運営サポート料・清掃・ごみを確定。残るは光熱費・日用品で、単価マスタ（758円/泊・401円/泊）からの推計値。"
     ],
     "nightsExplanation": "月跨ぎ滞在の扱いが2系統ある。nightsRevenue は収支表の「宿泊日数」で、チェックイン月に滞在まるごとを計上する（Beds24 の到着月集計と全期間で一致）。nightsActual はカレンダー上で実際に埋まっていた日数（Beds24 の宿泊日ベース）。稼働率には nightsActual、ADR には nightsRevenue を使うこと。",
-    "testBookings": "直販チャネルの4件（seed.testBookings）は自社のテスト予約。集計から除外している。"
+    "testBookings": "直販チャネルの4件（seed.testBookings）は自社のテスト予約。集計から除外している。",
+    "directChannel": "直販は OTA手数料こそ無いが、Stripe の決済手数料がかかる（実測3.96%）。Beds24 の commission は直販だと0で入るため、そのまま使うと直販の利益を過大評価する。normalizeBooking() が payment_fee_direct から手数料を補完する。"
   },
   "costRates": [
     {
@@ -107,6 +108,15 @@
       "validFrom": "2026-03-01",
       "validTo": "2026-05-31",
       "source": "収支表PDF。宣伝プログラム適用分のみ。3月は Booking 売上の72.7%（282,983円）に適用。6月以降は適用なし"
+    },
+    {
+      "key": "payment_fee_direct",
+      "value": 0.0396,
+      "unit": "ratio_of_revenue",
+      "validFrom": "2026-09-01",
+      "validTo": null,
+      "approximate": true,
+      "source": "Stripe 実測1件（2026-11-21〜23 の直販予約 78,910円に対し手数料 3,125円 = 3.96%）。件数が増えたら見直すこと"
     }
   ],
   "monthly": [

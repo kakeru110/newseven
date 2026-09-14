@@ -36,7 +36,12 @@ export function expectedRatesFor(seed, channel, month) {
       .map((k) => resolveRate(seed, k, month))
       .filter((v) => v != null);
   }
-  return [0];   // 直販は手数料なし
+  if (channel === "direct") {
+    /* 直販は OTA手数料こそ無いが、決済（Stripe）の手数料がかかる。
+       Beds24 の commission は直販だと0で入るので、単価マスタから補完する。 */
+    return [resolveRate(seed, "payment_fee_direct", month) ?? 0];
+  }
+  return [0];
 }
 
 export const nightsOf = (b) =>
@@ -50,8 +55,12 @@ export function normalizeBooking(seed, b) {
   const month = String(b.arrival).slice(0, 7);
   const channel = channelOf(b.channel);
   const priceRaw = Number(b.price) || 0;
-  const commission = Number(b.commission) || 0;
+  const commissionRaw = Number(b.commission) || 0;
   const rates = expectedRatesFor(seed, channel, month);
+  /* 直販は Beds24 に手数料が入らない（0で来る）ので、決済手数料を補完する。
+     補完しないと直販の限界利益を過大評価する。 */
+  const imputed = channel === "direct" && commissionRaw === 0 && priceRaw > 0;
+  const commission = imputed ? Math.round(priceRaw * (rates[0] || 0)) : commissionRaw;
   const fits = (p) => p > 0 && rates.some((r) => Math.abs(commission / p - r) <= RATE_TOLERANCE);
 
   let revenue = priceRaw;
@@ -78,6 +87,9 @@ export function normalizeBooking(seed, b) {
     priceRaw,
     revenue,
     commission,
+    commissionRaw,
+    /** true なら commission は Beds24 の値ではなく単価マスタからの補完（直販の決済手数料） */
+    commissionImputed: imputed,
     rate: priceRaw ? commission / priceRaw : 0,
     correctedRate: revenue ? commission / revenue : 0,
     correction,
