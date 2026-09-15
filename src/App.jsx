@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { useBeds24 } from "./lib/useBeds24.js";
+import { useSearchConsole } from "./lib/useSearchConsole.js";
 import seed from "../data/seed.json";
 import {
   allMonths, periodTotals, channelSummary, channelMonthlyRows, garbageTrend,
@@ -13,6 +14,7 @@ import BreakEvenSection from "./components/BreakEvenSection.jsx";
 import GarbageTrendChart from "./components/GarbageTrendChart.jsx";
 import LiveSection from "./components/LiveSection.jsx";
 import AcquisitionSection from "./components/AcquisitionSection.jsx";
+import SearchConsoleSection from "./components/SearchConsoleSection.jsx";
 import PricingSimulator from "./components/PricingSimulator.jsx";
 import PriceRecommendation from "./components/PriceRecommendation.jsx";
 import PricingSettings from "./components/PricingSettings.jsx";
@@ -30,6 +32,7 @@ export default function App() {
   const chMonthly = useMemo(() => channelMonthlyRows(seed), []);
   const garbage = useMemo(() => garbageTrend(seed), []);
   const live = useBeds24();
+  const gsc = useSearchConsole();
 
   return (
     <div className="app">
@@ -65,6 +68,7 @@ export default function App() {
       <MonthlyTrendChart months={months} />
       <PLTable months={months} totals={totals} incidents={seed.incidents} notes={seed.notes} />
       <ChannelSection channels={channels} monthlyRows={chMonthly} allMonths={months.map((m) => m.month)} />
+      <SearchConsoleSection seed={seed} live={live} gsc={gsc} />
       <AcquisitionSection seed={seed} channels={channels} />
       <PricingSettings seed={seed} />
       <PriceRecommendation seed={seed} months={months} />
