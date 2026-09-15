@@ -804,5 +804,13 @@
       92301525,
       92390536
     ]
+  },
+  "directSite": {
+    "url": "https://kamakuragateinn.com/",
+    "relaunchedOn": "2026-08-25",
+    "relaunchedOnPrecision": "approximate",
+    "note": "2026-09-14 に本人から「3週間前に構築した」と確認。旧サイトはUXが悪く予約が入らなかったため作り直したもの。日付は概算なので、正確な公開日が分かれば置き換えること（前後比較の窓がずれる）。",
+    "previousSiteBookings": 0,
+    "ga4": false
   }
 }
