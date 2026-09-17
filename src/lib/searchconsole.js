@@ -195,21 +195,35 @@ export function funnel(seed, daily, bookings, { from, to }) {
 
 /**
  * ボトルネックの判定。GA4 に進むべきかをここで決める（CLAUDE.md §3-5）。
- *   到達が無い     → サイトではなく露出の問題。GA4 を入れても何も分からない
- *   到達はあるが0件 → サイト内で落ちている。ここで初めて GA4 の出番
+ *
+ *   到達が無い             → サイトではなく露出の問題。GA4 を入れても何も分からない
+ *   到達はあるが予約0      → サイト内で落ちている。ここで初めて GA4 の出番
+ *   予約はあるが到達が薄い → 転換は足りている。伸ばす余地は露出側にある
+ *
+ * 「成約している」で止めると、転換率が高いだけの小さなファネルを
+ * 健全と読み違える。件数が少ないうちは到達が律速なので、そこを分けて出す。
  */
 export function bottleneck(f, { clicksNeeded = 100 } = {}) {
-  if (f.clicks < clicksNeeded && f.bookings === 0) {
-    return { key: "reach", needsGa4: false,
-      label: "到達が足りない",
-      detail: `期間中のクリックは ${f.clicks} 件。サイト内の改善より先に、検索での露出（表示回数 ${f.impressions.toLocaleString("ja-JP")}・平均順位 ${f.position.toFixed(1)}位）が課題です。GA4 を入れても母数が足りず判断できません。` };
-  }
-  if (f.clicks >= clicksNeeded && f.bookings === 0) {
+  const imp = (f.impressions || 0).toLocaleString("ja-JP");
+  if (f.bookings === 0) {
+    if (f.clicks < clicksNeeded) {
+      return { key: "reach", needsGa4: false,
+        label: "到達が足りない",
+        detail: `期間中のクリックは ${f.clicks} 件。サイト内の改善より先に、検索での露出（表示回数 ${imp}・平均順位 ${f.position.toFixed(1)}位）が課題です。GA4 を入れても母数が足りず判断できません。` };
+    }
     return { key: "conversion", needsGa4: true,
       label: "到達はあるが予約に至っていない",
       detail: `クリック ${f.clicks} 件に対し予約 0 件。サイト内のどこで落ちているかを見る必要があるため、ここで GA4 の出番です。` };
   }
-  return { key: "converting", needsGa4: f.clicks >= clicksNeeded,
+
+  /* 予約あたり何回の表示が要ったか。露出を増やす価値をそのまま金額に繋げられる */
+  const impressionsPerBooking = f.bookings ? Math.round(f.impressions / f.bookings) : null;
+  if (f.clicks < clicksNeeded) {
+    return { key: "convertingLowReach", needsGa4: false, impressionsPerBooking,
+      label: "転換は足りている。伸びしろは露出",
+      detail: `クリック ${f.clicks} 件から ${f.bookings} 件が成約（${(f.clickToBooking * 100).toFixed(1)}%）。転換率は十分なので、サイト内をいじるより露出を増やすほうが効きます。いまのところ表示 ${impressionsPerBooking} 回につき1件の割合です。ただし件数が少なく、この比率はまだ当てになりません。` };
+  }
+  return { key: "converting", needsGa4: true, impressionsPerBooking,
     label: "成約している",
     detail: `クリック ${f.clicks} 件から ${f.bookings} 件が成約（${(f.clickToBooking * 100).toFixed(1)}%）。クリック数は自然検索のみの下限値なので、実際の成約率はこれより低くなります。` };
 }

@@ -120,7 +120,12 @@ console.log("\n■ ボトルネック判定（GA4 に進むべきか）");
 check("クリックが少なく0件 → 到達", bottleneck({ clicks: 12, impressions: 400, position: 18, bookings: 0, clickToBooking: 0 }).key, "reach");
 check("到達はあるが0件 → 転換（GA4の出番）", bottleneck({ clicks: 300, impressions: 9000, position: 8, bookings: 0, clickToBooking: 0 }).key, "conversion");
 check("到達が少ないなら GA4 は不要", bottleneck({ clicks: 12, impressions: 400, position: 18, bookings: 0, clickToBooking: 0 }).needsGa4, false);
-check("成約していれば converting", bottleneck({ clicks: 300, impressions: 9000, position: 8, bookings: 2, clickToBooking: 2 / 300 }).key, "converting");
+check("到達も成約もあれば converting", bottleneck({ clicks: 300, impressions: 9000, position: 8, bookings: 2, clickToBooking: 2 / 300 }).key, "converting");
+/* 2026-09-17 の実績そのもの。転換率は高いが到達が薄い、を「健全」と読ませない */
+const realCase = bottleneck({ clicks: 26, impressions: 172, position: 12, bookings: 2, clickToBooking: 2 / 26 });
+check("成約ありでも到達が薄ければ露出が課題", realCase.key, "convertingLowReach");
+check("その場合 GA4 はまだ不要", realCase.needsGa4, false);
+check("予約1件あたりの表示回数", realCase.impressionsPerBooking, 86);
 
 console.log(failed ? `\n❌ ${failed}件が不一致です` : "\n✅ すべて期待どおりです");
 process.exit(failed ? 1 : 0);

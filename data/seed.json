@@ -808,9 +808,29 @@
   "directSite": {
     "url": "https://kamakuragateinn.com/",
     "relaunchedOn": "2026-08-25",
-    "relaunchedOnPrecision": "approximate",
-    "note": "2026-09-14 に本人から「3週間前に構築した」と確認。旧サイトはUXが悪く予約が入らなかったため作り直したもの。日付は概算なので、正確な公開日が分かれば置き換えること（前後比較の窓がずれる）。",
+    "relaunchedOnPrecision": "corroborated",
+    "note": "2026-09-14 に本人から「3週間前に構築した」と確認。旧サイトはUXが悪く予約が入らなかったため作り直したもの。Search Console の収録が 2026-08-24 から始まっており、この推定日と1日しか違わない（新サイト公開と同時にプロパティを登録したとみられる）。",
     "previousSiteBookings": 0,
-    "ga4": false
+    "ga4": false,
+    "searchConsoleDataFrom": "2026-08-24",
+    "searchConsoleCoversPreviousSite": false,
+    "bookings": [
+      {
+        "bookedOn": "2026-09-10",
+        "stay": "2026-11-21〜23",
+        "nights": 2,
+        "guests": 3,
+        "gross": 78910,
+        "stripeFee": 3125
+      },
+      {
+        "bookedOn": "2026-09-17",
+        "stay": "2026-09-27〜29",
+        "nights": 2,
+        "guests": 3,
+        "gross": 37000,
+        "stripeFee": 1465
+      }
+    ]
   }
 }
