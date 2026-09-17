@@ -3,10 +3,17 @@
   "generatedAt": "2026-09-14",
   "property": {
     "name": "Kamakura Gate Inn",
-    "location": "神奈川県鎌倉市大船",
+    "location": "神奈川県横浜市栄区笠間（大船駅近く）",
     "operator": "クリプトマネージ合同会社",
     "rooms": 1,
-    "currency": "JPY"
+    "currency": "JPY",
+    "address": "神奈川県横浜市栄区笠間3-41-8",
+    "jurisdiction": {
+      "municipality": "横浜市",
+      "ward": "栄区",
+      "authority": "横浜市栄区福祉保健センター 生活衛生課 環境衛生係",
+      "note": "屋号は Kamakura Gate Inn だが行政上は横浜市。届出・定期報告・旅館業許可の窓口はすべて横浜市栄区。鎌倉市ではない。"
+    }
   },
   "notes": {
     "summary": "2026年2〜8月の実績。全額は税込（表記のある項目を除く）。8月は光熱費・日用品のみ推計値。",
