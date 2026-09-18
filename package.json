@@ -14,7 +14,8 @@
     "verify:beds24": "node scripts/beds24-verify.mjs",
     "verify:regulation": "node scripts/regulation-verify.mjs",
     "verify:forecast": "node scripts/forecast-verify.mjs",
-    "verify:searchconsole": "node scripts/searchconsole-verify.mjs"
+    "verify:searchconsole": "node scripts/searchconsole-verify.mjs",
+    "refresh:beds24": "node scripts/beds24-refresh.mjs"
   },
   "dependencies": {
     "@vercel/edge": "^1.3.3",
