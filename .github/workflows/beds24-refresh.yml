@@ -1,0 +1,60 @@
+# Beds24 の予約スナップショットを毎日更新する
+#
+# 目的: トークンを持たない作業セッションでも、前日までの予約で分析できるようにする
+#       （CLAUDE.md §11）。本番の画面は api/beds24.js が都度取得するので別物。
+#
+# 事前設定（1回だけ）:
+#   リポジトリ → Settings → Secrets and variables → Actions → New repository secret
+#   Name: BEDS24_TOKEN  /  Secret: Beds24 の Long life token（読み取り専用）
+#
+# コミットされるのは個人情報を落としたあとの予約データだけ（toSafeBooking）。
+
+name: Beds24 スナップショット更新
+
+on:
+  schedule:
+    - cron: "0 20 * * *"   # 毎日 05:00 JST（UTC 20:00）
+  workflow_dispatch:        # 手動実行も可
+
+permissions:
+  contents: write
+
+concurrency:
+  group: beds24-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: 取得して fixture を書き出す
+        id: fetch
+        env:
+          BEDS24_TOKEN: ${{ secrets.BEDS24_TOKEN }}
+        run: node scripts/beds24-refresh.mjs
+
+      # 取り込んだデータが seed と矛盾していないかを、コミット前に確認する。
+      # 壊れたスナップショットを自動で積まないための歯止め。
+      - name: 検算
+        if: steps.fetch.outputs.changed == 'true'
+        run: |
+          npm ci
+          npm run verify:beds24
+
+      - name: 変化があればコミット
+        if: steps.fetch.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/fixtures/beds24-bookings.json
+          git commit -m "Beds24 スナップショットを更新する
+
+          scripts/beds24-refresh.mjs による自動更新。個人情報は
+          toSafeBooking() で除去済み。"
+          git push
