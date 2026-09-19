@@ -1,6 +1,6 @@
 # Kamakura Gate Inn 統合分析ダッシュボード
 
-神奈川県鎌倉市大船の民泊 **Kamakura Gate Inn**（1部屋 / 運営: クリプトマネージ合同会社）の
+神奈川県横浜市栄区笠間の民泊 **Kamakura Gate Inn**（1部屋 / 運営: クリプトマネージ合同会社）の
 予約・価格・会計を統合した分析ダッシュボード。仕様は [`CLAUDE.md`](./CLAUDE.md) を参照。
 
 **現在のステージ: Stage 1 — 静的データでUI（CLAUDE.md §8 / §12）**
