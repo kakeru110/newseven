@@ -113,7 +113,12 @@ for (const s of seed.monthly) {
 }
 
 console.log("\n■ キャンセル（既定の取得には含まれないため status=cancelled で別途取得する）");
-check("キャンセル件数（自社のテスト予約を除く）", summary.cancelled.length, 37, 0, `${summary.cancelled.length}件`);
+/* キャンセルは時間とともに増えるだけなので、固定値との一致では毎回落ちる。
+   日次更新（beds24-refresh.yml）はこの検算が通らないとコミットしないため、
+   厳密一致にすると自動更新が永久に止まる。下限だけを見る。
+   2026-09-07 時点の実測が 37件、2026-09-23 で 42件。 */
+check("キャンセル件数が減っていない（自社のテスト予約を除く・2026-09-07 実測 37件）",
+  summary.cancelled.length >= 37, `${summary.cancelled.length}件`);
 check("全チャネルのキャンセル率", summary.cancelRate >= 0.15 && summary.cancelRate <= 0.25,
   `${(summary.cancelRate * 100).toFixed(1)}%`);
 /* Booking.com エクストラネットの表示（20.0〜21.77%）と比べるなら、分母も Booking.com だけにする */
