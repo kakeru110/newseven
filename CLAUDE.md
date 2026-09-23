@@ -1283,6 +1283,36 @@ Beds24 の予約データ（キャンセル除く）から日単位で積み上�
 
 **週末は触らない。** 32,932円で売れていて上限にも当たっていない。
 
+#### 値上げによる OTA の露出低下は問題にならない（2026-09-23 検討）
+
+**「価格を上げると露出が下がる」は正しい。** ただし機構が違う。
+
+| | 効き方 |
+|---|---|
+| Airbnb | 絶対価格ではなく**競合比の妥当性**。競合より約30%高いと表示が減る。根本は転換率 |
+| Booking.com | 転換率が主。ただし **ADR は高いほど有利**な要素として公式に挙がる（手数料が増えるため）。キャンセル率も要素 |
+
+**それでも今回は問題にならない。根拠は3つ。**
+
+1. **値上げしても競合より安い。** Booking.com エクストラネットの実測で
+   当方 ADR 22,711円 / 直接競合 31,201円。**+20% しても 27,253円で競合より12.7%安い。**
+   Airbnb の言う「競合比+30%」には遠く届かない。値上げ後にようやく競合に近づく水準。
+2. **キャンセル率は競合より良好**（当方 21.8% / 競合 30.2%）。返金不可が泊数の9割を
+   運んでいるので崩れない（§9-4）。
+3. **露出が下がること自体が目的。** 枠を超えている以上、予約が減るのは効果であって副作用ではない。
+
+**残るリスクは「許可後の回復」だけ。** ランキングは実績の蓄積で決まるため、
+下がった転換率はすぐには戻らない。ただし**恒久ペナルティではなく、価格を戻せば戻る**。
+
+**値上げ前に露出の現在値を控えること。** 控えないと効果も副作用も測れない。
+Airbnb は管理画面「実績」のインプレッション・閲覧数、Booking.com はエクストラネットの
+アナリティクス。前回の記録は 2026-02-28〜08-28（インプレッション 26,554 / 閲覧 3,258）。
+
+- 出典: [Booking.com for Partners: Basics for improving ranking](https://partner.booking.com/en-us/help/commercial-insights/keys-success/basics-improving-ranking) ／
+  [同: Search results, ranking, and visibility](https://partner.booking.com/en-us/help/growing-your-business/analytics-reports/search-results-ranking-and-visibility) ／
+  [PriceLabs: How Airbnb's 2026 Algorithm Ranks Listings](https://hello.pricelabs.co/blog/airbnb-ranking-algorithm/)
+  （Airbnb は重み付けを公開していないため、Airbnb 側は業界情報に基づく整理）
+
 #### 承知しておくこと
 
 1. **効果測定は壊れる。** 8/29 の基準価格変更と 9/8 の12月最低価格の測定中で、
