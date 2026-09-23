@@ -615,7 +615,38 @@
         }
       },
       "monthly": {},
-      "monthlyNote": "月次のインプレッション・閲覧数。Airbnb の各画面右上『月間レポート』から取得して埋める。未取得のため空。"
+      "monthlyNote": "月次のインプレッション・閲覧数。Airbnb の各画面右上『月間レポート』から取得して埋める。未取得のため空。",
+      "snapshots": [
+        {
+          "period": {
+            "from": "2026-02-28",
+            "to": "2026-08-28",
+            "days": 182
+          },
+          "impressions": 26554,
+          "views": 3258,
+          "searchToViewRate": 0.1227,
+          "viewToBookingRate": 0.019,
+          "overallRate": 0.0023,
+          "impressionShareFirstPage": 0.564,
+          "note": "初回取得。立ち上げ期（2〜3月の低価格）を含む6ヶ月平均"
+        },
+        {
+          "period": {
+            "from": "2026-08-23",
+            "to": "2026-09-22",
+            "days": 30
+          },
+          "impressions": 6845,
+          "views": 424,
+          "searchToViewRate": 0.0619,
+          "viewToBookingRate": 0.0189,
+          "overallRate": 0.0012,
+          "impressionShareFirstPage": 0.609,
+          "note": "2026-09-23 取得。値上げ（基準23,548→28,000・最低18,500→22,000）の直前の基準値。検索→閲覧が 12.27%→6.19% と半減している一方、閲覧→予約は 1.90%→1.89% で不変。1ページ目率は 56.4%→60.9% に改善。日あたりインプレッションは 146→228 で+56%"
+        }
+      ],
+      "snapshotsNote": "値上げの前後比較用。同じ画面（ホスト管理画面『実績』→ 成約率／ページ閲覧数）から取得し、期間の日数も控えること。期間の長さが違うと日あたりに直さないと比較できない"
     },
     "booking": {
       "period": {
