@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-23T09:05:34.343Z",
+  "fetchedAt": "2026-09-23T10:10:38.525Z",
   "range": {
     "from": "2025-08-01",
     "to": "2027-03-31"
@@ -2794,7 +2794,7 @@
     },
     {
       "id": 93131888,
-      "status": "confirmed",
+      "status": "cancelled",
       "channel": "direct",
       "apiSource": "Direct",
       "arrival": "2026-11-21",
@@ -2804,7 +2804,7 @@
       "adults": 3,
       "children": 0,
       "bookedAt": "2026-09-15T00:50:40Z",
-      "cancelledAt": null
+      "cancelledAt": "2026-09-23T09:16:44Z"
     },
     {
       "id": 93285175,
