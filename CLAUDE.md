@@ -1347,8 +1347,36 @@ PriceLabs が**すでにもっと高く付けたい日にしか効かない**の
 1泊の穴は1泊客にしか売れない在庫。それが埋まった。
 
 **ただし単価は土曜平均（31,593円）より低い。** 10/12 はスポーツの日（10月第2月曜）で
-10/11 は3連休の中日、本来は土曜と同格の日である。配信価格は日曜並みだった。
-→ **PriceLabs の祝日カレンダーが効いているか確認すること。** API 未接続のため設定は読めない。
+10/11 は3連休の中日、本来は土曜と同格の日である。
+
+**2026-09-26 訂正: 原因は祝日の未認識ではない。オーファン日の値引きとみられる。**
+当初「PriceLabs の祝日カレンダーが効いていないのでは」としたが、調べて否定した。
+
+1. **祝日のオン/オフという設定は存在しない。** PriceLabs は価格変動要因として
+   "Supply and demand fluctuations due to a holiday or event" を挙げており、祝日は
+   アルゴリズムの一部。ユーザーが祝日を登録する仕組みではない。
+2. **日本の祝日は認識されている。** 同じ「祝日前日の日曜」でも
+   **11/22（勤労感謝の日の前日）は配信 40,472円**。見ていないならこの値段にならない。
+3. **10/11 は 2026-09-05 の時点で1泊の穴になっていた**（10/09→10/11 は 3/17 予約、
+   10/12→10/14 は 9/5 予約）。売れたのは 9/26。11/22 は2泊予約の一部で穴ではない。
+
+→ 見るべきは **Applied Customizations の `Customize Orphan Day Prices` と
+`Customize Last Minute Prices`**。どちらも下げる方向に効く。
+
+**祝日前日専用のルールは PriceLabs に存在しない。** 使えるレバーは
+`Weekend Days`（週末の定義を変える・全期間に効く）、
+`Day of Week Pricing Adjustments`（曜日ごとの%調整）、
+`Date Specific Overrides`（日付を限った上書き）の3つだけ。
+
+**祝日の認識を画面で確かめる方法:** Pricing Calendar のカレンダー上に**イベント名が直接出る**
+（モバイルは**紫の星**）。出ていなければ Calendar Settings → Calendar Info Visibility →
+`Events/Holidays` をオンにする（**表示トグルで価格には効かない**）。一覧パネルは
+`Event/Holidays` の横の目のアイコンだが、**申請制**（`support@pricelabs.co` へ依頼が要る）。
+祝日が抜けていれば `Report Event` で申告できる。
+
+- 出典: [Events, Holidays, & High Demand Dates](https://help.pricelabs.co/portal/en/kb/articles/events-holidays-and-high-demand-dates) ／
+  [Understanding the Dynamic Pricing Calendar](https://help.pricelabs.co/portal/en/kb/articles/pricing-calendar) ／
+  [List of all PriceLabs Customizations](https://help.pricelabs.co/portal/en/kb/articles/list-of-all-pricelabs-customizations)
 
 **この1件だけで11月が黒字転換した。**
 
@@ -1784,11 +1812,16 @@ pace 別到達日と、`PricingSimulator` の許容幅を組み合わせてい�
       **消防設備・届出関連・税理士など他にもある可能性**があるので、1件ずつ足さず
       **まとめて洗い出してから一度に seed へ入れる**。固定費が上がると損益分岐稼働率も動く
       （損益分岐価格は固定費を含まないので不変）。
-- [ ] **PriceLabs の祝日カレンダーが効いているか確認する**（§9-5）。
-      10/11（日）は 10/12 スポーツの日の前日＝3連休の中日だが、29,427円と日曜並みで売れた
-      （土曜の実績平均は 31,593円）。祝日を認識していれば土曜同格で配信されるはず。
-      API 未接続のため設定は読めないので、**画面で祝日設定を見る**こと。
-      効いていなければ、GW・年末年始・シルバーウィークでも同じ取りこぼしが続く。
+- [ ] **PriceLabs のオーファン日・直前値引きの設定を見る**（§9-5）。
+      Applied Customizations の `Customize Orphan Day Prices` と
+      `Customize Last Minute Prices` が、祝日前日にまで何%引いているかを確認する。
+      10/11（スポーツの日の前日の日曜）が 29,427円で売れた一方、同じ祝日前日の
+      11/22 は 40,472円で配信されている。違いは**穴かどうか**（10/11 は 9/5 から1泊の穴）。
+      **祝日の未認識ではない**ことは §9-5 で確認済み。
+
+      **急ぎではない。** 残る祝日前日で空いているのは 11/02（月）だけで金額が小さい
+      （11/22・1/10 はどちらも売済）。§9-5 のとおり
+      **10/5 の判定まで4つ目の設定変更を入れない**方針を優先する。
 - [ ] **Airbnb の返金不可プランの予約比率を確認する**（§9-4）。Booking.com は返金不可が
       泊数の89.6%を占め、キャンセル率2.6%まで下がっている。Airbnb も同水準なら
       キャンセルポリシー本体（柔軟 → 普通）を締める議論は不要になる。
