@@ -81,7 +81,7 @@ export default function PricingSimulator({ seed, totals, month }) {
           <div className="k">営業損益（月）</div>
           <div className="v">
             {money(result.operatingProfit)} 円{" "}
-            <span style={{ fontSize: 13, color: result.deltaOperatingProfit >= 0 ? "var(--up)" : "var(--neg)" }}>
+            <span style={{ fontSize: 13, color: result.deltaOperatingProfit >= 0 ? "var(--good)" : "var(--neg)" }}>
               {result.deltaOperatingProfit >= 0 ? "+" : ""}{money(result.deltaOperatingProfit)}
             </span>
           </div>

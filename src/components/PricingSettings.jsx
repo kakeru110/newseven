@@ -9,13 +9,14 @@ import { money, pct, num } from "../lib/format.js";
  * 変更履歴を残しておかないと、あとから効果を測るときに
  * 「いつ何を変えたか」が分からなくなる。
  */
-const LABEL = { minPrice: "最低価格", basePrice: "基準価格", maxPrice: "最高価格" };
+const LABEL = { minPrice: "最低価格", basePrice: "基準価格", maxPrice: "最高価格", all: "3値すべて" };
 
 export default function PricingSettings({ seed }) {
   const s = seed.pricingSettings;
   const overrides = s?.overrides || [];
   const changes = seed.pricingChanges || [];
   const obs = seed.pricingObservations;
+  const history = seed.pricingHistory;
   if (!s) return null;
 
   const adrLift = obs && obs.bookedAdrBefore ? obs.bookedAdrAfter / obs.bookedAdrBefore - 1 : null;
@@ -100,11 +101,15 @@ export default function PricingSettings({ seed }) {
                 <td>{c.date}</td>
                 <td>{LABEL[c.setting] || c.setting}</td>
                 <td>
-                  {money(c.from)}
+                  {c.from == null ? "—" : money(c.from)}
                   {c.approximate && <span className="psub"> 概算</span>}
                 </td>
-                <td>{money(c.to)}</td>
-                <td>+{num(((c.to - c.from) / c.from) * 100, 1)}%</td>
+                <td>{c.to == null ? "—" : money(c.to)}</td>
+                <td>
+                  {c.from == null || c.to == null
+                    ? "—"
+                    : `${c.to >= c.from ? "+" : ""}${num(((c.to - c.from) / c.from) * 100, 1)}%`}
+                </td>
                 <td className={c.status === "planned" ? "warn" : ""}>
                   {c.scope || "全期間"}
                   {c.status === "planned" && <span className="psub"> 未反映</span>}
@@ -115,6 +120,53 @@ export default function PricingSettings({ seed }) {
           </tbody>
         </table>
       </div>
+
+      {history && history.rows && history.rows.length > 0 && (
+        <>
+          <h3 style={{ fontSize: 12.5, fontWeight: 600, margin: "18px 0 6px" }}>
+            PriceLabs の基本価格履歴（一次記録）
+          </h3>
+          <p className="desc" style={{ marginBottom: 8 }}>
+            PriceLabs の画面から書き写した生の記録です。上の「変更履歴」は理由を添えた要約なので、
+            <strong>食い違ったらこちらを正としてください</strong>。変わった値だけ色を付けています。
+          </p>
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>日時（JST）</th>
+                  <th className="num">最低価格</th>
+                  <th className="num">基準価格</th>
+                  <th className="num">最高価格</th>
+                </tr>
+              </thead>
+              <tbody>
+                {history.rows
+                  .map((r, i) => ({ r, prev: history.rows[i - 1] }))
+                  .reverse()
+                  .map(({ r, prev }) => (
+                    <tr key={r.at + r.minPrice + r.basePrice + r.maxPrice}>
+                      <td>{r.at.replace("T", " ")}</td>
+                      {["minPrice", "basePrice", "maxPrice"].map((k) => (
+                        <td
+                          key={k}
+                          style={
+                            prev && prev[k] !== r[k]
+                              ? { color: "var(--good)", fontWeight: 600 }
+                              : { color: "var(--muted)" }
+                          }
+                        >
+                          {money(r[k])}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="desc" style={{ marginTop: 8 }}>{history.note}</p>
+        </>
+      )}
 
       {obs && (
         <>
@@ -132,7 +184,7 @@ export default function PricingSettings({ seed }) {
               <div className="k">引き上げ後（8/15〜8/29）</div>
               <div className="v">
                 {money(obs.bookedAdrAfter)} 円{" "}
-                {adrLift != null && <span style={{ fontSize: 13, color: "var(--up)" }}>+{pct(adrLift, 1)}</span>}
+                {adrLift != null && <span style={{ fontSize: 13, color: "var(--good)" }}>+{pct(adrLift, 1)}</span>}
               </div>
             </div>
           </div>

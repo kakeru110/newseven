@@ -35,7 +35,7 @@ function VersusRow({ label, mine, rival, format, betterIsLower, neutral }) {
     <div style={{ marginBottom: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 6 }}>
         <span>{label}</span>
-        <span style={{ color: neutral ? "var(--muted)" : win ? "var(--up)" : "var(--neg)", fontWeight: 500 }}>
+        <span style={{ color: neutral ? "var(--muted)" : win ? "var(--good)" : "var(--neg)", fontWeight: 500 }}>
           {neutral ? "差" : win ? "優位" : "劣位"} {format(Math.abs(mine - rival))}
         </span>
       </div>
