@@ -1,10 +1,10 @@
 {
-  "fetchedAt": "2026-09-24T22:57:18.066Z",
+  "fetchedAt": "2026-09-25T23:01:54.851Z",
   "range": {
     "from": "2025-08-01",
     "to": "2027-03-31"
   },
-  "count": 209,
+  "count": 210,
   "bookings": [
     {
       "id": 81441658,
@@ -2930,6 +2930,20 @@
       "adults": 6,
       "children": 0,
       "bookedAt": "2026-09-24T14:17:28Z",
+      "cancelledAt": null
+    },
+    {
+      "id": 93667142,
+      "status": "new",
+      "channel": "booking",
+      "apiSource": "Booking.com",
+      "arrival": "2026-11-12",
+      "departure": "2026-11-15",
+      "price": 97536,
+      "commission": 13947,
+      "adults": 4,
+      "children": 0,
+      "bookedAt": "2026-09-25T07:18:14Z",
       "cancelledAt": null
     }
   ]
