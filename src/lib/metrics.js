@@ -116,6 +116,8 @@ export function periodTotals(seed) {
     alos: cleaningCount ? nightsActual / cleaningCount : 0,
     hasProvisional: ms.some((m) => m.isProvisional),
     provisionalMonths: ms.filter((m) => m.isProvisional).map((m) => m.month),
+    /* 月まるごとの仮値ではなく「この行だけ推計」を持つ月。2026-08 の光熱費・日用品がこれにあたる */
+    estimatedMonths: ms.filter((m) => m.estimates && Object.keys(m.estimates).length).map((m) => m.month),
   };
 }
 

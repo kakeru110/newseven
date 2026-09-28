@@ -24,7 +24,7 @@
       "2026-08"
     ],
     "missingData": [
-      "2026-08: 収支表PDF（2026年8月分）と清掃請求書で、売上・OTA手数料・運営サポート料・清掃・ごみを確定。残るは光熱費・日用品で、単価マスタ（758円/泊・401円/泊）からの推計値。"
+      "2026-08: 売上・OTA手数料・運営サポート料・清掃・ごみは収支表PDFと清掃請求書で確定。**光熱費と日用品の2項目だけが推計**（単価マスタ 758円/泊・401円/泊 × 29泊）。実績レンジで振ると営業損益は 188,072〜209,540円（確定値 200,440円 に対し ±約5%）。どちらも月次では実額でもぶれる費目（水道は2ヶ月に1回、日用品はまとめ買い）なので、請求書が揃っても「その月に使った額」にはならない点に注意。"
     ],
     "nightsExplanation": "月跨ぎ滞在の扱いが2系統ある。nightsRevenue は収支表の「宿泊日数」で、チェックイン月に滞在まるごとを計上する（Beds24 の到着月集計と全期間で一致）。nightsActual はカレンダー上で実際に埋まっていた日数（Beds24 の宿泊日ベース）。稼働率には nightsActual、ADR には nightsRevenue を使うこと。",
     "testBookings": "直販チャネルの4件（seed.testBookings）は自社のテスト予約。集計から除外している。",
@@ -336,7 +336,7 @@
     },
     {
       "month": "2026-08",
-      "isProvisional": true,
+      "isProvisional": false,
       "calendarDays": 31,
       "nightsActual": 29,
       "nightsRevenue": 29,
@@ -366,6 +366,26 @@
         "mgmtBaseFeeInclTax": 22000,
         "checkinSystemInclTax": 2200,
         "noiseSensorInclTax": 2200
+      },
+      "estimates": {
+        "variableCosts.utilities": {
+          "basis": "単価マスタ 758円/泊 × 29泊",
+          "low": 19295,
+          "high": 25899,
+          "note": "2026-02〜07 の実績は 665〜893円/泊。水道は2ヶ月に1回の請求なので、実額でも月次ではぶれる（§6-4）"
+        },
+        "variableCosts.supplies": {
+          "basis": "単価マスタ 401円/泊 × 29泊",
+          "low": 5216,
+          "high": 20080,
+          "note": "2026-02〜07 の実績は 180〜692円/泊とばらつきが大きい。日用品はまとめ買いなので「その月に買った額」であって「その月に使った額」ではない"
+        }
+      },
+      "estimateImpact": {
+        "operatingProfit": 200440,
+        "operatingProfitLow": 188072,
+        "operatingProfitHigh": 209540,
+        "note": "推計2項目の合計 33,611円 を実績レンジ（24,511〜45,979円）で振ったときの営業損益の幅。±約5%"
       }
     }
   ],

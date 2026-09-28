@@ -24,8 +24,8 @@ export default function PLTable({ months, totals, incidents, notes }) {
     { label: "清掃・ごみ（税込）", get: (m) => m.variableCosts.cleaningTotalInclTax, indent: true, mark: (m) => m.variableCosts.advanceCredit !== 0 },
     { label: "OTA手数料", get: (m) => m.variableCosts.otaFee, indent: true },
     { label: "運営サポート料（税込）", get: (m) => m.variableCosts.mgmtSupportFeeInclTax, indent: true },
-    { label: "光熱費", get: (m) => m.variableCosts.utilities, indent: true },
-    { label: "日用品", get: (m) => m.variableCosts.supplies, indent: true },
+    { label: "光熱費", get: (m) => m.variableCosts.utilities, indent: true, est: "variableCosts.utilities" },
+    { label: "日用品", get: (m) => m.variableCosts.supplies, indent: true, est: "variableCosts.supplies" },
     { label: "変動費 合計", get: (m) => m.variableCostTotal, cls: "total" },
 
     { label: "限界利益", get: (m) => m.contributionMargin, cls: "grand" },
@@ -87,9 +87,15 @@ export default function PLTable({ months, totals, incidents, notes }) {
                   <td className={row.indent ? "indent" : ""}>{row.label}</td>
                   {months.map((m) => {
                     const v = row.get(m);
+                    const est = row.est && m.estimates && m.estimates[row.est];
                     return (
-                      <td key={m.month} className={row.mark && row.mark(m) ? "prov-mark" : ""}>
+                      <td
+                        key={m.month}
+                        className={row.mark && row.mark(m) ? "prov-mark" : ""}
+                        title={est ? `推計値 — ${est.basis}（実績レンジ ${money(est.low)}〜${money(est.high)}円）` : undefined}
+                      >
                         {row.fmt ? row.fmt(v) : money2(v)}
+                        {est && <span className="psub"> 推計</span>}
                       </td>
                     );
                   })}

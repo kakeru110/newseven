@@ -58,6 +58,12 @@ export default function App() {
               {totals.provisionalMonths.map(monthLong).join("・")}は仮値
             </span>
           )}
+          {!totals.hasProvisional && totals.estimatedMonths?.length > 0 && (
+            <span className="badge" title="売上・手数料・清掃は確定。光熱費と日用品だけが単価マスタからの推計">
+              <span className="dot" />
+              {totals.estimatedMonths.map(monthLong).join("・")}は光熱費・日用品のみ推計
+            </span>
+          )}
         </div>
       </header>
 
