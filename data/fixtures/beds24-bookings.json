@@ -1,10 +1,10 @@
 {
-  "fetchedAt": "2026-10-01T23:38:42.984Z",
+  "fetchedAt": "2026-10-04T22:40:32.680Z",
   "range": {
     "from": "2025-09-01",
     "to": "2027-04-30"
   },
-  "count": 213,
+  "count": 214,
   "bookings": [
     {
       "id": 81441658,
@@ -2986,6 +2986,20 @@
       "adults": 4,
       "children": 0,
       "bookedAt": "2026-09-28T11:39:55Z",
+      "cancelledAt": null
+    },
+    {
+      "id": 94150954,
+      "status": "new",
+      "channel": "airbnb",
+      "apiSource": "Airbnb",
+      "arrival": "2026-11-14",
+      "departure": "2026-11-15",
+      "price": 44844,
+      "commission": 6951,
+      "adults": 1,
+      "children": 0,
+      "bookedAt": "2026-10-04T10:45:40Z",
       "cancelledAt": null
     }
   ]
