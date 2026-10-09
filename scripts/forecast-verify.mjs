@@ -47,9 +47,19 @@ console.log("\n■ 配分と突合");
 /* 宿泊日ベースの配分なので、月をまたぐ滞在は分割される。合計は全期間で保存されること */
 const live = bookedAsOf(fixture.bookings, null);
 const totalNights = live.reduce((s, b) => s + Math.round((new Date(b.departure) - new Date(b.arrival)) / 86400000), 0);
+/* 窓はデータから引く。固定すると、窓の外へ伸びた予約のぶんだけ
+   「配分で保存されない」と誤検出する（2027-04 の予約が入って実際に落ちた） */
 const allMonths = [];
-for (let y = 2026, m = 1; !(y === 2027 && m > 3); m === 12 ? ((y += 1), (m = 1)) : (m += 1)) {
-  allMonths.push(`${y}-${String(m).padStart(2, "0")}`);
+{
+  const first = live.reduce((a, b) => (b.arrival < a ? b.arrival : a), live[0].arrival).slice(0, 7);
+  /* 最終泊はチェックアウト前日なので、departure から1日戻した月まで見る */
+  const lastNight = live.reduce((a, b) => (b.departure > a ? b.departure : a), live[0].departure);
+  const last = new Date(new Date(lastNight).getTime() - 86400000).toISOString().slice(0, 7);
+  for (let y = +first.slice(0, 4), m = +first.slice(5, 7); ; m === 12 ? ((y += 1), (m = 1)) : (m += 1)) {
+    const k = `${y}-${String(m).padStart(2, "0")}`;
+    allMonths.push(k);
+    if (k >= last) break;
+  }
 }
 const spread = allMonths.reduce((s, m) => s + onTheBooks(fixture.bookings, m, null).nights, 0);
 check("全期間の泊数が配分で保存される", spread, totalNights);
